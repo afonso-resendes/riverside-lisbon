@@ -1,0 +1,48 @@
+* {
+    margin: 0;
+    padding: 0;
+    outline: none;
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
+}
+.location{
+    position: relative;
+    display: flex;
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+    font-family: 'Hind Madurai', sans-serif;
+}
+.location .mapouter{
+    position:relative;
+    text-align:right;
+    flex: 2;
+    width:100%;
+}
+.location .info{
+    flex: 1;
+    padding: 5rem 2.5rem 5rem 2.5rem;
+}
+.footer{
+    position: relative;
+    padding-top: 3rem;
+}
+.footer .logo img{
+    max-width: 15rem;
+}
+@media (max-width: 700px) {
+    .location {
+        font-size: 0.8rem;
+    }
+    .location .info{
+        height: 100%;
+        padding: 2.5rem 1rem 2.5rem 1rem;
+    }
+    .footer{
+        padding-top: 1.5rem;
+        font-size: 0.8rem;
+    }
+    .footer .logo img{
+        max-width: 10rem;
+    }
+}

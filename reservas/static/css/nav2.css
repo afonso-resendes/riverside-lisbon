@@ -1,0 +1,201 @@
+* {
+  margin: 0;
+  padding: 0;
+  outline: none;
+  box-sizing: border-box;
+  list-style: none;
+  text-decoration: none;
+}
+#web-pc {
+  position: fixed;
+  top: 0rem;
+  z-index: 99;
+  display: flex;
+  border-radius: 0px 0px 10px 10px;
+  width: 100%;
+  height: 5rem;
+  background-color: rgb(78, 78, 78);
+}
+#web-pc .logo_lisbon {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  left: 4rem;
+  height: 5rem;
+}
+#web-pc .logo_lisbon img {
+  width: 12rem;
+  height: fit-content;
+}
+#web-pc ul {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 5rem;
+  position: fixed;
+}
+#web-pc li {
+  margin: 0px 20px 0px 20px;
+}
+#web-pc a {
+  font-size: 20px;
+  font-weight: 500;
+  padding: 15px;
+  color: rgb(255, 255, 255);
+  font-family: "Hind Madurai", sans-serif;
+}
+
+#web-pc li a:hover {
+  color: rgb(211, 209, 209);
+}
+#web-pc #signOut{
+    display: none;    
+}
+#signIn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 500;
+  width: 5rem;
+  color: rgb(255, 255, 255);
+  font-family: "Hind Madurai", sans-serif;
+  text-decoration: none;
+}
+#web-pc #socialIcon{
+  color: rgb(255, 255, 255);
+  padding: 10px;
+}
+.social-icons{
+  display: flex;
+  align-items: center;
+  position: fixed;
+  right: 4rem;
+  height: 5rem;
+}
+#web-mobile{
+  position: fixed;
+  top: 0rem;
+  z-index: 300;
+  display: none;
+  background-color: rgb(78, 78, 78);
+  width: 100%;
+  height: 3rem;
+  border-radius: 0px 0px 5px 5px;
+
+}
+.mobile_href{
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0rem;
+  text-align: center;
+  display: none;
+  background-color: rgb(78, 78, 78);
+  z-index: 200;
+}
+.mobile_href ul{
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+.mobile_href li{
+  padding: 15px;
+}
+.mobile_href a{
+  color:#d3d2d2;
+  font-family: "Hind Madurai", sans-serif;
+  font-size: 2rem;
+  text-align: center;
+}
+#web-mobile .mobile_logo_lisbon img{
+  width: 9rem;
+  height: fit-content;
+}
+#web-mobile .mobile_logo_lisbon {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  height: 3rem;
+}
+#web-mobile .mobile-social-icons{
+  display: flex;
+  align-items: center;
+  position: fixed;
+  height: 3rem;
+}
+.open-main-nav {
+  position: fixed;
+  top: 1.5rem;
+  transform: translate(0rem,-50%);
+  padding-top: 20px;
+  right: 20px;
+  z-index: 1000;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.open-main-nav:focus {
+  outline: none;
+}
+
+.burger {
+  position: relative;
+  display: block;
+  margin: 0px;
+  width: 28px;
+  height: 4px;
+  margin: 0 auto;
+  border-radius: 20px;
+  background: #d3d2d2;
+  transition: all 0.275s;
+}
+
+.burger:after,
+.burger:before {
+  content: "";
+  display: block;
+  height: 100%;
+  border-radius: 20px;
+
+  background: #d3d2d2;
+  transition: all 0.275s;
+}
+
+.burger:after {
+  transform: translateY(-12px) translateX(0px);
+}
+
+.burger:before {
+  transform: translateY(-16px);
+}
+
+/* Toggle State part */
+
+.is-open .burger {
+  transform: translateY(-8px) rotate(-45deg);
+  background-color: #eeeeee;
+}
+
+.is-open .burger:before {
+  transform: translateY(0px) rotate(90deg);
+  background-color: #eeeeee;
+}
+
+.is-open .burger:after {
+  transform: translateY(-12px) translateX(10px);
+  opacity: 0;
+}
+
+
+@media (max-width: 1024px) {
+  #web-pc {
+    display: none;
+  }
+  #web-mobile {
+    display: flex;
+  }
+}
