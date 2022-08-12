@@ -28,8 +28,8 @@
               <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" />
               <a id="socialIcon" href="https://www.facebook.com/profile.php?id=100082891012715"><i class="fab fa-facebook-f"></i></a>
               <a id="socialIcon" href="https://www.instagram.com/lisbonriverside.cowork/"><i class="fab fa-instagram"></i></a style="">
-              <a id="socialIcon" href="mailto:lisbonriverside@gmail.com"><i class="fas fa-envelope"></i></a>  
-              <a id="socialIcon" href="https://www.linkedin.com/in/riverside-lisboncoworking/"><i class="fab fa-linkedin"></i></a>      
+              <a id="socialIcon" href="mailto:lisbonriverside@gmail.com"><i class="fas fa-envelope"></i></a>
+              <a id="socialIcon" href="https://www.linkedin.com/in/riverside-lisboncoworking/"><i class="fab fa-linkedin"></i></a>
               <a type="submit" id="signIn" href="/">Back</a>
             </div>
           </nav>
@@ -46,7 +46,7 @@
             <label id="label-firstname">Nome</label>
             <br />
             {{form.first_name}}
-            
+
             <br />
 
             <label id="label-username">Nome de utilizador</label>
@@ -63,13 +63,18 @@
             <label id="label-pass">Palavra-passe</label>
             <br />
             {{form.password1}}
-           
+
 
             <br />
             <label id="label-confirm-pass">Reescreva a Palavra-passe</label>
             <br />
             {{form.password2}}
             <br />
+                {{form.errors.username}}
+                {{form.errors.email}}
+                {{form.errors.password1}}
+                {{form.errors.password2}}
+                <br />
                 <button type="submit">Sign Up</button>
             </form>
             {% for message in messages %}
@@ -78,6 +83,6 @@
             </div>
             {% endfor %}
             <p>Já tens conta? <a style="text-decoration: underline;" href="/signin">SignIn</a></p>
-        </section>    
+        </section>
     </div>
 </html>
