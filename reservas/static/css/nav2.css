@@ -50,7 +50,7 @@
   color: rgb(211, 209, 209);
 }
 #web-pc #signOut{
-    display: none;    
+  display: block;    
 }
 #signIn{
   display: flex;
