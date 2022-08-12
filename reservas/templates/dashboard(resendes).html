@@ -1,5 +1,5 @@
 {% load static %}
-<html lang="en">
+<html id="Html" lang="en">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -17,6 +17,7 @@
         </div>
     </header>
     <body>
+        <div id="payment_info_board"></div>
         <section class="Html">
             <div class="welcome">
                 <h2>Welcome {{request.user.username}}.</h2>
@@ -247,7 +248,59 @@
         };
         
         $.ajax(settings).done(function (response) {
-          console.log(response);
+            console.log(response)
+            var payment_Method=response.paymentMethod;
+            var url='http://127.0.0.1:8000/?id='+response.transactionID
+            console.log(payment_Method);
+            const paymentInfo=document.createElement("div");
+            
+            if(payment_Method==="MBWAY"){
+                document.getElementById('payment_info_board').style.display='block';
+                if(response.returnStatus.statusDescription==="Success"&&response.paymentStatus==="Pending"){
+                    const continue_button=document.createElement("button")
+                    const continue_button_link=document.createElement("a")
+                    var send_phone=response.token.value;
+                   
+                    paymentInfo.classList.add("payment_info");
+                   
+                    continue_button_link.innerHTML="Continue"
+                    continue_button_link.setAttribute("href", url)
+                    continue_button.appendChild(continue_button_link)
+                   
+                    paymentInfo.innerHTML=
+                    "<p>The MBWAY payment request was sent to "+send_phone+'.</br>'+" You have 4 minutes to procced the payment before it's expired.</p>";
+                    paymentInfo.appendChild(continue_button)
+
+                }else if(response.paymentStatus==="Success"){
+                    const continue_button_link=document.createElement("a")
+                    const continue_button=document.createElement("button")
+
+                    url='http://127.0.0.1:8000/user_wallet'
+                    paymentInfo.classList.add("payment_info");
+                    
+                    continue_button_link.innerHTML="Go to wallet"
+                    continue_button_link.setAttribute("href", url)
+                    continue_button.appendChild(continue_button_link)
+                    
+                    paymentInfo.innerHTML=
+                    "<a id='payment_info_out' href='/'>&#x2716;</a>"+'</br>'+" <p>Your Payment was made with SUCCESS."+'</br>'+"Please go to your wallet if you want to see your reservation</p>";
+                    paymentInfo.appendChild(continue_button)
+
+                }else if(response.paymentStatus==="Declined"){
+                    const continue_button_link=document.createElement("a")
+
+                    url='/'
+                    paymentInfo.classList.add("payment_info");
+                    
+                    continue_button_link.innerHTML="&#x2716;"
+                    continue_button_link.setAttribute("href", url)
+                    
+                    paymentInfo.innerHTML=
+                    "<p>Your Payment was DECLINED."+'</br>'+"Please try again later</p>";
+                    paymentInfo.appendChild(continue_button_link)
+                }
+            }
+            document.getElementById("payment_info_board").appendChild(paymentInfo);
         });
     }    
     $(document).ready(function(){

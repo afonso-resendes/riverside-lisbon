@@ -259,6 +259,8 @@ def coworkingSimulation(request):
         viewChairs = True
         context = {
             "r_form": r_form,
+            "customer_name":request.user.username,
+            "customer_mail":request.user.email,
             "dates": dates,
             "startdate": startdate.strftime("%m/%d/%Y"),
             "enddate": enddate.strftime("%m/%d/%Y"),
