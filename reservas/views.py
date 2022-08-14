@@ -227,7 +227,7 @@ def coworkingSimulation(request):
         if nrDias > 90:
             standPrice = 5
 
-        freeChair = [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        freeChair = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
         reservas = []
         for r in reservas_Coworking.objects.all():
             if startdate.date() == r.startDate or enddate.date() == r.endDate:
