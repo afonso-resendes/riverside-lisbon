@@ -17,7 +17,11 @@
         </div>
     </header>
     <body>
-        <div id="payment_info_board"></div>
+        <div id="payment_info_board">
+            <form action="" method="post" id="paymentStatus">
+                {% csrf_token %}
+            </form>
+        </div>
         <section class="Html">
             <div class="welcome">
                 <h2>Welcome {{request.user.username}}.</h2>
@@ -167,7 +171,7 @@
         <div class="line" id="left"></div>
         <div class="line" id="right"></div>
     </div>
-    <form action="" method="post" id="message">
+    <form action="" method="post">
         {% csrf_token %}
         <input type="text" id="name" name="name" placeholder="Name" Required><br>
         <input type="text" id="Industry" name="Industry" placeholder="Industry" Required><br>
@@ -227,7 +231,6 @@
     window.onload=()=>{
         if(window.location.href.indexOf("?id=")>-1){
             var id = window.location.href;
-            window.location.href+="#getStatus";
             transactionID = id.split('=')[1];
             console.log("statusTid = " + transactionID);
             getTransactionStatus(transactionID);
@@ -254,7 +257,7 @@
             console.log(payment_Method);
             const paymentInfo=document.createElement("div");
             
-            if(payment_Method==="MBWAY"){
+            if(payment_Method==="MBWAY"||payment_Method==="CARD"){
                 document.getElementById('payment_info_board').style.display='block';
                 if(response.returnStatus.statusDescription==="Success"&&response.paymentStatus==="Pending"){
                     const continue_button=document.createElement("button")
@@ -272,19 +275,26 @@
                     paymentInfo.appendChild(continue_button)
 
                 }else if(response.paymentStatus==="Success"){
-                    const continue_button_link=document.createElement("a")
-                    const continue_button=document.createElement("button")
+                    const form=document.getElementById('paymentStatus')
+                    
+                    const input=document.createElement("input");
+                    input.setAttribute("id", "paymentStatus_input");
+                    input.setAttribute("name", "paymentStatus_input");
+                    input.setAttribute("type","checkbox");
+                    input.setAttribute("valeu", "true");
+                    input.setAttribute("style","display:none;");
+                    input.checked=true;
+                    form.appendChild(input)
 
-                    url='http://127.0.0.1:8000/user_wallet'
+                    const continue_button=document.createElement("button");
+                    continue_button.setAttribute("type","submit")
+                    continue_button.innerHTML="Exit";
+                    form.appendChild(continue_button)
+
                     paymentInfo.classList.add("payment_info");
-                    
-                    continue_button_link.innerHTML="Go to wallet"
-                    continue_button_link.setAttribute("href", url)
-                    continue_button.appendChild(continue_button_link)
-                    
                     paymentInfo.innerHTML=
-                    "<a id='payment_info_out' href='/'>&#x2716;</a>"+'</br>'+" <p>Your Payment was made with SUCCESS."+'</br>'+"Please go to your wallet if you want to see your reservation</p>";
-                    paymentInfo.appendChild(continue_button)
+                    "<p>Your Payment was made with SUCCESS."+'</br>'+"Please go to your wallet if you want to see your reservation</p>";
+                    paymentInfo.appendChild(form)
 
                 }else if(response.paymentStatus==="Declined"){
                     const continue_button_link=document.createElement("a")

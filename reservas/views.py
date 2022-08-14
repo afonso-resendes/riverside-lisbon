@@ -1,6 +1,7 @@
 import datetime
 from datetime import datetime
 from email import message
+from sre_constants import SUCCESS
 
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse
@@ -112,43 +113,50 @@ def index(request):
             return render(request, "admin.html", context)
         else:
             if request.method == "POST":
-                if request.POST.get("message"):
+                if request.POST.get("Industry"):
                     name = request.POST.get("name", False)
-                    razao = request.POST.get("razao")
-                    message = request.POST.get("message", False)
+                    Industry = request.POST.get("Industry")
+                    employees = request.POST.get("employees", False)
+                    description=request.POST.get("description")
                     mensagens.objects.create(
                         user=request.user,
                         date=datetime.now(),
                         ClientName=name,
-                        Reason=razao,
+                        Reason=Industry,
                         ClientEmail=request.user.email,
-                        ClientMessage=message,
+                        ClientMessage=description,
                     )
 
                     return redirect("index")
+                if request.POST.get("paymentStatus_input"):
+                    success=request.POST.get("paymentStatus_input")
+                    if success:
+                        reserva_provisoria=reservas_Coworking_provisoria.objects.get(user=request.user)
+                        nr_Lugares=get_RealQty(reserva_provisoria)
+                        reservas_Coworking.objects.create(
+                            user=request.user,
+                            nrLugares=nr_Lugares,
+                            startDate=reserva_provisoria.startDate,
+                            endDate=reserva_provisoria.endDate,
+                            nrDias=reserva_provisoria.nrDias,
+                            cost_price=reserva_provisoria.cost_price,
+                            chair1=reserva_provisoria.chair1,
+                            chair2=reserva_provisoria.chair2,
+                            chair3=reserva_provisoria.chair3,
+                            chair4=reserva_provisoria.chair4,
+                            chair5=reserva_provisoria.chair5,
+                            chair6=reserva_provisoria.chair6,
+                            chair7=reserva_provisoria.chair7,
+                            chair8=reserva_provisoria.chair8,
+                            chair9=reserva_provisoria.chair9,
+                            chair10=reserva_provisoria.chair10,
+                            chair11=reserva_provisoria.chair11,
+                            chair12=reserva_provisoria.chair12,
+                        )
+                        reserva_provisoria.delete()
+                    return redirect("index")
             else:
-                MensagensPendentes = mensagens.objects.filter(
-                    user=request.user, Pendente=True)
-                reservas = reservas_Coworking.objects.filter(user=request.user)
-
-                nrMensagens = 0
-                difference = 0
-                todayDate = datetime.now()
-
-                if len(reservas) != 0:
-                    difference = abs(
-                        ((reservas[0].endDate)-todayDate.date()).days)
-
-                for mensagem in MensagensPendentes:
-                    nrMensagens = nrMensagens + 1
-
-                context = {
-                    "reservas": reservas,
-                    "difference": difference,
-                    "nrMensagens": nrMensagens,
-                    "MensagensPendentes": MensagensPendentes,
-                }
-                return render(request, "dashboard(resendes).html", context)
+                return render(request, "dashboard(resendes).html")
     else:
         return render(request, "index.html")
 
@@ -220,8 +228,20 @@ def coworkingSimulation(request):
             standPrice = 5
 
         freeChair = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-        reservas = reservas_Coworking.objects.filter(Q(endDate__range=[startdate, enddate]) | Q(
-            startDate__range=[startdate, enddate]) | Q(startDate=startdate, endDate=enddate))
+        reservas = []
+        for r in reservas_Coworking.objects.all():
+            if startdate.date() == r.startDate or enddate.date() == r.endDate:
+                reservas.append(r)
+            elif startdate.date() < r.startDate < enddate.date(): 
+                reservas.append(r)   
+            elif startdate.date() < r.endDate < enddate.date(): 
+                reservas.append(r)
+            elif startdate.date() > r.startDate and enddate.date() < r.endDate:
+                reservas.append(r)
+
+            
+            
+            
         for reserva in reservas:
             if reserva.chair1 == True:
                 freeChair.remove(1)
@@ -259,8 +279,6 @@ def coworkingSimulation(request):
         viewChairs = True
         context = {
             "r_form": r_form,
-            "customer_name":request.user.username,
-            "customer_mail":request.user.email,
             "dates": dates,
             "startdate": startdate.strftime("%m/%d/%Y"),
             "enddate": enddate.strftime("%m/%d/%Y"),

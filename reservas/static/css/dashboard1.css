@@ -240,12 +240,7 @@ input{
   transform: translate(-50%, -50%);
   background-color: rgb(243, 243, 243);
 }
-#payment_info_out{
-  position: absolute;
-  color: black;
-  right: 40px;
-  top: 20px;
-}
+
 @media (max-width: 700px) {
   .Html{
     margin-top: 3rem;
