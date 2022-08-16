@@ -1,17 +1,17 @@
 {% load static %}
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Business Center | Riverside Lisbon</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="{% static 'js/jquery.flipster.min.js' %}"></script>
     <link rel="stylesheet" href="{% static 'css/index2.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/jquery.flipster.min.css' %}" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Madurai&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap" rel="stylesheet"></head>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap" rel="stylesheet">
+</head>
 </head>
 <header>
     {% include "nav.html" %}
@@ -23,11 +23,17 @@
 </header>
 <section id="about_us">
     <h1>About us</h1>
-    <p>Riverside was established in 2022 as a contribution to the vision of a world where professionals are owners of their working time and space conditions while allowing for all the flexibility of one’s lifestyle.
-        <br> Located in the center of Parque das Naçoes in the city of Lisbon to accommodate any professional in need of a comfortable and productive working space. In the surrounding areas you can enjoy the riverside view of Tejo river, walking pathways, rental bicycles and the best Portuguese food and drinks.
-        We have single desks in a shared room that provide a private setup, individual meeting rooms and possibility to host company adresses. <br>
-        Our space is equipped with the most up to date technologies, including high bandwith wi-fi internet, big TV displays on the meeting rooms, kitchen ammenities including coffee machine and snack machine.
-        Check out our gallery page for a more closer look.</p>
+    <p>Riverside was established in 2022 as a contribution to the vision of a world where professionals are owners of
+        their working time and space conditions while allowing for all the flexibility of one’s lifestyle.
+        <br> Located in the center of Parque das Naçoes in the city of Lisbon to accommodate any professional in need of
+        a comfortable and productive working space. In the surrounding areas you can enjoy the riverside view of Tejo
+        river, walking pathways, rental bicycles and the best Portuguese food and drinks.
+        We have single desks in a shared room that provide a private setup, individual meeting rooms and possibility to
+        host company adresses. <br>
+        Our space is equipped with the most up to date technologies, including high bandwith wi-fi internet, big TV
+        displays on the meeting rooms, kitchen ammenities including coffee machine and snack machine.
+        Check out our gallery page for a more closer look.
+    </p>
 </section>
 <section id="services" class="services">
     <h1>Services</h1>
@@ -56,7 +62,7 @@
             </ul>
             <button id="coworkingplans">See plans</button>
         </div>
-        <div class="card">        
+        <div class="card">
             <h2>Meeting room</h2>
             <p>from €15/hour</p>
             <div id="line"></div>
@@ -67,98 +73,325 @@
                 <li>Privacy and security</li>
             </ul>
             <button id="meetingplans">See plans</button>
-        </div>    
+        </div>
     </div>
+    <div class="slideshow-container">
+
+        <div class="mySlides fade">
+            <div class="card">
+                <h2>Virtual office</h2>
+                <p>from €29/month</p>
+                <div id="line"></div>
+                <ul>
+                    <li>Prestige company address</li>
+                    <li>Mail reception</li>
+                    <li>Individual meeting rooms</li>
+                    <li>Legal & Fiscal consulting</li>
+                </ul>
+                <button id="virtualplans_1">See plans</button>
+            </div>
+        </div>
+
+        <div class="mySlides fade">
+            <div class="card">
+                <h2>Coworking</h2>
+                <p>from €30/week</p>
+                <div id="line"></div>
+                <ul>
+                    <li>Individual working desk</li>
+                    <li>High speed Wi-Fi</li>
+                    <li>Individual meeting rooms</li>
+                    <li>Privacy and security</li>
+                </ul>
+                <button id="coworkingplans_1">See plans</button>
+            </div>
+        </div>
+
+        <div class="mySlides fade">
+            <div class="card">
+                <h2>Meeting room</h2>
+                <p>from €15/hour</p>
+                <div id="line"></div>
+                <ul>
+                    <li>Private 2 to 4 pax room</li>
+                    <li>High speed Wi-Fi</li>
+                    <li>Large TV screen</li>
+                    <li>Privacy and security</li>
+                </ul>
+                <button id="meetingplans_1">See plans</button>
+            </div>
+        </div>
+        <a class="prev" onclick="plusSlides(-1)">❮</a>
+        <a class="next" onclick="plusSlides(1)">❯</a>
+        <div style="text-align:center">
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+        </div>
+    </div>
+    <script>
+        let slideIndex = 1;
+        showSlides(slideIndex);
+
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+        function showSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName("mySlides");
+            let dots = document.getElementsByClassName("dot");
+            if (n > slides.length) {slideIndex = 1}
+            if (n < 1) {slideIndex = slides.length}
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex - 1].style.display = "block";
+            dots[slideIndex - 1].className += " active";
+        }
+    </script>
 </section>
 
 {% include "footer.html" %}
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
-    $(document).ready(function(){
-        $("#virtualplans").click(function(){
+    $(document).ready(function () {
+        $("#virtualplans").click(function () {
+            console.log("entrou")
             $("#virtualoffice").slideToggle("fast");
             $("#coworking").slideUp("fast");
             $("#meeting").slideUp("fast");
         });
-        $("#coworkingplans").click(function(){
+        $("#virtualplans_1").click(function () {
+            console.log("entrou")
+            $("#virtualoffice").slideToggle("fast");
+            $("#coworking").slideUp("fast");
+            $("#meeting").slideUp("fast");
+        });
+        $("#coworkingplans").click(function () {
             $("#coworking").slideToggle("fast");
             $("#virtualoffice").slideUp("fast");
             $("#meeting").slideUp("fast");
         });
-        $("#meetingplans").click(function(){
+        $("#coworkingplans_1").click(function () {
+            $("#coworking").slideToggle("fast");
+            $("#virtualoffice").slideUp("fast");
+            $("#meeting").slideUp("fast");
+        });
+        $("#meetingplans").click(function () {
             $("#meeting").slideToggle("fast");
             $("#virtualoffice").slideUp("fast");
             $("#coworking").slideUp("fast");
         });
-        $("#out1").click(function(){
+        $("#meetingplans_1").click(function () {
+            $("#meeting").slideToggle("fast");
             $("#virtualoffice").slideUp("fast");
-        });
-        $("#out2").click(function(){
             $("#coworking").slideUp("fast");
         });
-        $("#out3").click(function(){
+        $("#out1").click(function () {
+            $("#virtualoffice").slideUp("fast");
+        });
+        $("#out2").click(function () {
+            $("#coworking").slideUp("fast");
+        });
+        $("#out3").click(function () {
             $("#meeting").slideUp("fast");
         });
     });
 </script>
 <section id="virtualoffice">
-    <h1>Choose your virtual office plan</h1>
+    <h1>Virtual office plans</h1>
     <div id="line"></div>
     <div class="out" id="out1">
         <div class="line" id="left"></div>
         <div class="line" id="right"></div>
     </div>
-    <<<div id="coverflow" class="cards">
-        <ul>
-            <li>
-                <div class="card">        
-                    <h2>Basic</h2>
-                    <h4 style="padding-bottom: 10px;">To place your business in Lisbon</h4>
-                    <ul>
-                        <li>Prestige Office Address</li>
-                        <li>Fiscal compliant</li>
-                        <li>Individual Mailbox</li>
-                        <li>Mail reception and forwarding</li>
-                        <li>Personal virtual support</li>
-                    </ul>
-                    <button><a href="/signin">Select plan</a></button>
-                </div>
-            </li>
-            <li>
-                <div class="card">        
-                    <h2>Premium</h2>
-                    <h4 style="padding-bottom: 10px;">To host your clients and partners
-                    </h4>
-                    <ul>
-                        <li>Prestige Office Address</li>
-                        <li>Fiscal compliant</li>
-                        <li>Individual Mailbox</li>
-                        <li>Mail reception and forwarding</li>
-                        <li>Personal virtual support</li>
-                        <li>4h/week individual meeting room</li>
-                    </ul>
-                    <button><a href="/signin">Select plan</a></button>
-                </div>  
-            </li>
-        </ul>
-          
-    </div>*/
+    <div class="slideshow-container">
+
+        <div class="mySlides_1 fade">
+            <div class="card">
+                <h2>Basic</h2>
+                <h4 style="padding-bottom: 10px;">To place your business in Lisbon</h4>
+                <ul>
+                    <li>Prestige Office Address</li>
+                    <li>Fiscal compliant</li>
+                    <li>Individual Mailbox</li>
+                    <li>Mail reception and forwarding</li>
+                    <li>Personal virtual support</li>
+                </ul>
+                <button><a href="/signin">Select plan</a></button>
+            </div>
+        </div>
+
+        <div class="mySlides_1 fade">
+            <div class="card">
+                <h2>Premium</h2>
+                <h4 style="padding-bottom: 10px;">To host your clients and partners
+                </h4>
+                <ul>
+                    <li>Prestige Office Address</li>
+                    <li>Fiscal compliant</li>
+                    <li>Individual Mailbox</li>
+                    <li>Mail reception and forwarding</li>
+                    <li>Personal virtual support</li>
+                    <li>4h/week individual meeting room</li>
+                </ul>
+                <button><a href="/signin">Select plan</a></button>
+            </div>
+        </div>
+
+        <a class="prev" style="margin-top: -60px;" onclick="plusSlides_1(-1)">❮</a>
+        <a class="next" style="margin-top: -60px;" onclick="plusSlides_1(1)">❯</a>
+
+        <div style="text-align:center">
+            <span class="dot_1" onclick="currentSlide_1(1)"></span>
+            <span class="dot_1" onclick="currentSlide_1(2)"></span>
+        </div>
+    </div>
+
     <script>
-    $("#coverflow").flipster({
-        spacing: 0,
-    });
+        let slideIndex_1 = 1;
+        showSlides_1(slideIndex_1);
+
+        function plusSlides_1(n) {
+            showSlides_1(slideIndex_1 += n);
+        }
+
+        function currentSlide_1(n) {
+            showSlides_1(slideIndex_1 = n);
+        }
+
+        function showSlides_1(n) {
+            let i_1;
+            let slides_1 = document.getElementsByClassName("mySlides_1");
+            let dots_1 = document.getElementsByClassName("dot_1");
+            if (n > slides_1.length) {slideIndex_1 = 1}
+            if (n < 1) {slideIndex_1 = slides_1.length}
+            for (i_1 = 0; i_1 < slides_1.length; i_1++) {
+                slides_1[i_1].style.display = "none";
+            }
+            for (i_1 = 0; i_1 < dots_1.length; i_1++) {
+                dots_1[i_1].className = dots_1[i_1].className.replace(" active", "");
+            }
+            slides_1[slideIndex_1 - 1].style.display = "block";
+            dots_1[slideIndex_1 - 1].className += " active";
+        }
     </script>
+    <div class="cards_slideUp">
+        <div class="card">
+            <h2>Basic</h2>
+            <h4 style="padding-bottom: 10px;">To place your business in Lisbon</h4>
+            <ul>
+                <li>Prestige Office Address</li>
+                <li>Fiscal compliant</li>
+                <li>Individual Mailbox</li>
+                <li>Mail reception and forwarding</li>
+                <li>Personal virtual support</li>
+            </ul>
+            <button><a href="/signin">Select plan</a></button>
+        </div>
+        <div class="card">
+            <h2>Premium</h2>
+            <h4 style="padding-bottom: 10px;">To host your clients and partners
+            </h4>
+            <ul>
+                <li>Prestige Office Address</li>
+                <li>Fiscal compliant</li>
+                <li>Individual Mailbox</li>
+                <li>Mail reception and forwarding</li>
+                <li>Personal virtual support</li>
+                <li>4h/week individual meeting room</li>
+            </ul>
+            <button><a href="/signin">Select plan</a></button>
+        </div>
+    </div>
 </section>
 <section id="coworking">
-    <h1>Choose your coworking desks plan</h1>
+    <h1>Cworking desks plans</h1>
     <div id="line"></div>
     <div class="out" id="out2">
         <div class="line" id="left"></div>
         <div class="line" id="right"></div>
     </div>
-    <div class="cards">
-        <div class="card">        
+    <div class="slideshow-container">
+
+        <div class="mySlides_2 fade">
+            <div class="card">
+                <h2>Monthly</h2>
+                <h4 style="padding-bottom: 10px;">To host your clients and partners
+                </h4>
+                <ul>
+                    <li>Individual private desk</li>
+                    <li>Premium office chair</li>
+                    <li>High speed internet</li>
+                    <li>8h/week meeting room</li>
+                    <li>Coffee and amenities</li>
+                </ul>
+                <button><a href="/signin">Select plan</a></button>
+            </div>
+        </div>
+
+        <div class="mySlides_2 fade">
+            <div class="card">
+                <h2>Weekly</h2>
+                <h4 style="padding-bottom: 10px;">Rent your individual desk for 1 week</h4>
+                <ul>
+                    <li>Individual private desk</li>
+                    <li>Premium office chair</li>
+                    <li>High speed internet</li>
+                    <li>2h/week meeting room</li>
+                    <li>Coffee and amenities</li>
+                </ul>
+                <button><a href="/signin">Select plan</a></button>
+            </div>
+        </div>
+
+        <a class="prev" style="margin-top: -60px;" onclick="plusSlides_2(-1)">❮</a>
+        <a class="next" style="margin-top: -60px;" onclick="plusSlides_2(1)">❯</a>
+
+        <div style="text-align:center">
+            <span class="dot_2" onclick="currentSlide_2(1)"></span>
+            <span class="dot_2" onclick="currentSlide_2(2)"></span>
+        </div>
+    </div>
+    <script>
+        let slideIndex_2 = 1;
+        showSlides_2(slideIndex_2);
+
+        function plusSlides_2(n) {
+            showSlides_2(slideIndex_2 += n);
+        }
+
+        function currentSlide_2(n) {
+            showSlides_2(slideIndex_2 = n);
+        }
+
+        function showSlides_2(n) {
+            let i_2;
+            let slides_2 = document.getElementsByClassName("mySlides_2");
+            let dots_2 = document.getElementsByClassName("dot_2");
+            if (n > slides_2.length) {slideIndex_2 = 1}
+            if (n < 1) {slideIndex_2 = slides_2.length}
+            for (i_2 = 0; i_2 < slides_2.length; i_2++) {
+                slides_2[i_2].style.display = "none";
+            }
+            for (i_2 = 0; i_2 < dots_2.length; i_2++) {
+                dots_2[i_2].className = dots_2[i_2].className.replace(" active", "");
+            }
+            slides_2[slideIndex_2 - 1].style.display = "block";
+            dots_2[slideIndex_2 - 1].className += " active";
+        }
+    </script>
+
+    <div class="cards_slideUp">
+        <div class="card">
             <h2>Weekly</h2>
             <h4 style="padding-bottom: 10px;">Rent your individual desk for 1 week</h4>
             <ul>
@@ -170,7 +403,7 @@
             </ul>
             <button><a href="/signin">Select plan</a></button>
         </div>
-        <div class="card">        
+        <div class="card">
             <h2>Monthly</h2>
             <h4 style="padding-bottom: 10px;">To host your clients and partners
             </h4>
@@ -182,18 +415,85 @@
                 <li>Coffee and amenities</li>
             </ul>
             <button><a href="/signin">Select plan</a></button>
-        </div>           
+        </div>
     </div>
 </section>
 <section id="meeting">
-    <h1>Choose your meeting room plan</h1>
+    <h1>Meeting room plans</h1>
     <div id="line"></div>
     <div class="out" id="out3">
         <div class="line" id="left"></div>
         <div class="line" id="right"></div>
     </div>
-    <div class="cards">
-        <div class="card">        
+    <div class="slideshow-container">
+
+        <div class="mySlides_3 fade">
+            <div class="card">
+                <h2>One Hour</h2>
+                <h4 style="padding-bottom: 10px;">Get 1 hour in a premium room</h4>
+                <ul>
+                    <li>2-4 pax private meeting room</li>
+                    <li>large TV LCD screen</li>
+                    <li>High speed Wi-Fi</li>
+                    <li>Schedule flexibility</li>
+                </ul>
+                <button><a href="/signin">Select plan</a></button>
+            </div>
+        </div>
+
+        <div class="mySlides_3 fade">
+            <div class="card">
+                <h2>Four Hours</h2>
+                <h4 style="padding-bottom: 10px;">To host your clients and partners
+                </h4>
+                <ul>
+                    <li>2-4 pax private meeting room</li>
+                    <li>large TV LCD screen</li>
+                    <li>High speed Wi-Fi</li>
+                    <li>Schedule flexibility</li>
+                </ul>
+                <button><a href="/signin">Select plan</a></button>
+            </div>
+        </div>
+
+        <a class="prev" style="margin-top: -60px;" onclick="plusSlides_3(-1)">❮</a>
+        <a class="next" style="margin-top: -60px;" onclick="plusSlides_3(1)">❯</a>
+
+        <div style="text-align:center">
+            <span class="dot_3" onclick="currentSlide_3(1)"></span>
+            <span class="dot_3" onclick="currentSlide_3(2)"></span>
+        </div>
+    </div>
+    <script>
+        let slideIndex_3 = 1;
+        showSlides_3(slideIndex_3);
+
+        function plusSlides_3(n) {
+            showSlides_3(slideIndex_3 += n);
+        }
+
+        function currentSlide_3(n) {
+            showSlides_3(slideIndex_3 = n);
+        }
+
+        function showSlides_3(n) {
+            let i_3;
+            let slides_3 = document.getElementsByClassName("mySlides_3");
+            let dots_3 = document.getElementsByClassName("dot_3");
+            if (n > slides_3.length) {slideIndex_3 = 1}
+            if (n < 1) {slideIndex_3 = slides_3.length}
+            for (i_3 = 0; i_3 < slides_3.length; i_3++) {
+                slides_3[i_3].style.display = "none";
+            }
+            for (i_3 = 0; i_3 < dots_3.length; i_3++) {
+                dots_3[i_3].className = dots_3[i_3].className.replace(" active", "");
+            }
+            slides_3[slideIndex_3 - 1].style.display = "block";
+            dots_3[slideIndex_3 - 1].className += " active";
+        }
+    </script>
+    <div class="cards_slideUp">
+        <div class="card">
             <h2>One Hour</h2>
             <h4 style="padding-bottom: 10px;">Get 1 hour in a premium room</h4>
             <ul>
@@ -204,7 +504,7 @@
             </ul>
             <button><a href="/signin">Select plan</a></button>
         </div>
-        <div class="card">        
+        <div class="card">
             <h2>Four Hours</h2>
             <h4 style="padding-bottom: 10px;">To host your clients and partners
             </h4>
@@ -215,7 +515,8 @@
                 <li>Schedule flexibility</li>
             </ul>
             <button><a href="/signin">Select plan</a></button>
-        </div>           
+        </div>
     </div>
 </section>
+
 </html>

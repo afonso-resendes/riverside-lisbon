@@ -75,37 +75,50 @@
     </a>
   </div>
   <div class="coworking_banner">
-    <div class="model"></div>
     <div class="form">
       <form action="" method="POST">
         <h2>Choose your dates:</h2>
         <input type="daterange" name="daterange" />
         {% csrf_token %}
-        <button type="submit" name="submit_r_form" style="background-color: gray">
+        <button id="avail_button" type="submit" name="submit_r_form" style="background-color: gray">
           Check availability
         </button>
-        {% if viewChairs %} {% for reserva in reservaprovisoria%}
+        {% if viewChairs %}
         <p>Lugares disponíveis de {{dates}}:</p>
-        {%endfor%} {% for cadeira in freeChair %} Cadeira {{cadeira}}<input type="checkbox" name="cadeiras_escolhidas"
-          placeholder="Cadeira {{cadeira}}" value="{{cadeira}}" />
+        <div class="free_chairs">          
+          {% for cadeira in freeChair %}
+          <div class="chair">
+            Cadeira {{cadeira}}<input type="checkbox" name="cadeiras_escolhidas"
+             placeholder="Cadeira {{cadeira}}" value="{{cadeira}}" />
+          </div>
+          {% endfor %}
+        </div>
         <br />
-        {% endfor %}
-        <br />
-        <button type="submit" name="submit_r_form" style="background-color: gray">
+        <button type="submit" name="submit_r_form" style="margin: 0; background-color: gray">
           Confirmar
         </button>
         {% endif %}
       </form>
-
       {% if cadeirasSubmit %}
-      <h1>Preço: {{provPrice}}</h1>
-      <button type="button" onclick="requestCheckout()" id="button-checkout">
-        Checkout
-      </button>
+      <div class="checkout_price">
+        <h1 style="margin-right: 5px;">Preço: {{provPrice}} €</h1>
+        <button type="button" style="margin: 0;" onclick="requestCheckout()" id="button-checkout">
+          Checkout
+        </button>
+      </div>
       {% endif %}
     </div>
+    <div class="model"><img src="{% static 'images/RiversideTopo.png' %}" alt=""></div>
+    <div class="checkout_info">
+      <div class="checkout_info_text">
+        <h2>Your reservation</h2>
+        <p>Chossen dates: {{dates}}</p>
+        <p>Nr of chair: {{nrChairs}}</p>
+        <p>Price: {{provPrice}} €</p>
+      </div>
+    </div>
+    <div id="checkout-form"></div>
   </div>
-  <div id="checkout-form"></div>
 </section>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
@@ -142,6 +155,7 @@
       return false;
     }
   }
+
   function requestCheckout() {
     var startDatetime = new Date($.now());
     var endDatetime = new Date(
@@ -226,7 +240,10 @@
 
     $.ajax(settings).done(function (response) {
       console.log(response)
-      $(".coworking_banner").css({display: "none"});
+      $(".coworking_banner .model").css({display: "none"});
+      $(".coworking_banner .form").css({display: "none"});
+      $(".coworking_banner .checkout_info").css({display: "flex"});
+      $("#checkout-form").css({display: "block"});
       console.log(response);
       const FORM_CONFIG = {
         paymentMethodList: [],
@@ -237,7 +254,7 @@
       };
       const FORM_STYLE = {
         layout: "default",
-        theme: "default",
+        theme: "--light",
         color: {
           primary: "",
           secondary: "",
@@ -245,14 +262,14 @@
           surface: "",
           header: {
             text: "",
-            background: "",
+            background: "white",
           },
           body: {
             text: "",
-            background: "",
+            background: "white",
           },
         },
-        font: "10",
+        font: "Roboto",
       };
       const ta_ConfigValue = JSON.stringify(FORM_CONFIG, undefined, 4);
       const ta_StyleValue = JSON.stringify(FORM_STYLE, undefined, 4);
@@ -314,7 +331,7 @@
           "transactionTimestamp": startDatetime,
           "description": "Transaction short description",
           "amount": {
-            "value": 5.5,
+            "value": parseFloat(price),
             "currency": "EUR"
           },
           "originalTransaction": {

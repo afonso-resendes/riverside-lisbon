@@ -267,7 +267,7 @@ def coworkingSimulation(request):
         reservasProv = reservas_Coworking_provisoria.objects.get(
             user=request.user)
         quantaty = get_qty(reservasProv)
-        print(get_RealQty(reservasProv))
+        nrChairs=get_RealQty(reservasProv)
         if get_RealQty(reservasProv) == 0:
             reservasProv.second_step = False
         else:
@@ -282,7 +282,8 @@ def coworkingSimulation(request):
             "dates": dates,
             "startdate": startdate.strftime("%m/%d/%Y"),
             "enddate": enddate.strftime("%m/%d/%Y"),
-            "reservaprovisoria": reservaprovisoria,
+            "nrChairs":nrChairs,
+            "reservaprovisoria": reservasProv,
             "freeChair": freeChair,
             "provPrice": standPrice*quantaty,
             "viewChairs": viewChairs,

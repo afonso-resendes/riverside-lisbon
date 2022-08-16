@@ -1,34 +1,38 @@
 {% load static %}
 <html id="Html" lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Business Center | Riverside Lisbon</title>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <link rel="stylesheet" href="{% static 'css/dashboard1.css' %}" />
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Hind+Madurai&display=swap" rel="stylesheet">
-    </head>
-    <header>
-        {% include "nav.html" %}
-        <div class="banner">
-            <img src="{% static 'images/dashback.jpg' %}" alt="">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Business Center | Riverside Lisbon</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/dashboard1.css' %}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Madurai&display=swap" rel="stylesheet">
+</head>
+<header>
+    {% include "nav.html" %}
+    <div class="banner">
+        <img src="{% static 'images/dashback.jpg' %}" alt="">
+    </div>
+</header>
+
+<body>
+    <div id="payment_info_board">
+        <form action="" method="post" id="paymentStatus">
+            {% csrf_token %}
+        </form>
+    </div>
+    <section class="Html">
+        <div class="welcome">
+            <h2>Welcome {{request.user.username}}.</h2>
         </div>
-    </header>
-    <body>
-        <div id="payment_info_board">
-            <form action="" method="post" id="paymentStatus">
-                {% csrf_token %}
-            </form>
-        </div>
-        <section class="Html">
-            <div class="welcome">
-                <h2>Welcome {{request.user.username}}.</h2>
-            </div>
-            <section id="services" class="services">
-                <h1>Make your reservation:</h1>
-                <div class="cards">
+        <section id="services" class="services">
+            <h1>Make your reservation:</h1>
+            <div class="slideshow-container">
+
+                <div class="mySlides fade">
                     <div class="service-card">
                         <h2>Virtual office</h2>
                         <p>from €29/month</p>
@@ -39,8 +43,11 @@
                             <li>Individual meeting rooms</li>
                             <li>Legal & Fiscal consulting</li>
                         </ul>
-                        <button id="virtualplans">Choose plans</button>
+                        <button id="virtualplans_1">See plans</button>
                     </div>
+                </div>
+
+                <div class="mySlides fade">
                     <div class="service-card">
                         <h2>Coworking</h2>
                         <p>from €30/week</p>
@@ -51,24 +58,102 @@
                             <li>Individual meeting rooms</li>
                             <li>Privacy and security</li>
                         </ul>
-                        <button><a href="/coworkingSimulation">Choose plans</a></button>    
+                        <button><a href="/coworkingSimulation">See plans</a></button>
                     </div>
-                    <div class="service-card">        
+                </div>
+
+                <div class="mySlides fade">
+                    <div class="service-card">
                         <h2>Meeting room</h2>
                         <p>from €15/hour</p>
                         <div id="line"></div>
                         <ul>
-                            <li>Private 2 to 4 Pax room</li>
+                            <li>Private 2 to 4 pax room</li>
                             <li>High speed Wi-Fi</li>
-                            <li>Large Tv screen</li>
+                            <li>Large TV screen</li>
                             <li>Privacy and security</li>
                         </ul>
-                        <button id="meetingplans">Choose plans</button>
-                    </div>    
+                        <button id="meetingplans_1">See plans</button>
+                    </div>
                 </div>
-            </section>  
+                <a class="prev" onclick="plusSlides(-1)">❮</a>
+                <a class="next" onclick="plusSlides(1)">❯</a>
+                <div style="text-align:center">
+                    <span class="dot" onclick="currentSlide(1)"></span>
+                    <span class="dot" onclick="currentSlide(2)"></span>
+                    <span class="dot" onclick="currentSlide(3)"></span>
+                </div>
+            </div>
+            <script>
+                let slideIndex = 1;
+                showSlides(slideIndex);
+
+                function plusSlides(n) {
+                    showSlides(slideIndex += n);
+                }
+
+                function currentSlide(n) {
+                    showSlides(slideIndex = n);
+                }
+
+                function showSlides(n) {
+                    let i;
+                    let slides = document.getElementsByClassName("mySlides");
+                    let dots = document.getElementsByClassName("dot");
+                    if (n > slides.length) {slideIndex = 1}
+                    if (n < 1) {slideIndex = slides.length}
+                    for (i = 0; i < slides.length; i++) {
+                        slides[i].style.display = "none";
+                    }
+                    for (i = 0; i < dots.length; i++) {
+                        dots[i].className = dots[i].className.replace(" active", "");
+                    }
+                    slides[slideIndex - 1].style.display = "block";
+                    dots[slideIndex - 1].className += " active";
+                }
+            </script>
+            <div class="cards">
+                <div class="service-card">
+                    <h2>Virtual office</h2>
+                    <p>from €29/month</p>
+                    <div id="line"></div>
+                    <ul>
+                        <li>Prestige company address</li>
+                        <li>Mail reception</li>
+                        <li>Individual meeting rooms</li>
+                        <li>Legal & Fiscal consulting</li>
+                    </ul>
+                    <button id="virtualplans">Choose plans</button>
+                </div>
+                <div class="service-card">
+                    <h2>Coworking</h2>
+                    <p>from €30/week</p>
+                    <div id="line"></div>
+                    <ul>
+                        <li>Individual working desk</li>
+                        <li>High speed Wi-Fi</li>
+                        <li>Individual meeting rooms</li>
+                        <li>Privacy and security</li>
+                    </ul>
+                    <button><a href="/coworkingSimulation">Choose plans</a></button>
+                </div>
+                <div class="service-card">
+                    <h2>Meeting room</h2>
+                    <p>from €15/hour</p>
+                    <div id="line"></div>
+                    <ul>
+                        <li>Private 2 to 4 Pax room</li>
+                        <li>High speed Wi-Fi</li>
+                        <li>Large Tv screen</li>
+                        <li>Privacy and security</li>
+                    </ul>
+                    <button id="meetingplans">Choose plans</button>
+                </div>
+            </div>
         </section>
-    </body>
+    </section>
+</body>
+
 </html>
 <section class="template" id="virtualoffice">
     <h1>Choose your virtual office plan</h1>
@@ -77,8 +162,80 @@
         <div class="line" id="left"></div>
         <div class="line" id="right"></div>
     </div>
+    <div class="slideshow-container">
+
+        <div class="mySlides_1 fade">
+            <div class="card">
+                <h2>Basic</h2>
+                <h4 style="padding-bottom: 10px;">To place your business in Lisbon</h4>
+                <ul>
+                    <li>Prestige Office Address</li>
+                    <li>Fiscal compliant</li>
+                    <li>Individual Mailbox</li>
+                    <li>Mail reception and forwarding</li>
+                    <li>Personal virtual support</li>
+                    <li><br></li>
+                </ul>
+                <button id="virtualofficeButton1_1">Get in Touch</button>
+            </div>
+        </div>
+
+        <div class="mySlides_1 fade">
+            <div class="card">
+                <h2>Premium</h2>
+                <h4 style="padding-bottom: 10px;">To host your clients and partners
+                </h4>
+                <ul>
+                    <li>Prestige Office Address</li>
+                    <li>Fiscal compliant</li>
+                    <li>Individual Mailbox</li>
+                    <li>Mail reception and forwarding</li>
+                    <li>Personal virtual support</li>
+                    <li><b>4h/week meeting room included</b></li>
+                </ul>
+                <button id="virtualofficeButton2_1">Get in Touch</button>
+            </div>
+        </div>
+
+        <a class="prev" style="margin-top: -60px;" onclick="plusSlides_1(-1)">❮</a>
+        <a class="next" style="margin-top: -60px;" onclick="plusSlides_1(1)">❯</a>
+
+        <div style="text-align:center">
+            <span class="dot_1" onclick="currentSlide_1(1)"></span>
+            <span class="dot_1" onclick="currentSlide_1(2)"></span>
+        </div>
+    </div>
+
+    <script>
+        let slideIndex_1 = 1;
+        showSlides_1(slideIndex_1);
+
+        function plusSlides_1(n) {
+            showSlides_1(slideIndex_1 += n);
+        }
+
+        function currentSlide_1(n) {
+            showSlides_1(slideIndex_1 = n);
+        }
+
+        function showSlides_1(n) {
+            let i_1;
+            let slides_1 = document.getElementsByClassName("mySlides_1");
+            let dots_1 = document.getElementsByClassName("dot_1");
+            if (n > slides_1.length) {slideIndex_1 = 1}
+            if (n < 1) {slideIndex_1 = slides_1.length}
+            for (i_1 = 0; i_1 < slides_1.length; i_1++) {
+                slides_1[i_1].style.display = "none";
+            }
+            for (i_1 = 0; i_1 < dots_1.length; i_1++) {
+                dots_1[i_1].className = dots_1[i_1].className.replace(" active", "");
+            }
+            slides_1[slideIndex_1 - 1].style.display = "block";
+            dots_1[slideIndex_1 - 1].className += " active";
+        }
+    </script>
     <div class="cards">
-        <div class="card">        
+        <div class="card">
             <h2>Basic</h2>
             <h4 style="padding-bottom: 10px;">To place your business in Lisbon</h4>
             <ul>
@@ -91,7 +248,7 @@
             </ul>
             <button id="virtualofficeButton1">Get in Touch</button>
         </div>
-        <div class="card">        
+        <div class="card">
             <h2>Premium</h2>
             <h4 style="padding-bottom: 10px;">To host your clients and partners
             </h4>
@@ -104,8 +261,8 @@
                 <li><b>4h/week meeting room included</b></li>
             </ul>
             <button id="virtualofficeButton2">Get in Touch</button>
-        </div> 
-    </div>           
+        </div>
+    </div>
     </div>
 </section>
 <section class="template" id="meeting">
@@ -115,8 +272,91 @@
         <div class="line" id="left"></div>
         <div class="line" id="right"></div>
     </div>
+    <div class="slideshow-container">
+
+        <div class="mySlides_2 fade">
+            <div class="card">
+                <h2>Bundle 5 hours</h2>
+                <p>€8/hour</p>
+                <div id="line"></div>
+                <ul>
+                    <li>2-4 Pax private meeting room</li>
+                    <li>Large TV LCD screen</li>
+                    <li>High speed Wi-Fi</li>
+                    <li>Scheduling flexibility</li>
+                </ul>
+                <button><a href="">Select plan</a></button>
+            </div>
+        </div>
+
+        <div class="mySlides_2 fade">
+            <div class="card">
+                <h2>Bundle 10 hours</h2>
+                <p>€7/hour</p>
+                <div id="line"></div>
+                <ul>
+                    <li>2-4 Pax private meeting room</li>
+                    <li>Large TV LCD screen</li>
+                    <li>High speed Wi-Fi</li>
+                    <li>Scheduling flexibility</li>
+                </ul>
+                <button><a href="">Select plan</a></button>
+            </div>
+        </div>
+
+        <div class="mySlides_2 fade">
+            <div class="card">
+                <h2>Book by the hour</h2>
+                <p>€10/hour</p>
+                <div id="line"></div>
+                <ul>
+                    <li>2-4 Pax private meeting room</li>
+                    <li>Large TV LCD screen</li>
+                    <li>High speed Wi-Fi</li>
+                    <li>Scheduling flexibility</li>
+                </ul>
+                <button><a href="/meetingRoomPersonalizada">Select plan</a></button>
+            </div>
+        </div>
+
+        <a class="prev" style="margin-top: -60px;" onclick="plusSlides_2(-1)">❮</a>
+        <a class="next" style="margin-top: -60px;" onclick="plusSlides_2(1)">❯</a>
+
+        <div style="text-align:center">
+            <span class="dot_2" onclick="currentSlide_2(1)"></span>
+            <span class="dot_2" onclick="currentSlide_2(2)"></span>
+        </div>
+    </div>
+    <script>
+        let slideIndex_2 = 1;
+        showSlides_2(slideIndex_2);
+
+        function plusSlides_2(n) {
+            showSlides_2(slideIndex_2 += n);
+        }
+
+        function currentSlide_2(n) {
+            showSlides_2(slideIndex_2 = n);
+        }
+
+        function showSlides_2(n) {
+            let i_2;
+            let slides_2 = document.getElementsByClassName("mySlides_2");
+            let dots_2 = document.getElementsByClassName("dot_2");
+            if (n > slides_2.length) {slideIndex_2 = 1}
+            if (n < 1) {slideIndex_2 = slides_2.length}
+            for (i_2 = 0; i_2 < slides_2.length; i_2++) {
+                slides_2[i_2].style.display = "none";
+            }
+            for (i_2 = 0; i_2 < dots_2.length; i_2++) {
+                dots_2[i_2].className = dots_2[i_2].className.replace(" active", "");
+            }
+            slides_2[slideIndex_2 - 1].style.display = "block";
+            dots_2[slideIndex_2 - 1].className += " active";
+        }
+    </script>
     <div class="cards">
-        <div class="card">        
+        <div class="card">
             <h2>Bundle 5 hours</h2>
             <p>€8/hour</p>
             <div id="line"></div>
@@ -128,7 +368,7 @@
             </ul>
             <button><a href="">Select plan</a></button>
         </div>
-        <div class="card">        
+        <div class="card">
             <h2>Bundle 10 hours</h2>
             <p>€7/hour</p>
             <div id="line"></div>
@@ -139,7 +379,7 @@
                 <li>Scheduling flexibility</li>
             </ul>
             <button><a href="">Select plan</a></button>
-        </div>       
+        </div>
         <div class="card">
             <h2>Book by the hour</h2>
             <p>€10/hour</p>
@@ -150,19 +390,20 @@
                 <li>High speed Wi-Fi</li>
                 <li>Scheduling flexibility</li>
             </ul>
-            <button><a href="/meetingRoomPersonalizada">Select plan</a></button>    
-        </div>     
+            <button><a href="/meetingRoomPersonalizada">Select plan</a></button>
+        </div>
     </div>
 </section>
 <section class="template" id="virtualofficeInfo">
-    <h1>&#9432;	Info</h1>
+    <h1>&#9432; Info</h1>
     <div id="line"></div>
     <div class="out" id="out4">
         <div class="line" id="left"></div>
         <div class="line" id="right"></div>
     </div>
-    <h3>For this type of service, we ask you kindly to provide us a few details about your needs so that we can design the most suitable setup for you.</h3>
-    <button style="float: right; margin: 2rem 15rem 0rem 0rem;" id="continueToMessage" >Complete form</button>
+    <h3>For this type of service, we ask you kindly to provide us a few details about your needs so that we can design
+        the most suitable setup for you.</h3>
+    <button style="float: right; margin: 2rem 15rem 0rem 0rem;" id="continueToMessage">Complete form</button>
 </section>
 <section class="template" id="sendmessage">
     <h1>Mensagem:</h1>
@@ -192,13 +433,13 @@
             <th>Razão</th>
             <th>Mensagem</th>
         </tr>
-    {% for mensagem in MensagensPendentes %}
+        {% for mensagem in MensagensPendentes %}
         <tr>
             <td>{{mensagem.date}}</td>
             <td>{{mensagem.Reason}}</td>
             <td>{{mensagem.ClientMessage}}</td>
         </tr>
-    {% endfor %}    
+        {% endfor %}
     </table>
 </div>
 {% if difference != 0 %}
@@ -214,147 +455,161 @@
             <th>Dias</th>
             <th>Preço</th>
         </tr>
-    {% for reserva in reservas %}
+        {% for reserva in reservas %}
         <tr>
             <td>{{reserva.startDate}} / {{reserva.endDate}}</td>
             <td>{{reserva.nrLugares}} lugares</td>
             <td>{{difference}} dias</td>
             <td>{{reserva.valor}}€</td>
         </tr>
-    {% endfor %}    
+        {% endfor %}
     </table>
 </div>
 {% endif %}
 {% include "footer.html" %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
-    window.onload=()=>{
-        if(window.location.href.indexOf("?id=")>-1){
+    window.onload = () => {
+        if (window.location.href.indexOf("?id=") > -1) {
             var id = window.location.href;
             transactionID = id.split('=')[1];
             console.log("statusTid = " + transactionID);
             getTransactionStatus(transactionID);
         }
     }
-    function getTransactionStatus(k){
-        console.log("https://spg.qly.site1.sibs.pt/api/v1/payments/"+k+"/status");
-        url="https://spg.qly.site1.sibs.pt/api/v1/payments/"+k+"/status"
+    function getTransactionStatus(k) {
+        console.log("https://spg.qly.site1.sibs.pt/api/v1/payments/" + k + "/status");
+        url = "https://spg.qly.site1.sibs.pt/api/v1/payments/" + k + "/status"
         var settings = {
-          "url": url,
-          "method": "GET",
-          "timeout": 0,
-          "headers": {
-            "X-IBM-Client-Id": "10f87673-1058-4da6-8bfd-3de4a6cd5555",
-            "Content-Type": "application/json",
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJlNzYyMzE3Yi03N2IxLTQ0ZWItYTUzYy0zMjY1ZDY5NTllZGIifQ.eyJpYXQiOjE2NTg4NDIzNTYsImp0aSI6IjkzMjJkYTFlLTgxY2UtNDUxZS1hZmUyLTFjMTJkNWQzMjY5NyIsImlzcyI6Imh0dHBzOi8vcWx5LnNpdGUxLnNzby5zeXMuc2licy5wdC9hdXRoL3JlYWxtcy9RTFkuU1BHLkFQSSIsImF1ZCI6Imh0dHBzOi8vcWx5LnNpdGUxLnNzby5zeXMuc2licy5wdC9hdXRoL3JlYWxtcy9RTFkuU1BHLkFQSSIsInN1YiI6Ijg2YTQ4MDlkLTIyM2MtNDEzZC1iZTA5LWIxNmZiYWVkMzc3MSIsInR5cCI6Ik9mZmxpbmUiLCJhenAiOiJRTFkuU1BHLkFQSS1DTEkiLCJzZXNzaW9uX3N0YXRlIjoiMjY5YWZhMTEtYzc5OC00MmM4LThlNTctN2I1ZGUwYzhmMTU5Iiwic2NvcGUiOiJvcGVuaWQgb2ZmbGluZV9hY2Nlc3MifQ.MObgJ4bCY_17H378BDRbdCZuceGqMcFIS4PEElGA4U8.eyJtYyI6Ijk5OTk5OTkiLCJ0YyI6IjU1OTExIn0=.C63F60B306287AE4A426B0EE933019BCDFD8C7CEA213B34ABFEFD6BD49E753A8"
-          },
+            "url": url,
+            "method": "GET",
+            "timeout": 0,
+            "headers": {
+                "X-IBM-Client-Id": "10f87673-1058-4da6-8bfd-3de4a6cd5555",
+                "Content-Type": "application/json",
+                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJlNzYyMzE3Yi03N2IxLTQ0ZWItYTUzYy0zMjY1ZDY5NTllZGIifQ.eyJpYXQiOjE2NTg4NDIzNTYsImp0aSI6IjkzMjJkYTFlLTgxY2UtNDUxZS1hZmUyLTFjMTJkNWQzMjY5NyIsImlzcyI6Imh0dHBzOi8vcWx5LnNpdGUxLnNzby5zeXMuc2licy5wdC9hdXRoL3JlYWxtcy9RTFkuU1BHLkFQSSIsImF1ZCI6Imh0dHBzOi8vcWx5LnNpdGUxLnNzby5zeXMuc2licy5wdC9hdXRoL3JlYWxtcy9RTFkuU1BHLkFQSSIsInN1YiI6Ijg2YTQ4MDlkLTIyM2MtNDEzZC1iZTA5LWIxNmZiYWVkMzc3MSIsInR5cCI6Ik9mZmxpbmUiLCJhenAiOiJRTFkuU1BHLkFQSS1DTEkiLCJzZXNzaW9uX3N0YXRlIjoiMjY5YWZhMTEtYzc5OC00MmM4LThlNTctN2I1ZGUwYzhmMTU5Iiwic2NvcGUiOiJvcGVuaWQgb2ZmbGluZV9hY2Nlc3MifQ.MObgJ4bCY_17H378BDRbdCZuceGqMcFIS4PEElGA4U8.eyJtYyI6Ijk5OTk5OTkiLCJ0YyI6IjU1OTExIn0=.C63F60B306287AE4A426B0EE933019BCDFD8C7CEA213B34ABFEFD6BD49E753A8"
+            },
         };
-        
+
         $.ajax(settings).done(function (response) {
             console.log(response)
-            var payment_Method=response.paymentMethod;
-            var url='http://127.0.0.1:8000/?id='+response.transactionID
+            var payment_Method = response.paymentMethod;
+            var url = 'http://127.0.0.1:8000/?id=' + response.transactionID
             console.log(payment_Method);
-            const paymentInfo=document.createElement("div");
-            
-            if(payment_Method==="MBWAY"||payment_Method==="CARD"){
-                document.getElementById('payment_info_board').style.display='block';
-                if(response.returnStatus.statusDescription==="Success"&&response.paymentStatus==="Pending"){
-                    const continue_button=document.createElement("button")
-                    const continue_button_link=document.createElement("a")
-                    var send_phone=response.token.value;
-                   
+            const paymentInfo = document.createElement("div");
+
+            if (payment_Method === "MBWAY" || payment_Method === "CARD") {
+                document.getElementById('payment_info_board').style.display = 'block';
+                if (response.returnStatus.statusDescription === "Success" && response.paymentStatus === "Pending") {
+                    const continue_button = document.createElement("button")
+                    const continue_button_link = document.createElement("a")
+                    var send_phone = response.token.value;
+
                     paymentInfo.classList.add("payment_info");
-                   
-                    continue_button_link.innerHTML="Continue"
+
+                    continue_button_link.innerHTML = "Continue"
                     continue_button_link.setAttribute("href", url)
                     continue_button.appendChild(continue_button_link)
-                   
-                    paymentInfo.innerHTML=
-                    "<p>The MBWAY payment request was sent to "+send_phone+'.</br>'+" You have 4 minutes to procced the payment before it's expired.</p>";
+
+                    paymentInfo.innerHTML =
+                        "<p>The MBWAY payment request was sent to " + send_phone + '.</br>' + " You have 4 minutes to procced the payment before it's expired.</p>";
                     paymentInfo.appendChild(continue_button)
 
-                }else if(response.paymentStatus==="Success"){
-                    const form=document.getElementById('paymentStatus')
-                    
-                    const input=document.createElement("input");
+                } else if (response.paymentStatus === "Success") {
+                    const form = document.getElementById('paymentStatus')
+
+                    const input = document.createElement("input");
                     input.setAttribute("id", "paymentStatus_input");
                     input.setAttribute("name", "paymentStatus_input");
-                    input.setAttribute("type","checkbox");
+                    input.setAttribute("type", "checkbox");
                     input.setAttribute("valeu", "true");
-                    input.setAttribute("style","display:none;");
-                    input.checked=true;
+                    input.setAttribute("style", "display:none;");
+                    input.checked = true;
                     form.appendChild(input)
 
-                    const continue_button=document.createElement("button");
-                    continue_button.setAttribute("type","submit")
-                    continue_button.innerHTML="Exit";
+                    const continue_button = document.createElement("button");
+                    continue_button.setAttribute("type", "submit")
+                    continue_button.innerHTML = "Exit";
                     form.appendChild(continue_button)
 
                     paymentInfo.classList.add("payment_info");
-                    paymentInfo.innerHTML=
-                    "<p>Your Payment was made with SUCCESS."+'</br>'+"Please go to your wallet if you want to see your reservation</p>";
+                    paymentInfo.innerHTML =
+                        "<p>Your Payment was made with SUCCESS." + '</br>' + "Please go to your wallet if you want to see your reservation</p>";
                     paymentInfo.appendChild(form)
 
-                }else if(response.paymentStatus==="Declined"){
-                    const continue_button_link=document.createElement("a")
+                } else if (response.paymentStatus === "Declined") {
+                    const continue_button_link = document.createElement("a")
 
-                    url='/'
+                    url = '/'
                     paymentInfo.classList.add("payment_info");
-                    
-                    continue_button_link.innerHTML="&#x2716;"
+
+                    continue_button_link.innerHTML = "&#x2716;"
                     continue_button_link.setAttribute("href", url)
-                    
-                    paymentInfo.innerHTML=
-                    "<p>Your Payment was DECLINED."+'</br>'+"Please try again later</p>";
+
+                    paymentInfo.innerHTML =
+                        "<p>Your Payment was DECLINED." + '</br>' + "Please try again later</p>";
                     paymentInfo.appendChild(continue_button_link)
                 }
             }
             document.getElementById("payment_info_board").appendChild(paymentInfo);
         });
-    }    
-    $(document).ready(function(){
-        $("#virtualplans").click(function(){
+    }
+    $(document).ready(function () {
+        $("#virtualplans").click(function () {
             $("#virtualoffice").slideToggle("fast");
             $("#meeting").slideUp("fast");
         });
-        $("#meetingplans").click(function(){
+        $("#virtualplans_1").click(function () {
+            $("#virtualoffice").slideToggle("fast");
+            $("#meeting").slideUp("fast");
+        });
+        $("#meetingplans").click(function () {
             $("#meeting").slideToggle("fast");
             $("#virtualoffice").slideUp("fast");
         });
-        $("#out1").click(function(){
+        $("#meetingplans_1").click(function () {
+            $("#meeting").slideToggle("fast");
             $("#virtualoffice").slideUp("fast");
         });
-        $("#out3").click(function(){
+        $("#out1").click(function () {
+            $("#virtualoffice").slideUp("fast");
+        });
+        $("#out3").click(function () {
             $("#meeting").slideUp("fast");
         });
-        $("#out4").click(function(){
+        $("#out4").click(function () {
             $("#virtualofficeInfo").slideUp("fast");
         });
-        $("#out5").click(function(){
+        $("#out5").click(function () {
             $("#sendmessage").slideUp("fast");
             $("#virtualofficeInfo").slideUp();
             $("#virtualoffice").slideUp("slow");
         });
-        $("#out6").click(function(){
+        $("#out6").click(function () {
             $("#messageTable").slideUp("fast");
         });
-        $("#out7").click(function(){
+        $("#out7").click(function () {
             $("#coworkingTable").slideUp("fast");
         });
-        $("#MensagensPendentes").click(function(){
+        $("#MensagensPendentes").click(function () {
             $("#messageTable").slideToggle("slow");
-        });    
-        $("#coworkingDays").click(function(){
+        });
+        $("#coworkingDays").click(function () {
             $("#coworkingTable").slideToggle("slow");
-        });        
-        $("#virtualofficeButton1").click(function(){
+        });
+        $("#virtualofficeButton1").click(function () {
             $("#virtualofficeInfo").slideToggle("slow");
         });
-        $("#virtualofficeButton2").click(function(){
+        $("#virtualofficeButton1_1").click(function () {
             $("#virtualofficeInfo").slideToggle("slow");
         });
-        $("#continueToMessage").click(function(){
+        $("#virtualofficeButton2").click(function () {
+            $("#virtualofficeInfo").slideToggle("slow");
+        });
+        $("#virtualofficeButton2_1").click(function () {
+            $("#virtualofficeInfo").slideToggle("slow");
+        });
+        $("#continueToMessage").click(function () {
             $("#sendmessage").slideToggle("fast")
         });
     });

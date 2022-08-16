@@ -73,10 +73,16 @@ q* {
     position: relative;
     background-color: rgba(255, 255, 255, 0.363);
     width: 100%;
-    padding:5rem 15rem 5rem 15rem;
+    padding:5rem 5rem 5rem 5rem;
     text-align: center;
 }
 .cards{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.cards_slideUp{
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -118,7 +124,7 @@ q* {
     background-color: rgb(165, 106, 34);
     border-radius: 10px;
 }
-#virtualoffice{
+#virtualoffice,#coworking,#meeting{
     position: fixed;
     display: none;
     bottom: 0;
@@ -126,37 +132,12 @@ q* {
     background-color: rgb(255, 255, 255);
     font-family: 'Hind Madurai', sans-serif;
     width: 100%;
-    height: 50%;
+    height: fit-content;
     z-index: 100;
     border-radius: 30px 30px 0px 0px;
-    padding:3rem 15rem 5rem 15rem;
+    padding:3rem 0rem 5rem 0rem;
 }
-#coworking{
-    position: fixed;
-    display: none;
-    bottom: 0;
-    text-align: center;
-    background-color: rgb(255, 255, 255);
-    font-family: 'Hind Madurai', sans-serif;
-    width: 100%;
-    height: 50%;
-    z-index: 100;
-    border-radius: 30px 30px 0px 0px;
-    padding:3rem 15rem 5rem 15rem;
-}
-#meeting{
-    position: fixed;
-    display: none;
-    bottom: 0;
-    text-align: center;
-    background-color: rgb(255, 255, 255);
-    font-family: 'Hind Madurai', sans-serif;
-    width: 100%;
-    height: 50%;
-    z-index: 100;
-    border-radius: 30px 30px 0px 0px;
-    padding:3rem 15rem 5rem 15rem;
-}
+
 #line{
     position: relative;
     left: 50%;
@@ -184,6 +165,7 @@ q* {
     font-weight: 600;
     background-color: rgb(165, 106, 34);
     border-radius: 10px;
+    cursor: pointer;
 }
 .card button a{
     color: white;
@@ -207,6 +189,78 @@ q* {
 .out #right{
     transform: rotate(45deg);
 }
+.banner_carousel{
+    width: 100%;
+    height: 100%;
+    background-color: #222;
+}
+* {box-sizing: border-box}
+body {font-family: Verdana, sans-serif; margin:0}
+.mySlides {display: none}
+img {vertical-align: middle;}
+
+.slideshow-container {
+    display: none;
+  max-width: 1000px;
+  position: relative;
+  margin: auto;
+}
+
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -70px;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+}
+
+.next {
+  right: 0;
+  border-radius:0 3px 3px 0;
+}
+.prev {
+    left: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+.prev:hover, .next:hover {
+  background-color: rgba(139, 139, 139, 0.8);
+}
+
+.dot, .dot_1, .dot_2,.dot_3 {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active, .dot:hover {
+  background-color: #717171;
+}
+
+.fade {
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+
+@media only screen and (max-width: 300px) {
+  .prev, .next,.text {font-size: 11px}
+}
 @media (max-width: 700px) {
     .banner{
         height: 100vh;
@@ -226,36 +280,42 @@ q* {
         padding: 3rem 4rem 3rem 4rem;
         text-align: left;
     }
+    .slideshow-container{
+        display: block;
+    }
     .services{
-        padding: 3rem 4rem 1rem 4rem;
-        background-color: rgba(0, 0, 0, 0.349);
+        padding: 3rem 1rem 1rem 1rem;
+        background-color: rgba(114, 135, 141, 0.349);
     }
     .cards{
-        flex-direction: column;
+        display: none;
+    }
+    .cards_slideUp{
+        display: none;
     }
     .services .card{
         padding: 30px;
-        margin: 40px;
-        font-size: 10px;
+        font-size: 12px;
     }
-    #virtualoffice{
-        padding: 2rem 1rem 2.5rem 1rem;
+    #virtualoffice, #coworking, #meeting{
+        padding: 2rem 0rem 2.5rem 0rem;
     }
-    #vitualoffice .cards{
-        flex-direction: row;
-    }
+
     .card{
-        margin: 30px;
+        margin: 45px;
+        padding: 15px;
+        font-size: 12px;
     }
-    #virtualoffice h1{
-        font-size: 20px;
+    #virtualoffice h1, #coworking h1, #meeting h1{ 
+        padding: 5px;
+        font-size: 15px;
     }
     .out{
-        right: 2.8rem;
-        top: 2.5rem;
+        right: 2.6rem;
+        top: 2.7rem;
     }
     .out .line{
-        width: 1.8rem;
-        height: 0.25rem;
+        width: 1.3rem;
+        height: 0.2rem;
     }
 }

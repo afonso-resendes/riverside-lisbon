@@ -7,10 +7,12 @@ q* {
   text-decoration: none;
   scroll-behavior: smooth;
 }
+
 .banner {
   position: relative;
   width: 100%;
 }
+
 .banner img {
   position: fixed;
   object-fit: cover;
@@ -18,9 +20,11 @@ q* {
   height: 100vh;
   width: 100%;
 }
+
 .Html {
   margin-top: 5rem;
 }
+
 .welcome {
   position: relative;
   display: flex;
@@ -41,9 +45,11 @@ q* {
   font-weight: lighter;
   cursor: pointer;
 }
+
 .carton p {
   font-size: 3rem;
 }
+
 .services {
   position: relative;
   background-color: rgba(78, 78, 78, 0.274);
@@ -51,17 +57,20 @@ q* {
   padding: 5rem 15rem 5rem 15rem;
   text-align: center;
 }
+
 .cards {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
 }
+
 .services h1 {
   font-size: 30px;
   font-family: "Hind Madurai", sans-serif;
   color: white;
 }
+
 .services .service-card {
   padding: 30px;
   margin: 50px;
@@ -82,6 +91,7 @@ q* {
   border-radius: 10px;
   background-color: rgb(165, 106, 34);
 }
+
 .services .service-card button {
   border: none;
   margin: 10px 0px 0px 0px;
@@ -91,6 +101,7 @@ q* {
   background-color: rgb(165, 106, 34);
   border-radius: 10px;
 }
+
 .template {
   position: fixed;
   display: none;
@@ -104,6 +115,7 @@ q* {
   border-radius: 30px 30px 0px 0px;
   padding: 3rem 15rem 5rem 15rem;
 }
+
 .templatebig {
   position: fixed;
   display: none;
@@ -117,6 +129,7 @@ q* {
   border-radius: 30px 30px 0px 0px;
   padding: 3rem 0rem 3rem 0rem;
 }
+
 .notification {
   position: fixed;
   display: none;
@@ -130,37 +143,71 @@ q* {
   border-radius: 30px 30px 0px 0px;
   padding: 5rem 5rem 5rem 5rem;
 }
+
 input {
   font-family: "Hind Madurai", sans-serif;
 }
+
 .coworking_banner {
   display: flex;
   width: 100%;
   height: 100%;
 }
+
 #checksub {
   position: absolute;
   bottom: 5rem;
   right: -6rem;
 }
+
 .coworking_banner .model {
   position: relative;
-  width: 60%;
   height: 100%;
-  background-image: url(/static/images/RiversideTopo.png);
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: left;
+}
+.coworking_banner .model img{
+  width: 100%;
+  border-radius: 10px 10px 0px 0px;
 }
 
 .coworking_banner .form {
+  display: block;
+  background-color: rgb(255, 255, 255);
+  position: absolute;
   text-align: left;
+  border-radius: 10px;
   padding: 30px;
-  width: 40%;
+  margin: 30px;
+  z-index: 100;
 }
+
+.coworking_banner .checkout_info {
+  width: 25%;
+  height: 100%;
+  position: relative;
+  text-align: left;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
+}
+.free_chairs{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+.chair{
+  width: fit-content;
+}
+#checkout-form {
+  display: none;
+  width: 75%;
+}
+
 .template h3 {
   padding-top: 5rem;
 }
+
 #line {
   position: relative;
   left: 50%;
@@ -171,6 +218,7 @@ input {
   border-radius: 10px;
   background-color: rgb(165, 106, 34);
 }
+
 .card {
 
   padding: 30px;
@@ -181,6 +229,7 @@ input {
   text-align: center;
   font-family: "Hind Madurai", sans-serif;
 }
+
 button {
   border: none;
   margin: 10px 0px 0px 0px;
@@ -191,15 +240,18 @@ button {
   border-radius: 10px;
   cursor: pointer;
 }
+
 button a {
   color: white;
 }
+
 .out {
   position: absolute;
   right: 5rem;
   top: 4rem;
   cursor: pointer;
 }
+
 .out .line {
   position: absolute;
   width: 2rem;
@@ -207,19 +259,23 @@ button a {
   background-color: black;
   border-radius: 10px;
 }
+
 .out #left {
   transform: rotate(-45deg);
 }
+
 .out #right {
   transform: rotate(45deg);
 }
-input{
+
+input {
   padding: 10px;
   border: 1px solid;
   border-radius: 10px;
   margin: 10px;
 }
-#payment_info_board{
+
+#payment_info_board {
   display: none;
   position: fixed;
   top: 0;
@@ -229,7 +285,8 @@ input{
   background-color: rgba(56, 55, 55, 0.233);
   font-family: "Hind Madurai", sans-serif;
 }
-.payment_info{
+
+.payment_info {
   position: relative;
   text-align: center;
   width: fit-content;
@@ -241,21 +298,199 @@ input{
   background-color: rgb(243, 243, 243);
 }
 
+.slideshow-container {
+  display: none;
+  max-width: 1000px;
+  position: relative;
+  margin: auto;
+}
+
+.prev,
+.next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -70px;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+}
+
+.next {
+  right: 0;
+  border-radius: 0 3px 3px 0;
+}
+
+.prev {
+  left: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+.prev:hover,
+.next:hover {
+  background-color: rgba(139, 139, 139, 0.8);
+}
+
+.dot,
+.dot_1,
+.dot_2,
+.dot_3 {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active,
+.dot:hover {
+  background-color: #717171;
+}
+
+.fade {
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@keyframes fade {
+  from {
+    opacity: .4
+  }
+
+  to {
+    opacity: 1
+  }
+}
+
+@media only screen and (max-width: 300px) {
+
+  .prev,
+  .next,
+  .text {
+    font-size: 11px
+  }
+}
+
 @media (max-width: 700px) {
-  .Html{
+  .Html {
     margin-top: 3rem;
   }
+
   .welcome {
     height: 8rem;
     font-size: 18px;
   }
-  .services{
-    padding: 2.5rem ;
-  }
-  .services h1{
-    font-size: 25px;
-  }
-  .cards{
+
+  .coworking_banner {
     flex-direction: column;
+    font-size: 12px;
+  }
+
+  .slideshow-container {
+    display: block;
+  }
+
+  .services {
+    padding: 3rem 0 1.5rem 0;
+  }
+
+  .services .service-card {
+    font-size: 12px;
+  }
+
+  .services h1 {
+    font-size: 20px;
+  }
+
+  .cards {
+    display: none;
+  }
+
+  .templatebig {
+    position: absolute;
+    height: 93%;
+  }
+  .template{
+    min-height: 70%;
+    padding: 3rem 0 1.5rem 0;
+    font-size: 12px;
+  }
+  #continueToMessage{
+    left: 50%;
+    position: relative;
+    transform: translate(-50%, 0);
+  }
+  .coworking_banner .model {
+    position: absolute;
+    height: fit-content;
+    width: 100%;
+    bottom: 0;
+  }
+  .coworking_banner .form {
+    position: relative;
+    padding: 1rem;
+    margin: 0;
+    font-size: 10px;
+  }
+  input[type="daterange"]{
+    padding: 5px;
+    margin: 5px 5px 5px 0;
+    font-size: 12px;
+  }
+  input[type="checkbox"]{
+    padding: 5px;
+  }
+  .free_chairs{
+    flex-direction: unset;
+    width: 100%;
+  }
+  .chair{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1 0 25%;
+  }
+  .coworking_banner .checkout_info {
+    width: 100%;
+    padding: 1rem;
+  }
+  .checkout_price{
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    right: 2rem;
+    bottom: .9rem;
+  }
+  #checkout-form{
+    width: 100%;
+    font-size: 10px;
+  }
+  #avail_button{
+    margin: 0;
+    padding: 5px;
+    font-size: 12px;
+  }
+  .out {
+    right: 2.6rem;
+    top: 2.3rem;
+  }
+
+  .out .line {
+    width: 1.3rem;
+    height: 0.2rem;
+  }
+
+  #page_title {
+    font-size: 18px;
   }
 }
