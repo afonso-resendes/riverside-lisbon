@@ -307,31 +307,36 @@ def coworkingSimulation(request):
 class SuccessView(TemplateView):
     template_name = "success.html"
 
-
 def meetingRoomPersonalizada(request):
     if request.method == "POST":
         meetingdate = request.POST.get("daterange1", False)
-        print(meetingdate)
-        starttime = request.POST.get("starttime", False)
-        endtime = request.POST.get("endtime", False)
-        tempo1 = datetime.strptime(starttime, "%H:%M")
-        tempo2 = datetime.strptime(endtime, "%H:%M")
-        salasOcupadas = meetingRoomCalendar.objects.filter(
-            Q(date=(meetingdate), startTimerange=[tempo1, tempo2])
-            | Q(date=(meetingdate), endTimerange=[tempo1, tempo2])
-            | Q(date=(meetingdate), startTimelt=starttime, endTimegt=endtime)
-        )
+        datesTrim = meetingdate.replace(" ", "")    
+        dateSplit = datesTrim.split("-")
+        startDate = datetime.strptime(dateSplit[0], '%m/%d%H:%M%p')
+        endDate = datetime.strptime(dateSplit[1], '%m/%d%H:%M%p')
+        
 
-        numeroDeSalas = 0
-        for sala in salasOcupadas:
-            numeroDeSalas = numeroDeSalas + 1
-
-        if numeroDeSalas < 2:
-            messages.success(request, str(numeroDeSalas))
-        else:
-            messages.error(request, str(numeroDeSalas))
-        context = {"salasOcupadas": salasOcupadas}
-        return render(request, "meetingRoomPersonalizada.html", context)
+        for r in meetingRoomCalendar.objects.all():
+            
+            
+            if startDate.time() == r.startdate.replace(tzinfo=None).time() or endDate.time() == r.enddate.time():
+                print("Não podes")
+                return render(request, "meetingRoomPersonalizada.html", )
+                
+            elif startDate.time() < r.startdate.replace(tzinfo=None).time() < endDate.time(): 
+                print("Não podes")
+                return render(request, "meetingRoomPersonalizada.html", )
+            elif startDate.time() < r.enddate.replace(tzinfo=None).time() < endDate.time(): 
+                print("Não podes")
+                return render(request, "meetingRoomPersonalizada.html", )
+            elif startDate.time() > r.startdate.replace(tzinfo=None).time() and endDate.time() < r.enddate.time():
+                print("Não podes")
+                return render(request, "meetingRoomPersonalizada.html", )
+            else:
+                print("podes")
+                return render(request, "meetingRoomPersonalizada.html", )
+        
+        return render(request, "meetingRoomPersonalizada.html", )
 
     else:
         return render(request, "meetingRoomPersonalizada.html")
