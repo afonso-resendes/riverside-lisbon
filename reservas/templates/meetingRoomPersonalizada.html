@@ -74,9 +74,13 @@
     <form action="" method="post" >
         {% csrf_token %}
         <div id="myCal" class="cal-content">
-            <h2>Choose your start date and time:</h2>
+            <h3>Choose your start date:</h3>
             <input type="daterange" name="daterange1" value="01/01/2022 - 01/01/2022" />
-          </div>
+            <h3>Choose your start and end time:</h3>
+            <input type="time" name="starttime"/>
+            <input type="time" name="endtime"/>
+        </div>
+
         <button type="submit">Verificar</button>
     </form>
     {% for message in messages %}
@@ -92,20 +96,13 @@
 
 <script>
     $('input[name="daterange1"]').daterangepicker({
-        "timePicker": true,
+        "singleDatePicker": true,
         "linkedCalendars": false,
         "autoUpdateInput": true,
         "showCustomRangeLabel": false,
         "alwaysShowCalendars": true,
         "startDate": "07/19/2022",
-        "maxSpan": {
-            "days":0,
-            "hours": 6
-        },
         "opens": "left",
-        locale: {
-            format: 'M/DD hh:mm A'
-        }
-
     });
+
 </script>

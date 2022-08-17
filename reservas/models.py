@@ -138,3 +138,8 @@ class gallery(models.Model):
 
     def __str__(self):
         return self.caption
+
+
+class Wallet(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    mettingRoomHours = models.PositiveIntegerField(null=True)

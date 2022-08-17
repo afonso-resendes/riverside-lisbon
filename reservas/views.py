@@ -403,17 +403,21 @@ def activateEmail(request, user, to_email):
 
 def signup(request):
     form = CreateUserForm()
+    accounts = User.objects.all()
     if request.method == 'POST':
-        print('1')
         form = CreateUserForm(request.POST)
+
         if form.is_valid():
-            print('2')
+            for user in accounts:
+                if form.cleaned_data.get('email') == user.email:
+                    messages.warning(request, 'email already exists.')
+                    context = {'form': form}
+                    return render(request, 'signup.html', context)
             user = form.save(commit=False)
             user.is_active = False
             user.save()
             activateEmail(request, user, form.cleaned_data.get('email'))
-            ola = form.cleaned_data.get('email')
-            print(ola)
+           
 
             messages.success(
                 request, 'Conta criada com sucesso. Entre já!', extra_tags='reg')
