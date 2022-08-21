@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import (
     Product,
+    Wallet,
     meetingRoomCalendar,
     reservas_Coworking,
     reservas_Coworking_provisoria,
@@ -92,6 +93,46 @@ def get_RealQty(reserva):
     return qty
 
 
+def coworkingTanks(request):
+    if request.method == "POST":
+        if request.POST.get("paymentStatus_input"):
+            success = request.POST.get("paymentStatus_input")
+            if success:
+                user_wallet = Wallet.objects.get(user=request.user)
+
+                reserva_provisoria = reservas_Coworking_provisoria.objects.get(
+                    user=request.user)
+
+                multipy_nr = reserva_provisoria.nrDias / 7
+                user_wallet.mettingRoomHours =user_wallet.mettingRoomHours+multipy_nr*2
+                user_wallet.save()
+                
+                nr_Lugares = get_RealQty(reserva_provisoria)
+                reservas_Coworking.objects.create(
+                    user=request.user,
+                    nrLugares=nr_Lugares,
+                    startDate=reserva_provisoria.startDate,
+                    endDate=reserva_provisoria.endDate,
+                    nrDias=reserva_provisoria.nrDias,
+                    cost_price=reserva_provisoria.cost_price,
+                    chair1=reserva_provisoria.chair1,
+                    chair2=reserva_provisoria.chair2,
+                    chair3=reserva_provisoria.chair3,
+                    chair4=reserva_provisoria.chair4,
+                    chair5=reserva_provisoria.chair5,
+                    chair6=reserva_provisoria.chair6,
+                    chair7=reserva_provisoria.chair7,
+                    chair8=reserva_provisoria.chair8,
+                    chair9=reserva_provisoria.chair9,
+                    chair10=reserva_provisoria.chair10,
+                    chair11=reserva_provisoria.chair11,
+                    chair12=reserva_provisoria.chair12,
+                )
+                reserva_provisoria.delete()
+            return redirect("wallet")
+    return render(request, "tanks_coworking.html")
+
+
 def index(request):
     if request.user.is_authenticated:
         if request.user.is_superuser:
@@ -117,7 +158,7 @@ def index(request):
                     name = request.POST.get("name", False)
                     Industry = request.POST.get("Industry")
                     employees = request.POST.get("employees", False)
-                    description=request.POST.get("description")
+                    description = request.POST.get("description")
                     mensagens.objects.create(
                         user=request.user,
                         date=datetime.now(),
@@ -129,10 +170,11 @@ def index(request):
 
                     return redirect("index")
                 if request.POST.get("paymentStatus_input"):
-                    success=request.POST.get("paymentStatus_input")
+                    success = request.POST.get("paymentStatus_input")
                     if success:
-                        reserva_provisoria=reservas_Coworking_provisoria.objects.get(user=request.user)
-                        nr_Lugares=get_RealQty(reserva_provisoria)
+                        reserva_provisoria = reservas_Coworking_provisoria.objects.get(
+                            user=request.user)
+                        nr_Lugares = get_RealQty(reserva_provisoria)
                         reservas_Coworking.objects.create(
                             user=request.user,
                             nrLugares=nr_Lugares,
@@ -156,7 +198,10 @@ def index(request):
                         reserva_provisoria.delete()
                     return redirect("index")
             else:
-                return render(request, "dashboard(resendes).html")
+                context = {
+                    "user": request.user,
+                }
+                return render(request, "dashboard(resendes).html", context)
     else:
         return render(request, "index.html")
 
@@ -232,16 +277,13 @@ def coworkingSimulation(request):
         for r in reservas_Coworking.objects.all():
             if startdate.date() == r.startDate or enddate.date() == r.endDate:
                 reservas.append(r)
-            elif startdate.date() < r.startDate < enddate.date(): 
-                reservas.append(r)   
-            elif startdate.date() < r.endDate < enddate.date(): 
+            elif startdate.date() < r.startDate < enddate.date():
+                reservas.append(r)
+            elif startdate.date() < r.endDate < enddate.date():
                 reservas.append(r)
             elif startdate.date() > r.startDate and enddate.date() < r.endDate:
                 reservas.append(r)
 
-            
-            
-            
         for reserva in reservas:
             if reserva.chair1 == True:
                 freeChair.remove(1)
@@ -267,7 +309,7 @@ def coworkingSimulation(request):
         reservasProv = reservas_Coworking_provisoria.objects.get(
             user=request.user)
         quantaty = get_qty(reservasProv)
-        nrChairs=get_RealQty(reservasProv)
+        nrChairs = get_RealQty(reservasProv)
         if get_RealQty(reservasProv) == 0:
             reservasProv.second_step = False
         else:
@@ -282,7 +324,7 @@ def coworkingSimulation(request):
             "dates": dates,
             "startdate": startdate.strftime("%m/%d/%Y"),
             "enddate": enddate.strftime("%m/%d/%Y"),
-            "nrChairs":nrChairs,
+            "nrChairs": nrChairs,
             "reservaprovisoria": reservasProv,
             "freeChair": freeChair,
             "provPrice": standPrice*quantaty,
@@ -307,26 +349,25 @@ def coworkingSimulation(request):
 class SuccessView(TemplateView):
     template_name = "success.html"
 
+
 def meetingRoomPersonalizada(request):
     if request.method == "POST":
         meetingdate = request.POST.get("daterange1", False)
-        datesTrim = meetingdate.replace(" ", "")    
+        datesTrim = meetingdate.replace(" ", "")
         dateSplit = datesTrim.split("-")
         startDate = datetime.strptime(dateSplit[0], '%m/%d%H:%M%p')
         endDate = datetime.strptime(dateSplit[1], '%m/%d%H:%M%p')
-        
 
         for r in meetingRoomCalendar.objects.all():
-            
-            
+
             if startDate.time() == r.startdate.replace(tzinfo=None).time() or endDate.time() == r.enddate.time():
                 print("Não podes")
                 return render(request, "meetingRoomPersonalizada.html", )
-                
-            elif startDate.time() < r.startdate.replace(tzinfo=None).time() < endDate.time(): 
+
+            elif startDate.time() < r.startdate.replace(tzinfo=None).time() < endDate.time():
                 print("Não podes")
                 return render(request, "meetingRoomPersonalizada.html", )
-            elif startDate.time() < r.enddate.replace(tzinfo=None).time() < endDate.time(): 
+            elif startDate.time() < r.enddate.replace(tzinfo=None).time() < endDate.time():
                 print("Não podes")
                 return render(request, "meetingRoomPersonalizada.html", )
             elif startDate.time() > r.startdate.replace(tzinfo=None).time() and endDate.time() < r.enddate.time():
@@ -335,7 +376,7 @@ def meetingRoomPersonalizada(request):
             else:
                 print("podes")
                 return render(request, "meetingRoomPersonalizada.html", )
-        
+
         return render(request, "meetingRoomPersonalizada.html", )
 
     else:
@@ -350,12 +391,15 @@ def gallery(request):
 def wallet(request):
     reservas = reservas_Coworking.objects.filter(user=request.user)
     reservasMeeting = meetingRoomCalendar.objects.filter(user=request.user)
+    user_wallet = Wallet.objects.get(user=request.user)
+    print(user_wallet.mettingRoomHours)
 
     nrReservas = len(reservas)
     nrReservasMeeting = len(reservasMeeting)
     context = {
         "nrReservas": nrReservas,
         "reservas": reservas,
+        "meetingRoomHours": user_wallet.mettingRoomHours,
         "nrReservasMeeting": nrReservasMeeting,
         "reservasMeeting": reservasMeeting
     }
@@ -417,7 +461,7 @@ def signup(request):
             user.is_active = False
             user.save()
             activateEmail(request, user, form.cleaned_data.get('email'))
-           
+            Wallet.objects.create(user=request.user, mettingRoomHours=0)
 
             messages.success(
                 request, 'Conta criada com sucesso. Entre já!', extra_tags='reg')
