@@ -1,66 +1,69 @@
 {% load static %}
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Business Center | Riverside Lisbon</title>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <link rel="stylesheet" href="{% static 'css/dashboard1.css' %}" />
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Hind+Madurai&display=swap" rel="stylesheet">
-    </head>
-    <header>
-        {% include "nav.html" %}
-        <div class="banner">
-            <img src="{% static 'images/dashback.jpg' %}" alt="">
-        </div>
-    </header>
-    <body>
-        <div class="welcome">
-            <h2>Olá {{request.user.username}}.</h2>
-        </div>
-        <section id="services" class="services">
-            <h1>Escolhe o teu plano:</h1>
-            <div class="cards">
-                <div class="card">
-                    <h2>Virtual office</h2>
-                    <p>from €29/month</p>
-                    <div id="line"></div>
-                    <ul>
-                        <li>Prestige company address</li>
-                        <li>Mail reception</li>
-                        <li>Individual meeting rooms</li>
-                    </ul>
-                    <button id="virtualplans">Choose plans</button>
-                </div>
-                <div class="card">
-                    <h2>Coworking</h2>
-                    <p>from €30/week</p>
-                    <div id="line"></div>
-                    <ul>
-                        <li>Individual working desk</li>
-                        <li>High speed Wi-Fi</li>
-                        <li>Individual meeting rooms</li>
-                        <li>Privacy and security</li>
-                    </ul>
-                    <button id="coworkingplans">Choose plans</button>
-                </div>
-                <div class="card">        
-                    <h2>Meeting room</h2>
-                    <p>from €15/hour</p>
-                    <div id="line"></div>
-                    <ul>
-                        <li>Private 2 to 4 pax room</li>
-                        <li>High speed Wi-Fi</li>
-                        <li>Large Tv screen</li>
-                        <li>Privacy and security</li>
-                    </ul>
-                    <button id="meetingplans">Choose plans</button>
-                </div>    
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Business Center | Riverside Lisbon</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/dashboard1.css' %}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Madurai&display=swap" rel="stylesheet">
+</head>
+<header>
+    {% include "nav.html" %}
+    <div class="banner">
+        <img src="{% static 'images/dashback.jpg' %}" alt="">
+    </div>
+</header>
+
+<body>
+    <div class="welcome">
+        <h2>Olá {{request.user.username}}.</h2>
+    </div>
+    <section id="services" class="services">
+        <h1>Escolhe o teu plano:</h1>
+        <div class="cards">
+            <div class="card">
+                <h2>Virtual office</h2>
+                <p>from €29/month</p>
+                <div id="line"></div>
+                <ul>
+                    <li>Prestige company address</li>
+                    <li>Mail reception</li>
+                    <li>Individual meeting rooms</li>
+                </ul>
+                <button id="virtualplans">Choose plans</button>
             </div>
-        </section>  
-    </body>
+            <div class="card">
+                <h2>Coworking</h2>
+                <p>from €30/week</p>
+                <div id="line"></div>
+                <ul>
+                    <li>Individual working desk</li>
+                    <li>High speed Wi-Fi</li>
+                    <li>Individual meeting rooms</li>
+                    <li>Privacy and security</li>
+                </ul>
+                <button id="coworkingplans">Choose plans</button>
+            </div>
+            <div class="card">
+                <h2>Meeting room</h2>
+                <p>from €15/hour</p>
+                <div id="line"></div>
+                <ul>
+                    <li>Private 2 to 4 pax room</li>
+                    <li>High speed Wi-Fi</li>
+                    <li>Large Tv screen</li>
+                    <li>Privacy and security</li>
+                </ul>
+                <button id="meetingplans">Choose plans</button>
+            </div>
+        </div>
+    </section>
+</body>
+
 </html>
 <section class="template" style="display: block;" id="meetingRoomPersonalization">
     <h1>Personaliza o teu plano meeting room</h1>
@@ -68,20 +71,31 @@
     <div class="out">
         <a href="/">
             <div class="line" id="left"></div>
-            <div class="line" id="right"></div>    
+            <div class="line" id="right"></div>
         </a>
     </div>
-    <form action="" method="post" >
+    <form action="" id="chooseForm" method="post">
         {% csrf_token %}
         <div id="myCal" class="cal-content">
             <h3>Choose your start date:</h3>
-            <input type="daterange" name="daterange1" value="01/01/2022 - 01/01/2022" />
+            <input type="daterange" name="daterange1" required value="01/01/2022 - 01/01/2022" />
             <h3>Choose your start and end time:</h3>
-            <input type="time" name="starttime"/>
-            <input type="time" name="endtime"/>
+            <input type="time" value="{{startValeu}}" name="starttime" required/>
+            <input type="time" value="{{endValeu}}" name="endtime" required/>
         </div>
 
-        <button type="submit">Verificar</button>
+        <button type="submit">Verificar</button><br>
+        {% if second_step %}          
+            {% if disponibilidade %}
+              <h3>Price: {{price}} €</h3>
+              <button onclick="requestCheckout()">Checkout</button>
+              {% if payWallet %}
+              <button id="use_wallet" style="background-color: rgb(114, 88, 55);">Use wallet</button>
+              {% endif %}
+            {% else %}
+              <h2>We don`t have availability for thoose dates.</h2>
+            {% endif %}
+        {% endif %}
     </form>
     {% for message in messages %}
     <div class="alert alert-{{message.tags}}" role="alert">
@@ -95,14 +109,171 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/datePicker.css' %}" />
 
 <script>
+      var startdate = "{{startdate}}";
+
     $('input[name="daterange1"]').daterangepicker({
         "singleDatePicker": true,
         "linkedCalendars": false,
         "autoUpdateInput": true,
         "showCustomRangeLabel": false,
         "alwaysShowCalendars": true,
-        "startDate": "07/19/2022",
+        "startDate": startdate,
         "opens": "left",
     });
+    $(document).ready(function(){
+        $('#use_wallet').click(function(){
+            $("chooseForm").css({display: "none"});
+        });
+    });
+    function requestCheckout() {
+    var startDatetime = new Date($.now());
+    var endDatetime = new Date(
+      startDatetime.setDate(startDatetime.getDate() + 2)
+    );
+    console.log(
+      startDatetime.getFullYear() +
+      "-" +
+      startDatetime.getMonth() +
+      "-" +
+      startDatetime.getDay() +
+      "T" +
+      startDatetime.getHours() +
+      ":" +
+      startDatetime.getMinutes() +
+      ":" +
+      startDatetime.getSeconds() +
+      ".040Z"
+    );
+    console.log(
+      endDatetime.getFullYear() +
+      "-" +
+      endDatetime.getMonth() +
+      "-" +
+      endDatetime.getDay() +
+      "T" +
+      endDatetime.getHours() +
+      ":" +
+      endDatetime.getMinutes() +
+      ":" +
+      endDatetime.getSeconds() +
+      ".040Z"
+    );
+    var settings = {
+      url: "https://spg.qly.site1.sibs.pt/api/v1/payments",
+      method: "POST",
+      timeout: 0,
+      headers: {
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJlNzYyMzE3Yi03N2IxLTQ0ZWItYTUzYy0zMjY1ZDY5NTllZGIifQ.eyJpYXQiOjE2NTg4NDIzNTYsImp0aSI6IjkzMjJkYTFlLTgxY2UtNDUxZS1hZmUyLTFjMTJkNWQzMjY5NyIsImlzcyI6Imh0dHBzOi8vcWx5LnNpdGUxLnNzby5zeXMuc2licy5wdC9hdXRoL3JlYWxtcy9RTFkuU1BHLkFQSSIsImF1ZCI6Imh0dHBzOi8vcWx5LnNpdGUxLnNzby5zeXMuc2licy5wdC9hdXRoL3JlYWxtcy9RTFkuU1BHLkFQSSIsInN1YiI6Ijg2YTQ4MDlkLTIyM2MtNDEzZC1iZTA5LWIxNmZiYWVkMzc3MSIsInR5cCI6Ik9mZmxpbmUiLCJhenAiOiJRTFkuU1BHLkFQSS1DTEkiLCJzZXNzaW9uX3N0YXRlIjoiMjY5YWZhMTEtYzc5OC00MmM4LThlNTctN2I1ZGUwYzhmMTU5Iiwic2NvcGUiOiJvcGVuaWQgb2ZmbGluZV9hY2Nlc3MifQ.MObgJ4bCY_17H378BDRbdCZuceGqMcFIS4PEElGA4U8.eyJtYyI6Ijk5OTk5OTkiLCJ0YyI6IjU1OTExIn0=.C63F60B306287AE4A426B0EE933019BCDFD8C7CEA213B34ABFEFD6BD49E753A8",
+        "X-IBM-Client-Id": "10f87673-1058-4da6-8bfd-3de4a6cd5555",
+        "Content-Type": "application/json",
+      },
+      data: JSON.stringify({
+        merchant: {
+          terminalId: 55911,
+          channel: "web",
+          merchantTransactionId: "Order Id: 210nk9o9pv",
+        },
+        customer: {
+          customerInfo: {
+            customerName: customerName,
+            customerEmail: customerEmail,
+          },
+        },
+        transaction: {
+          transactionTimestamp: startDatetime,
+          description: "Coworking reservation Payment",
+          moto: false,
+          paymentType: "PURS",
+          amount: {
+            value: parseFloat(price),
+            currency: "EUR",
+          },
+          paymentMethod: ["CARD", "MBWAY", "REFERENCE"],
+          paymentReference: {
+            initialDatetime: startDatetime,
+            finalDatetime: endDatetime,
+            maxAmount: {
+              value: parseFloat(price),
+              currency: "EUR",
+            },
+            minAmount: {
+              value: parseFloat(price),
+              currency: "EUR",
+            },
+            entity: "24000",
+          },
+        },
+      }),
+    };
+
+    $.ajax(settings).done(function (response) {
+      console.log(response)
+      $("chooseForm").css({display: "none"});
+      $(".checkout_info").css({display: "flex"});
+      $("#checkout-form").css({display: "block"});
+      console.log(response);
+      const FORM_CONFIG = {
+        paymentMethodList: [],
+        amount: {value: parseFloat(price), currency: "EUR"},
+        language: "en",
+        redirectUrl: "http://127.0.0.1:8000/ctanks",
+        customerData: null,
+      };
+      const FORM_STYLE = {
+        layout: "default",
+        theme: "--light",
+        color: {
+          primary: "",
+          secondary: "",
+          border: "",
+          surface: "",
+          header: {
+            text: "",
+            background: "white",
+          },
+          body: {
+            text: "",
+            background: "white",
+          },
+        },
+        font: "Roboto",
+      };
+      const ta_ConfigValue = JSON.stringify(FORM_CONFIG, undefined, 4);
+      const ta_StyleValue = JSON.stringify(FORM_STYLE, undefined, 4);
+      const form = document.createElement("form");
+      const script = document.createElement("script");
+      var base_url = "https://spg.qly.site1.sibs.pt/assets/js/widget.js?id=";
+      var transactionSignature = response.transactionSignature;
+      var formContext = response.formContext;
+
+      transactionID = response.transactionID;
+
+      base_url += transactionID;
+
+      script.setAttribute("src", base_url);
+
+      form.classList.add("paymentSPG");
+
+      form.setAttribute("spg-context", formContext);
+
+      if (isValidJSON(ta_ConfigValue)) {
+        const configParams = JSON.parse(ta_ConfigValue);
+        form.setAttribute("spg-config", JSON.stringify(configParams));
+      } else {
+        alert("Invalid Form Configuration json!");
+      }
+      if (isValidJSON(ta_StyleValue)) {
+        const styleParams = JSON.parse(ta_StyleValue);
+        form.setAttribute("spg-style", JSON.stringify(styleParams));
+      } else {
+        alert("Invalid Form Style json!");
+      }
+      document.getElementById("checkout-form").appendChild(script);
+      document.getElementById("checkout-form").appendChild(form);
+      document.getElementById("page_title").innerHTML =
+        "Reserve your coworking plan";
+    });
+  }
 
 </script>

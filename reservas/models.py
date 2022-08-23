@@ -1,4 +1,5 @@
 import datetime
+from pyexpat import model
 from statistics import mode
 from django.db import models
 from django.contrib.auth.models import User
@@ -6,23 +7,6 @@ from PIL import Image
 
 
 sala_nr = (("", ""), ("1", "1"), ("2", "2"))
-
-lugares = (
-    ("", ""),
-    ("1", "1"),
-    ("2", "2"),
-    ("3", "3"),
-    ("4", "4"),
-    ("5", "5"),
-    ("6", "6"),
-    ("7", "7"),
-    ("8", "8"),
-    ("9", "9"),
-    ("10", "10"),
-    ("11", "11"),
-    ("12", "12"),
-)
-
 
 class reservas_Coworking_provisoria(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
@@ -117,6 +101,16 @@ class meetingRoomCalendar(models.Model):
     date = models.DateField(null=True)
     startTime = models.TimeField()
     endTime = models.TimeField()
+    
+class meetingRoomProvisoria(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    sala = models.ForeignKey(meetingRooms, on_delete=models.CASCADE, null=True)
+    date = models.DateField(null=True)
+    startTime = models.TimeField()
+    endTime = models.TimeField()
+    
+
+
 
 
 class mensagens(models.Model):
@@ -142,4 +136,4 @@ class gallery(models.Model):
 
 class Wallet(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    mettingRoomHours = models.PositiveIntegerField(null=True)
+    mettingRoomHours = models.IntegerField(default=0)

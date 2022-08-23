@@ -1,7 +1,10 @@
 import datetime
-from datetime import datetime
+from datetime import date, datetime, timedelta
 from email import message
+from multiprocessing import context
+from re import T
 from sre_constants import SUCCESS
+from time import time
 
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse
@@ -13,6 +16,7 @@ from .models import (
     Product,
     Wallet,
     meetingRoomCalendar,
+    meetingRoomProvisoria,
     reservas_Coworking,
     reservas_Coworking_provisoria,
     Price,
@@ -104,9 +108,9 @@ def coworkingTanks(request):
                     user=request.user)
 
                 multipy_nr = reserva_provisoria.nrDias / 7
-                user_wallet.mettingRoomHours =user_wallet.mettingRoomHours+multipy_nr*2
+                user_wallet.mettingRoomHours = user_wallet.mettingRoomHours+multipy_nr*2
                 user_wallet.save()
-                
+
                 nr_Lugares = get_RealQty(reserva_provisoria)
                 reservas_Coworking.objects.create(
                     user=request.user,
@@ -352,35 +356,89 @@ class SuccessView(TemplateView):
 
 def meetingRoomPersonalizada(request):
     if request.method == "POST":
+        meetingRoomProv=meetingRoomProvisoria.objects.filter(user=request.user)
+        meetingRoomProv.delete()
         meetingdate = request.POST.get("daterange1", False)
-        datesTrim = meetingdate.replace(" ", "")
-        dateSplit = datesTrim.split("-")
-        startDate = datetime.strptime(dateSplit[0], '%m/%d%H:%M%p')
-        endDate = datetime.strptime(dateSplit[1], '%m/%d%H:%M%p')
+        startTime = request.POST.get("starttime")
+        endTime = request.POST.get("endtime")
+        meetingdate.replace(" ", "")
+        disponibilidade = True
+        dateSplit = meetingdate.split("/")
+        meetingDate_Format = datetime(
+            int(dateSplit[2]), int(dateSplit[0]), int(dateSplit[1]))
 
-        for r in meetingRoomCalendar.objects.all():
+        startTime = datetime.strptime(startTime, '%H:%M').time()
+        endTime = datetime.strptime(endTime, '%H:%M').time()
 
-            if startDate.time() == r.startdate.replace(tzinfo=None).time() or endDate.time() == r.enddate.time():
-                print("Não podes")
-                return render(request, "meetingRoomPersonalizada.html", )
+        salasDisponiveis = []
+        z = 0
+        meetingRoom_bydate = meetingRoomCalendar.objects.filter(
+            date=meetingDate_Format)
 
-            elif startDate.time() < r.startdate.replace(tzinfo=None).time() < endDate.time():
-                print("Não podes")
-                return render(request, "meetingRoomPersonalizada.html", )
-            elif startDate.time() < r.enddate.replace(tzinfo=None).time() < endDate.time():
-                print("Não podes")
-                return render(request, "meetingRoomPersonalizada.html", )
-            elif startDate.time() > r.startdate.replace(tzinfo=None).time() and endDate.time() < r.enddate.time():
-                print("Não podes")
-                return render(request, "meetingRoomPersonalizada.html", )
-            else:
-                print("podes")
-                return render(request, "meetingRoomPersonalizada.html", )
+        for reservaMeeting in meetingRoom_bydate:
+            if reservaMeeting.startTime == startTime or reservaMeeting.endTime == endTime:
+                salasDisponiveis.append(z)
 
-        return render(request, "meetingRoomPersonalizada.html", )
+            elif reservaMeeting.startTime < startTime < reservaMeeting.endTime:
+                salasDisponiveis.append(z)
+
+            elif reservaMeeting.startTime < endTime < reservaMeeting.endTime:
+                salasDisponiveis.append(z)
+
+            elif reservaMeeting.startTime > startTime and reservaMeeting.endTime < endTime:
+                salasDisponiveis.append(z)
+
+            elif reservaMeeting.startTime < startTime and reservaMeeting.endTime > endTime:
+                salasDisponiveis.append(z)
+
+            z += 1
+
+        if len(salasDisponiveis) > 1:
+            disponibilidade = False
+
+        meetingRoomProvisoria.objects.create(
+            user=request.user,
+            date=meetingDate_Format,
+            startTime=startTime,
+            endTime=endTime
+        )
+
+        user_wallet = Wallet.objects.get(user=request.user)
+        payWallet = False
+        reservationTime = datetime.combine(
+            date.today(), endTime) - datetime.combine(date.today(), startTime)
+
+        if user_wallet.mettingRoomHours >= (reservationTime.seconds/60/60):
+            payWallet = True
+
+        price=10*reservationTime.seconds/60/60
+        
+        if reservationTime.seconds/60/60 > 5:
+            price=8*reservationTime.seconds/60/60
+        elif reservationTime.seconds/60/60 > 10:
+            price=7*reservationTime.seconds/60/60
+        
+        price=round(price, 2)
+        
+        second_step = True
+
+        context = {
+            "second_step": second_step,
+            "price":price,
+            "startdate": meetingdate,
+            "disponibilidade": disponibilidade,
+            "payWallet": payWallet,
+            "startValeu": request.POST.get("starttime"),
+            "endValeu": request.POST.get("endtime")
+        }
+
+        return render(request, "meetingRoomPersonalizada.html", context)
 
     else:
-        return render(request, "meetingRoomPersonalizada.html")
+        context = {
+            "startdate": '08/11/2022',
+        }
+        return render(request, "meetingRoomPersonalizada.html", context)
 
 
 def gallery(request):
