@@ -126,3 +126,39 @@ q* {
     background-color: rgb(110, 110, 110);
     position: absolute;
   }
+  @media (max-width: 700px) {
+    .Html{
+      margin-top: 3rem;
+    }
+    #info_text{
+      padding: 1rem;
+      font-size: 0.9rem;
+    }
+    table{
+      width: fit-content;
+      color: aliceblue;
+      font-size: 10px;
+    }
+    form, .dataTable{
+      padding: 0px 25px 25px 25px;
+    }
+    caption{
+      font-size: 15px;
+      margin: 15px;
+    }
+    tr{
+      padding: 0px;
+      font-weight: 200;
+      text-align: center;
+      align-items: center;
+    }
+  
+    td{
+      padding: 5px;
+      height: fit-content;
+    }
+    #submit_button{
+      right: 1rem;
+      top: 5%;
+    }
+  }
