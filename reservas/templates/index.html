@@ -324,24 +324,8 @@
 
         <div class="mySlides_2 fade">
             <div class="card">
-                <h2>Monthly</h2>
-                <h4 style="padding-bottom: 10px;">To host your clients and partners
-                </h4>
-                <ul>
-                    <li>Individual private desk</li>
-                    <li>Premium office chair</li>
-                    <li>High speed internet</li>
-                    <li>8h/week meeting room</li>
-                    <li>Coffee and amenities</li>
-                </ul>
-                <button><a href="/signin">Select plan</a></button>
-            </div>
-        </div>
-
-        <div class="mySlides_2 fade">
-            <div class="card">
-                <h2>Weekly</h2>
-                <h4 style="padding-bottom: 10px;">Rent your individual desk for 1 week</h4>
+                <h2>Custom</h2>
+                <h4 style="padding-bottom: 10px;">Rent your individual desk for the time you need</h4>
                 <ul>
                     <li>Individual private desk</li>
                     <li>Premium office chair</li>
@@ -352,66 +336,16 @@
                 <button><a href="/signin">Select plan</a></button>
             </div>
         </div>
-
-        <a class="prev" style="margin-top: -60px;" onclick="plusSlides_2(-1)">❮</a>
-        <a class="next" style="margin-top: -60px;" onclick="plusSlides_2(1)">❯</a>
-
-        <div style="text-align:center">
-            <span class="dot_2" onclick="currentSlide_2(1)"></span>
-            <span class="dot_2" onclick="currentSlide_2(2)"></span>
-        </div>
     </div>
-    <script>
-        let slideIndex_2 = 1;
-        showSlides_2(slideIndex_2);
-
-        function plusSlides_2(n) {
-            showSlides_2(slideIndex_2 += n);
-        }
-
-        function currentSlide_2(n) {
-            showSlides_2(slideIndex_2 = n);
-        }
-
-        function showSlides_2(n) {
-            let i_2;
-            let slides_2 = document.getElementsByClassName("mySlides_2");
-            let dots_2 = document.getElementsByClassName("dot_2");
-            if (n > slides_2.length) {slideIndex_2 = 1}
-            if (n < 1) {slideIndex_2 = slides_2.length}
-            for (i_2 = 0; i_2 < slides_2.length; i_2++) {
-                slides_2[i_2].style.display = "none";
-            }
-            for (i_2 = 0; i_2 < dots_2.length; i_2++) {
-                dots_2[i_2].className = dots_2[i_2].className.replace(" active", "");
-            }
-            slides_2[slideIndex_2 - 1].style.display = "block";
-            dots_2[slideIndex_2 - 1].className += " active";
-        }
-    </script>
-
     <div class="cards_slideUp">
         <div class="card">
-            <h2>Weekly</h2>
-            <h4 style="padding-bottom: 10px;">Rent your individual desk for 1 week</h4>
+            <h2>Custom</h2>
+            <h4 style="padding-bottom: 10px;">Rent your individual desk for the time you need</h4>
             <ul>
                 <li>Individual private desk</li>
                 <li>Premium office chair</li>
                 <li>High speed internet</li>
                 <li>2h/week meeting room</li>
-                <li>Coffee and amenities</li>
-            </ul>
-            <button><a href="/signin">Select plan</a></button>
-        </div>
-        <div class="card">
-            <h2>Monthly</h2>
-            <h4 style="padding-bottom: 10px;">To host your clients and partners
-            </h4>
-            <ul>
-                <li>Individual private desk</li>
-                <li>Premium office chair</li>
-                <li>High speed internet</li>
-                <li>8h/week meeting room</li>
                 <li>Coffee and amenities</li>
             </ul>
             <button><a href="/signin">Select plan</a></button>
@@ -429,13 +363,14 @@
 
         <div class="mySlides_3 fade">
             <div class="card">
-                <h2>One Hour</h2>
-                <h4 style="padding-bottom: 10px;">Get 1 hour in a premium room</h4>
+                <h2>Bundle 5 hours</h2>
+                <p>€8/hour</p>
+                <div id="line"></div>
                 <ul>
-                    <li>2-4 pax private meeting room</li>
-                    <li>large TV LCD screen</li>
+                    <li>2-4 Pax private meeting room</li>
+                    <li>Large TV LCD screen</li>
                     <li>High speed Wi-Fi</li>
-                    <li>Schedule flexibility</li>
+                    <li>Scheduling flexibility</li>
                 </ul>
                 <button><a href="/signin">Select plan</a></button>
             </div>
@@ -443,14 +378,29 @@
 
         <div class="mySlides_3 fade">
             <div class="card">
-                <h2>Four Hours</h2>
-                <h4 style="padding-bottom: 10px;">To host your clients and partners
-                </h4>
+                <h2>Bundle 10 hours</h2>
+                <p>€7/hour</p>
+                <div id="line"></div>
                 <ul>
-                    <li>2-4 pax private meeting room</li>
-                    <li>large TV LCD screen</li>
+                    <li>2-4 Pax private meeting room</li>
+                    <li>Large TV LCD screen</li>
                     <li>High speed Wi-Fi</li>
-                    <li>Schedule flexibility</li>
+                    <li>Scheduling flexibility</li>
+                </ul>
+                <button><a href="/signin">Select plan</a></button>
+            </div>
+        </div>
+
+        <div class="mySlides_3 fade">
+            <div class="card">
+                <h2>Book by the hour</h2>
+                <p>€10/hour</p>
+                <div id="line"></div>
+                <ul>
+                    <li>2-4 Pax private meeting room</li>
+                    <li>Large TV LCD screen</li>
+                    <li>High speed Wi-Fi</li>
+                    <li>Scheduling flexibility</li>
                 </ul>
                 <button><a href="/signin">Select plan</a></button>
             </div>
@@ -462,6 +412,7 @@
         <div style="text-align:center">
             <span class="dot_3" onclick="currentSlide_3(1)"></span>
             <span class="dot_3" onclick="currentSlide_3(2)"></span>
+            <span class="dot_3" onclick="currentSlide_3(3)"></span>
         </div>
     </div>
     <script>
@@ -494,27 +445,40 @@
     </script>
     <div class="cards_slideUp">
         <div class="card">
-            <h2>One Hour</h2>
-            <h4 style="padding-bottom: 10px;">Get 1 hour in a premium room</h4>
+            <h2>Bundle 5 hours</h2>
+            <p>€8/hour</p>
+            <div id="line"></div>
             <ul>
-                <li>2-4 pax private meeting room</li>
-                <li>large TV LCD screen</li>
+                <li>2-4 Pax private meeting room</li>
+                <li>Large TV LCD screen</li>
                 <li>High speed Wi-Fi</li>
-                <li>Schedule flexibility</li>
+                <li>Scheduling flexibility</li>
             </ul>
-            <button><a href="/signin">Select plan</a></button>
+            <button onclick="bundleFiveRequest()">Select plan</button>
         </div>
         <div class="card">
-            <h2>Four Hours</h2>
-            <h4 style="padding-bottom: 10px;">To host your clients and partners
-            </h4>
+            <h2>Bundle 10 hours</h2>
+            <p>€7/hour</p>
+            <div id="line"></div>
             <ul>
-                <li>2-4 pax private meeting room</li>
-                <li>large TV LCD screen</li>
+                <li>2-4 Pax private meeting room</li>
+                <li>Large TV LCD screen</li>
                 <li>High speed Wi-Fi</li>
-                <li>Schedule flexibility</li>
+                <li>Scheduling flexibility</li>
             </ul>
-            <button><a href="/signin">Select plan</a></button>
+            <button onclick="bundleTenRequest()">Select plan</button>
+        </div>
+        <div class="card">
+            <h2>Book by the hour</h2>
+            <p>€10/hour</p>
+            <div id="line"></div>
+            <ul>
+                <li>2-4 Pax private meeting room</li>
+                <li>Large TV LCD screen</li>
+                <li>High speed Wi-Fi</li>
+                <li>Scheduling flexibility</li>
+            </ul>
+            <button><a href="/meetingRoomPersonalizada">Select plan</a></button>
         </div>
     </div>
 </section>

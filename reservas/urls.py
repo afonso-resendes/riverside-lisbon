@@ -15,6 +15,8 @@ urlpatterns = [
         name="coworkingSimulation",
     ),
     path("ctanks", views.coworkingTanks, name="coworkingTanks"),
+    path("m5tanks", views.m5Thanks, name="m5Thanks"),
+    path("m10tanks", views.m10Thanks, name="m10Thanks"),
     path("user_wallet", views.wallet, name="wallet"),
     path("Gallery", views.gallery, name="gallery"),
     path("signup", views.signup, name="signup"),

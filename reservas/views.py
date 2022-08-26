@@ -136,6 +136,25 @@ def coworkingTanks(request):
             return redirect("wallet")
     return render(request, "tanks_coworking.html")
 
+def m5Thanks(request):
+    if request.method == "POST":
+        if request.POST.get("paymentStatus_input"):
+            success = request.POST.get("paymentStatus_input")
+            if success:
+                user_wallet=Wallet.objects.get(user=request.user)
+                user_wallet.mettingRoomHours = user_wallet.mettingRoomHours+5
+                return redirect("wallet")
+    return render(request, "m5thanks.html")
+def m10Thanks(request):
+    if request.method == "POST":
+        if request.POST.get("paymentStatus_input"):
+            success = request.POST.get("paymentStatus_input")
+            if success:
+                user_wallet=Wallet.objects.get(user=request.user)
+                user_wallet.mettingRoomHours += 10
+                return redirect("wallet")
+    return render(request, "m5thanks.html")
+
 
 def index(request):
     if request.user.is_authenticated:

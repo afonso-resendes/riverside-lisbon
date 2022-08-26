@@ -64,7 +64,7 @@
     $.ajax(settings).done(function (response) {
       console.log(response);
       var payment_Method = response.paymentMethod;
-      var url = "http://127.0.0.1:8000/ctanks?id=" + response.transactionID;
+      var url = "http://127.0.0.1:8000/m10thanks?id=" + response.transactionID;
       console.log(payment_Method);
       const paymentInfo = document.createElement("div");
 
@@ -111,7 +111,7 @@
           paymentInfo.innerHTML =
             "<p>Your Payment was made with SUCCESS." +
             "</br>" +
-            "Please go to your wallet if you want to see your reservation</p>";
+            "Please go to your wallet if you want to see your meeting room hours</p>";
           paymentInfo.appendChild(form);
         } else if (response.paymentStatus === "Declined") {
           const continue_button_link = document.createElement("a");

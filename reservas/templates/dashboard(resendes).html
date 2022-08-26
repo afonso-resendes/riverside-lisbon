@@ -1,121 +1,35 @@
 {% load static %}
 <html id="Html" lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Business Center | Riverside Lisbon</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <link rel="stylesheet" href="{% static 'css/dashboard1.css' %}" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Hind+Madurai&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <header>
-    {% include "nav.html" %}
-    <div class="banner">
-      <img src="{% static 'images/dashback.jpg' %}" alt="" />
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Business Center | Riverside Lisbon</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <link rel="stylesheet" href="{% static 'css/dashboard1.css' %}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Madurai&display=swap" rel="stylesheet" />
+</head>
+<header>
+  {% include "nav.html" %}
+  <div class="banner">
+    <img src="{% static 'images/dashback.jpg' %}" alt="" />
+  </div>
+</header>
+
+<body>
+  <div id="payment_info_board">
+    <form action="" method="post" id="paymentStatus">{% csrf_token %}</form>
+  </div>
+  <section class="Html">
+    <div class="welcome">
+      <h2>Welcome {{request.user.username}}.</h2>
     </div>
-  </header>
-
-  <body>
-    <div id="payment_info_board">
-      <form action="" method="post" id="paymentStatus">{% csrf_token %}</form>
-    </div>
-    <section class="Html">
-      <div class="welcome">
-        <h2>Welcome {{request.user.username}}.</h2>
-      </div>
-      <section id="services" class="services">
-        <h1>Make your reservation:</h1>
-        <div class="slideshow-container">
-          <div class="mySlides fade">
-            <div class="service-card">
-              <h2>Virtual office</h2>
-              <p>from €29/month</p>
-              <div id="line"></div>
-              <ul>
-                <li>Prestige company address</li>
-                <li>Mail reception</li>
-                <li>Individual meeting rooms</li>
-                <li>Legal & Fiscal consulting</li>
-              </ul>
-              <button id="virtualplans_1">See plans</button>
-            </div>
-          </div>
-
-          <div class="mySlides fade">
-            <div class="service-card">
-              <h2>Coworking</h2>
-              <p>from €30/week</p>
-              <div id="line"></div>
-              <ul>
-                <li>Individual working desk</li>
-                <li>High speed Wi-Fi</li>
-                <li>Individual meeting rooms</li>
-                <li>Privacy and security</li>
-              </ul>
-              <button><a href="/coworkingSimulation">See plans</a></button>
-            </div>
-          </div>
-
-          <div class="mySlides fade">
-            <div class="service-card">
-              <h2>Meeting room</h2>
-              <p>from €15/hour</p>
-              <div id="line"></div>
-              <ul>
-                <li>Private 2 to 4 pax room</li>
-                <li>High speed Wi-Fi</li>
-                <li>Large TV screen</li>
-                <li>Privacy and security</li>
-              </ul>
-              <button id="meetingplans_1">See plans</button>
-            </div>
-          </div>
-          <a class="prev" onclick="plusSlides(-1)">❮</a>
-          <a class="next" onclick="plusSlides(1)">❯</a>
-          <div style="text-align: center">
-            <span class="dot" onclick="currentSlide(1)"></span>
-            <span class="dot" onclick="currentSlide(2)"></span>
-            <span class="dot" onclick="currentSlide(3)"></span>
-          </div>
-        </div>
-        <script>
-          let slideIndex = 1;
-          showSlides(slideIndex);
-
-          function plusSlides(n) {
-            showSlides((slideIndex += n));
-          }
-
-          function currentSlide(n) {
-            showSlides((slideIndex = n));
-          }
-
-          function showSlides(n) {
-            let i;
-            let slides = document.getElementsByClassName("mySlides");
-            let dots = document.getElementsByClassName("dot");
-            if (n > slides.length) {
-              slideIndex = 1;
-            }
-            if (n < 1) {
-              slideIndex = slides.length;
-            }
-            for (i = 0; i < slides.length; i++) {
-              slides[i].style.display = "none";
-            }
-            for (i = 0; i < dots.length; i++) {
-              dots[i].className = dots[i].className.replace(" active", "");
-            }
-            slides[slideIndex - 1].style.display = "block";
-            dots[slideIndex - 1].className += " active";
-          }
-        </script>
-        <div id="dashCards" class="cards">
+    <section id="services" class="services">
+      <h1>Make your reservation:</h1>
+      <div class="slideshow-container">
+        <div class="mySlides fade">
           <div class="service-card">
             <h2>Virtual office</h2>
             <p>from €29/month</p>
@@ -126,8 +40,11 @@
               <li>Individual meeting rooms</li>
               <li>Legal & Fiscal consulting</li>
             </ul>
-            <button id="virtualplans">Choose plans</button>
+            <button id="virtualplans_1">See plans</button>
           </div>
+        </div>
+
+        <div class="mySlides fade">
           <div class="service-card">
             <h2>Coworking</h2>
             <p>from €30/week</p>
@@ -138,24 +55,106 @@
               <li>Individual meeting rooms</li>
               <li>Privacy and security</li>
             </ul>
-            <button><a href="/coworkingSimulation">Choose plans</a></button>
+            <button><a href="/coworkingSimulation">See plans</a></button>
           </div>
+        </div>
+
+        <div class="mySlides fade">
           <div class="service-card">
             <h2>Meeting room</h2>
             <p>from €15/hour</p>
             <div id="line"></div>
             <ul>
-              <li>Private 2 to 4 Pax room</li>
+              <li>Private 2 to 4 pax room</li>
               <li>High speed Wi-Fi</li>
-              <li>Large Tv screen</li>
+              <li>Large TV screen</li>
               <li>Privacy and security</li>
             </ul>
-            <button id="meetingplans">Choose plans</button>
+            <button id="meetingplans_1">See plans</button>
           </div>
         </div>
-      </section>
+        <a class="prev" onclick="plusSlides(-1)">❮</a>
+        <a class="next" onclick="plusSlides(1)">❯</a>
+        <div style="text-align: center">
+          <span class="dot" onclick="currentSlide(1)"></span>
+          <span class="dot" onclick="currentSlide(2)"></span>
+          <span class="dot" onclick="currentSlide(3)"></span>
+        </div>
+      </div>
+      <script>
+        let slideIndex = 1;
+        showSlides(slideIndex);
+
+        function plusSlides(n) {
+          showSlides((slideIndex += n));
+        }
+
+        function currentSlide(n) {
+          showSlides((slideIndex = n));
+        }
+
+        function showSlides(n) {
+          let i;
+          let slides = document.getElementsByClassName("mySlides");
+          let dots = document.getElementsByClassName("dot");
+          if (n > slides.length) {
+            slideIndex = 1;
+          }
+          if (n < 1) {
+            slideIndex = slides.length;
+          }
+          for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+          }
+          for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+          }
+          slides[slideIndex - 1].style.display = "block";
+          dots[slideIndex - 1].className += " active";
+        }
+      </script>
+      <div id="dashCards" class="cards">
+        <div class="service-card">
+          <h2>Virtual office</h2>
+          <p>from €29/month</p>
+          <div id="line"></div>
+          <ul>
+            <li>Prestige company address</li>
+            <li>Mail reception</li>
+            <li>Individual meeting rooms</li>
+            <li>Legal & Fiscal consulting</li>
+          </ul>
+          <button id="virtualplans">Choose plans</button>
+        </div>
+        <div class="service-card">
+          <h2>Coworking</h2>
+          <p>from €30/week</p>
+          <div id="line"></div>
+          <ul>
+            <li>Individual working desk</li>
+            <li>High speed Wi-Fi</li>
+            <li>Individual meeting rooms</li>
+            <li>Privacy and security</li>
+          </ul>
+          <button><a href="/coworkingSimulation">Choose plans</a></button>
+        </div>
+        <div class="service-card">
+          <h2>Meeting room</h2>
+          <p>from €15/hour</p>
+          <div id="line"></div>
+          <ul>
+            <li>Private 2 to 4 Pax room</li>
+            <li>High speed Wi-Fi</li>
+            <li>Large Tv screen</li>
+            <li>Privacy and security</li>
+          </ul>
+          <button id="meetingplans">Choose plans</button>
+        </div>
+      </div>
     </section>
-  </body>
+  </section>
+</body>
+
 </html>
 <section class="template" id="virtualoffice">
   <h1>Choose your virtual office plan</h1>
@@ -238,8 +237,8 @@
       dots_1[slideIndex_1 - 1].className += " active";
     }
   </script>
-        <div id="dashCards" class="cards">
-            <div class="card">
+  <div id="dashCards" class="cards">
+    <div class="card">
       <h2>Basic</h2>
       <h4 style="padding-bottom: 10px">To place your business in Lisbon</h4>
       <ul>
@@ -270,11 +269,13 @@
 <section class="template" id="meeting">
   <h1>Choose your meeting room plan</h1>
   <div id="line"></div>
-  <div class="out" id="out3">
-    <div class="line" id="left"></div>
-    <div class="line" id="right"></div>
+  <div class="out">
+    <a href="/">
+      <div class="line" id="left"></div>
+      <div class="line" id="right"></div>
+    </a>
   </div>
-  <div  class="slideshow-container">
+  <div class="slideshow-container">
     <div class="mySlides_2 fade">
       <div class="card">
         <h2>Bundle 5 hours</h2>
@@ -364,7 +365,7 @@
     <div class="card">
       <h2>Bundle 5 hours</h2>
       <p>€8/hour</p>
-      <div id="line"></div> 
+      <div id="line"></div>
       <ul>
         <li>2-4 Pax private meeting room</li>
         <li>Large TV LCD screen</li>
@@ -383,7 +384,7 @@
         <li>High speed Wi-Fi</li>
         <li>Scheduling flexibility</li>
       </ul>
-      <button><a href="">Select plan</a></button>
+      <button onclick="bundleTenRequest()">Select plan</button>
     </div>
     <div class="card">
       <h2>Book by the hour</h2>
@@ -414,10 +415,7 @@
     For this type of service, we ask you kindly to provide us a few details
     about your needs so that we can design the most suitable setup for you.
   </h3>
-  <button
-    style="float: right; margin: 2rem 15rem 0rem 0rem"
-    id="continueToMessage"
-  >
+  <button style="float: right; margin: 2rem 15rem 0rem 0rem" id="continueToMessage">
     Complete form
   </button>
 </section>
@@ -430,38 +428,11 @@
   </div>
   <form action="" method="post">
     {% csrf_token %}
-    <input
-      type="text"
-      id="name"
-      name="name"
-      placeholder="Name"
-      required
-    /><br />
-    <input
-      type="text"
-      id="Industry"
-      name="Industry"
-      placeholder="Industry"
-      required
-    /><br />
-    <input
-      type="text"
-      id="employees"
-      name="employees"
-      placeholder="Number of employees"
-    /><br />
-    <input
-      type="text"
-      id="country"
-      name="country"
-      placeholder="Company's HQ"
-    /><br />
-    <input
-      type="text"
-      id="description"
-      name="description"
-      placeholder="description"
-    /><br />
+    <input type="text" id="name" name="name" placeholder="Name" required /><br />
+    <input type="text" id="Industry" name="Industry" placeholder="Industry" required /><br />
+    <input type="text" id="employees" name="employees" placeholder="Number of employees" /><br />
+    <input type="text" id="country" name="country" placeholder="Company's HQ" /><br />
+    <input type="text" id="description" name="description" placeholder="description" /><br />
     <button type="submit">Send</button>
   </form>
 </section>
@@ -513,6 +484,7 @@
   var price_js;
   var customerName = "{{user.username}}";
   var customerEmail = "{{user.mail}}";
+  var url
   function isValidJSON(text) {
     if (
       /^[\],:{}\s]*$/.test(
@@ -533,8 +505,18 @@
   function bundleFiveRequest() {
     console.log("Entrou");
     price_js = 50;
-    $(".slideshow-container").css({ display: "none" });
-    $("#bundle_cards").css({ display: "none" });
+    url = "http://127.0.0.1:8000/m5tanks"
+    $(".slideshow-container").css({display: "none"});
+    $("#bundle_cards").css({display: "none"});
+
+    requestCheckout();
+  }
+  function bundleTenRequest() {
+    console.log("Entrou");
+    price_js = 90;
+    url = "http://127.0.0.1:8000/m10tanks"
+    $(".slideshow-container").css({display: "none"});
+    $("#bundle_cards").css({display: "none"});
 
     requestCheckout();
   }
@@ -545,31 +527,31 @@
     );
     console.log(
       startDatetime.getFullYear() +
-        "-" +
-        startDatetime.getMonth() +
-        "-" +
-        startDatetime.getDay() +
-        "T" +
-        startDatetime.getHours() +
-        ":" +
-        startDatetime.getMinutes() +
-        ":" +
-        startDatetime.getSeconds() +
-        ".040Z"
+      "-" +
+      startDatetime.getMonth() +
+      "-" +
+      startDatetime.getDay() +
+      "T" +
+      startDatetime.getHours() +
+      ":" +
+      startDatetime.getMinutes() +
+      ":" +
+      startDatetime.getSeconds() +
+      ".040Z"
     );
     console.log(
       endDatetime.getFullYear() +
-        "-" +
-        endDatetime.getMonth() +
-        "-" +
-        endDatetime.getDay() +
-        "T" +
-        endDatetime.getHours() +
-        ":" +
-        endDatetime.getMinutes() +
-        ":" +
-        endDatetime.getSeconds() +
-        ".040Z"
+      "-" +
+      endDatetime.getMonth() +
+      "-" +
+      endDatetime.getDay() +
+      "T" +
+      endDatetime.getHours() +
+      ":" +
+      endDatetime.getMinutes() +
+      ":" +
+      endDatetime.getSeconds() +
+      ".040Z"
     );
     var settings = {
       url: "https://spg.qly.site1.sibs.pt/api/v1/payments",
@@ -622,16 +604,16 @@
 
     $.ajax(settings).done(function (response) {
       console.log(response);
-      $(".coworking_banner .model").css({ display: "none" });
-      $(".coworking_banner .form").css({ display: "none" });
-      $(".coworking_banner .checkout_info").css({ display: "flex" });
-      $("#checkout-form").css({ display: "block" });
+      $(".coworking_banner .model").css({display: "none"});
+      $(".coworking_banner .form").css({display: "none"});
+      $(".coworking_banner .checkout_info").css({display: "flex"});
+      $("#checkout-form").css({display: "block"});
       console.log(response);
       const FORM_CONFIG = {
         paymentMethodList: [],
-        amount: { value: price_js, currency: "EUR" },
+        amount: {value: price_js, currency: "EUR"},
         language: "en",
-        redirectUrl: "http://127.0.0.1:8000/",
+        redirectUrl: url,
         customerData: null,
       };
       const FORM_STYLE = {
@@ -683,11 +665,18 @@
       } else {
         alert("Invalid Form Style json!");
       }
-      $(".payment_part").css({ display: "flex" });
+      $(".payment_part").css({display: "flex"});
       if (price_js === 50) {
         console.log("Entrou");
         document.getElementById("checkout_info_text").innerHTML =
           "<h2>Your Product</h2> <p>Product: 5h Bundle</p> <p>Price: " +
+          price_js +
+          "€</p>";
+      }
+      if (price_js === 90) {
+        console.log("Entrou");
+        document.getElementById("checkout_info_text").innerHTML =
+          "<h2>Your Product</h2> <p>Product: 10h Bundle</p> <p>Price: " +
           price_js +
           "€</p>";
       }
