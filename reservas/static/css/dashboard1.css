@@ -181,7 +181,7 @@ input {
   z-index: 100;
 }
 
-.coworking_banner .checkout_info {
+.checkout_info {
   width: 25%;
   height: 100%;
   position: relative;
@@ -312,9 +312,9 @@ input {
   align-items: center;
   justify-content: center;
 }
-#checkout_info_text{
+#checkout_info_text, .wallet_status{
   text-align: left;
-  padding-right: 1rem;
+  padding: 2rem;
 }
 .slideshow-container {
   display: none;

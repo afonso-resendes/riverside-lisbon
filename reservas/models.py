@@ -137,3 +137,4 @@ class gallery(models.Model):
 class Wallet(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     mettingRoomHours = models.IntegerField(default=0)
+    mettingRoomMinutes = models.IntegerField(default=0)

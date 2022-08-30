@@ -2,106 +2,127 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Business Center | Riverside Lisbon</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <link rel="stylesheet" href="{% static 'css/dashboard1.css' %}" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Madurai&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Business Center | Riverside Lisbon</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <link rel="stylesheet" href="{% static 'css/dashboard1.css' %}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Madurai&display=swap" rel="stylesheet">
 </head>
 <header>
-    {% include "nav.html" %}
-    <div class="banner">
-        <img src="{% static 'images/dashback.jpg' %}" alt="">
-    </div>
+  {% include "nav.html" %}
+  <div class="banner">
+    <img src="{% static 'images/dashback.jpg' %}" alt="">
+  </div>
 </header>
 
 <body>
-    <div class="welcome">
-        <h2>Olá {{request.user.username}}.</h2>
+  <div class="welcome">
+    <h2>Olá {{request.user.username}}.</h2>
+  </div>
+  <section id="services" class="services">
+    <h1>Escolhe o teu plano:</h1>
+    <div class="cards">
+      <div class="card">
+        <h2>Virtual office</h2>
+        <p>from €29/month</p>
+        <div id="line"></div>
+        <ul>
+          <li>Prestige company address</li>
+          <li>Mail reception</li>
+          <li>Individual meeting rooms</li>
+        </ul>
+        <button id="virtualplans">Choose plans</button>
+      </div>
+      <div class="card">
+        <h2>Coworking</h2>
+        <p>from €30/week</p>
+        <div id="line"></div>
+        <ul>
+          <li>Individual working desk</li>
+          <li>High speed Wi-Fi</li>
+          <li>Individual meeting rooms</li>
+          <li>Privacy and security</li>
+        </ul>
+        <button id="coworkingplans">Choose plans</button>
+      </div>
+      <div class="card">
+        <h2>Meeting room</h2>
+        <p>from €15/hour</p>
+        <div id="line"></div>
+        <ul>
+          <li>Private 2 to 4 pax room</li>
+          <li>High speed Wi-Fi</li>
+          <li>Large Tv screen</li>
+          <li>Privacy and security</li>
+        </ul>
+        <button id="meetingplans">Choose plans</button>
+      </div>
     </div>
-    <section id="services" class="services">
-        <h1>Escolhe o teu plano:</h1>
-        <div class="cards">
-            <div class="card">
-                <h2>Virtual office</h2>
-                <p>from €29/month</p>
-                <div id="line"></div>
-                <ul>
-                    <li>Prestige company address</li>
-                    <li>Mail reception</li>
-                    <li>Individual meeting rooms</li>
-                </ul>
-                <button id="virtualplans">Choose plans</button>
-            </div>
-            <div class="card">
-                <h2>Coworking</h2>
-                <p>from €30/week</p>
-                <div id="line"></div>
-                <ul>
-                    <li>Individual working desk</li>
-                    <li>High speed Wi-Fi</li>
-                    <li>Individual meeting rooms</li>
-                    <li>Privacy and security</li>
-                </ul>
-                <button id="coworkingplans">Choose plans</button>
-            </div>
-            <div class="card">
-                <h2>Meeting room</h2>
-                <p>from €15/hour</p>
-                <div id="line"></div>
-                <ul>
-                    <li>Private 2 to 4 pax room</li>
-                    <li>High speed Wi-Fi</li>
-                    <li>Large Tv screen</li>
-                    <li>Privacy and security</li>
-                </ul>
-                <button id="meetingplans">Choose plans</button>
-            </div>
-        </div>
-    </section>
+  </section>
 </body>
 
 </html>
 <section class="template" style="display: block;" id="meetingRoomPersonalization">
-    <h1>Personaliza o teu plano meeting room</h1>
-    <div id="line"></div>
-    <div class="out">
-        <a href="/">
-            <div class="line" id="left"></div>
-            <div class="line" id="right"></div>
-        </a>
-    </div>
-    <form action="" id="chooseForm" method="post">
-        {% csrf_token %}
-        <div id="myCal" class="cal-content">
-            <h3>Choose your start date:</h3>
-            <input type="daterange" name="daterange1" required value="01/01/2022 - 01/01/2022" />
-            <h3>Choose your start and end time:</h3>
-            <input type="time" value="{{startValeu}}" name="starttime" required/>
-            <input type="time" value="{{endValeu}}" name="endtime" required/>
-        </div>
+  <h1>Personaliza o teu plano meeting room</h1>
+  <div id="line"></div>
+  <div class="out">
+    <a href="/">
+      <div class="line" id="left"></div>
+      <div class="line" id="right"></div>
+    </a>
+  </div>
+  <div id="chooseForm">
 
-        <button type="submit">Verificar</button><br>
-        {% if second_step %}          
-            {% if disponibilidade %}
-              <h3>Price: {{price}} €</h3>
-              <button onclick="requestCheckout()">Checkout</button>
-              {% if payWallet %}
-              <button id="use_wallet" style="background-color: rgb(114, 88, 55);">Use wallet</button>
-              {% endif %}
-            {% else %}
-              <h2>We don`t have availability for thoose dates.</h2>
-            {% endif %}
-        {% endif %}
+    <form action="" id="chooseForm" method="post">
+      {% csrf_token %}
+      <div id="myCal" class="cal-content">
+        <h3>Choose your start date:</h3>
+        <input type="daterange" name="daterange1" required value="01/01/2022 - 01/01/2022" />
+        <h3>Choose your start and end time:</h3>
+        <input type="time" value="{{startValeu}}" step="1800" name="starttime" required />
+        <input type="time" value="{{endValeu}}" step="1800" name="endtime" required />
+      </div>
+
+      <button type="submit">Verificar</button><br>
     </form>
-    {% for message in messages %}
-    <div class="alert alert-{{message.tags}}" role="alert">
-        <h1>{{message}}</h1>
+    {% if second_step %}
+    {% if disponibilidade %}
+    <h3>Price: {{price}} €</h3>
+    <button onclick="requestCheckout()">Checkout</button>
+    {% if payWallet %}
+    <button id="use_wallet" style="background-color: rgb(114, 88, 55);">Use wallet</button>
+    {% endif %}
+    {% else %}
+    <h2>We don`t have availability for thoose dates.</h2>
+    {% endif %}
+    {% endif %}
+  </div>
+  <div class="checkout_info">
+    <div class="checkout_info_text">
+      <h2>Your reservation</h2>
+      <p>Chossen date: {{startdate}}</p>
+      <p>Time: {{startTime}} - {{endTime}}</p>
+      <p id="price_info">Price: {{price}} €</p>
     </div>
-    {% endfor %}
+    <div class="wallet_status">
+        <form action="" method="POST">
+        <h2>Your Wallet</h2>
+        <p>meeting room: {{walletHours}} hours</p>
+        {% csrf_token %}
+        <input type="checkbox" name="useWallet" checked style="display: none">
+        <button type="submit" style="background-color: rgb(114, 88, 55);">Use wallet</button>
+      </form>
+      </div>
+  </div>
+  <div id="checkout-form"></div>
+  {% for message in messages %}
+  <div class="alert alert-{{message.tags}}" role="alert">
+    <h1>{{message}}</h1>
+  </div>
+  {% endfor %}
 </section>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
@@ -109,23 +130,26 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/datePicker.css' %}" />
 
 <script>
-      var startdate = "{{startdate}}";
+  var startdate = "{{startdate}}";
 
-    $('input[name="daterange1"]').daterangepicker({
-        "singleDatePicker": true,
-        "linkedCalendars": false,
-        "autoUpdateInput": true,
-        "showCustomRangeLabel": false,
-        "alwaysShowCalendars": true,
-        "startDate": startdate,
-        "opens": "left",
+  $('input[name="daterange1"]').daterangepicker({
+    "singleDatePicker": true,
+    "linkedCalendars": false,
+    "autoUpdateInput": true,
+    "showCustomRangeLabel": false,
+    "alwaysShowCalendars": true,
+    "startDate": startdate,
+    "opens": "left",
+  });
+  $(document).ready(function () {
+    $('#use_wallet').click(function () {
+      $("#chooseForm").css({display: "none"});
+      $("#price_info").css({display: "none"});
+      $(".checkout_info").css({display: "flex", width: "100%"});
+      $(".wallet_status").css({display: "block"});
     });
-    $(document).ready(function(){
-        $('#use_wallet').click(function(){
-            $("chooseForm").css({display: "none"});
-        });
-    });
-    function requestCheckout() {
+  });
+  function requestCheckout() {
     var startDatetime = new Date($.now());
     var endDatetime = new Date(
       startDatetime.setDate(startDatetime.getDate() + 2)

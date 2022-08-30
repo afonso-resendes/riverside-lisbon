@@ -136,21 +136,24 @@ def coworkingTanks(request):
             return redirect("wallet")
     return render(request, "tanks_coworking.html")
 
+
 def m5Thanks(request):
     if request.method == "POST":
         if request.POST.get("paymentStatus_input"):
             success = request.POST.get("paymentStatus_input")
             if success:
-                user_wallet=Wallet.objects.get(user=request.user)
+                user_wallet = Wallet.objects.get(user=request.user)
                 user_wallet.mettingRoomHours = user_wallet.mettingRoomHours+5
                 return redirect("wallet")
     return render(request, "m5thanks.html")
+
+
 def m10Thanks(request):
     if request.method == "POST":
         if request.POST.get("paymentStatus_input"):
             success = request.POST.get("paymentStatus_input")
             if success:
-                user_wallet=Wallet.objects.get(user=request.user)
+                user_wallet = Wallet.objects.get(user=request.user)
                 user_wallet.mettingRoomHours += 10
                 return redirect("wallet")
     return render(request, "m5thanks.html")
@@ -176,6 +179,8 @@ def index(request):
             }
             return render(request, "admin.html", context)
         else:
+            if not Wallet.objects.filter(user=request.user):
+                Wallet.objects.create(user=request.user, mettingRoomHours=0)
             if request.method == "POST":
                 if request.POST.get("Industry"):
                     name = request.POST.get("name", False)
@@ -375,83 +380,103 @@ class SuccessView(TemplateView):
 
 def meetingRoomPersonalizada(request):
     if request.method == "POST":
-        meetingRoomProv=meetingRoomProvisoria.objects.filter(user=request.user)
-        meetingRoomProv.delete()
-        meetingdate = request.POST.get("daterange1", False)
-        startTime = request.POST.get("starttime")
-        endTime = request.POST.get("endtime")
-        meetingdate.replace(" ", "")
-        disponibilidade = True
-        dateSplit = meetingdate.split("/")
-        meetingDate_Format = datetime(
-            int(dateSplit[2]), int(dateSplit[0]), int(dateSplit[1]))
-
-        startTime = datetime.strptime(startTime, '%H:%M').time()
-        endTime = datetime.strptime(endTime, '%H:%M').time()
-
-        salasDisponiveis = []
-        z = 0
-        meetingRoom_bydate = meetingRoomCalendar.objects.filter(
-            date=meetingDate_Format)
-
-        for reservaMeeting in meetingRoom_bydate:
-            if reservaMeeting.startTime == startTime or reservaMeeting.endTime == endTime:
-                salasDisponiveis.append(z)
-
-            elif reservaMeeting.startTime < startTime < reservaMeeting.endTime:
-                salasDisponiveis.append(z)
-
-            elif reservaMeeting.startTime < endTime < reservaMeeting.endTime:
-                salasDisponiveis.append(z)
-
-            elif reservaMeeting.startTime > startTime and reservaMeeting.endTime < endTime:
-                salasDisponiveis.append(z)
-
-            elif reservaMeeting.startTime < startTime and reservaMeeting.endTime > endTime:
-                salasDisponiveis.append(z)
-
-            z += 1
-
-        if len(salasDisponiveis) > 1:
-            disponibilidade = False
-
-        meetingRoomProvisoria.objects.create(
-            user=request.user,
-            date=meetingDate_Format,
-            startTime=startTime,
-            endTime=endTime
-        )
-
         user_wallet = Wallet.objects.get(user=request.user)
-        payWallet = False
-        reservationTime = datetime.combine(
-            date.today(), endTime) - datetime.combine(date.today(), startTime)
+        meetingRoomProv = meetingRoomProvisoria.objects.get(user=request.user)
+        if request.POST.get("useWallet"):
+            print("ENTROU wallet")
+            startTime = meetingRoomProv.startTime
+            endTime = meetingRoomProv.endTime
+            reservationTime = datetime.combine(
+                date.today(), endTime) - datetime.combine(date.today(), startTime)
+            user_wallet.mettingRoomHours = user_wallet.mettingRoomHours - \
+                (reservationTime.seconds/60/60)
+            user_wallet.save()
+            meetingRoomCalendar.objects.create(user=meetingRoomProv.user,
+                                               date=meetingRoomProv.date,
+                                               startTime=meetingRoomProv.startTime,
+                                               endTime=meetingRoomProv.endTime)
+            return redirect('wallet')
 
-        if user_wallet.mettingRoomHours >= (reservationTime.seconds/60/60):
-            payWallet = True
+        if request.POST.get("daterange1"):
+            print("ENTROU dateRange")
+            meetingRoomProv.delete()
+            meetingdate = request.POST.get("daterange1", False)
+            startTime = request.POST.get("starttime")
+            endTime = request.POST.get("endtime")
+            meetingdate.replace(" ", "")
+            disponibilidade = True
+            dateSplit = meetingdate.split("/")
+            meetingDate_Format = datetime(
+                int(dateSplit[2]), int(dateSplit[0]), int(dateSplit[1]))
 
-        price=10*reservationTime.seconds/60/60
-        
-        if reservationTime.seconds/60/60 > 5:
-            price=8*reservationTime.seconds/60/60
-        elif reservationTime.seconds/60/60 > 10:
-            price=7*reservationTime.seconds/60/60
-        
-        price=round(price, 2)
-        
-        second_step = True
+            startTime = datetime.strptime(startTime, '%H:%M').time()
+            endTime = datetime.strptime(endTime, '%H:%M').time()
 
-        context = {
-            "second_step": second_step,
-            "price":price,
-            "startdate": meetingdate,
-            "disponibilidade": disponibilidade,
-            "payWallet": payWallet,
-            "startValeu": request.POST.get("starttime"),
-            "endValeu": request.POST.get("endtime")
-        }
+            salasDisponiveis = []
+            z = 0
+            meetingRoom_bydate = meetingRoomCalendar.objects.filter(
+                date=meetingDate_Format)
 
-        return render(request, "meetingRoomPersonalizada.html", context)
+            for reservaMeeting in meetingRoom_bydate:
+                if reservaMeeting.startTime == startTime or reservaMeeting.endTime == endTime:
+                    salasDisponiveis.append(z)
+
+                elif reservaMeeting.startTime < startTime < reservaMeeting.endTime:
+                    salasDisponiveis.append(z)
+
+                elif reservaMeeting.startTime < endTime < reservaMeeting.endTime:
+                    salasDisponiveis.append(z)
+
+                elif reservaMeeting.startTime > startTime and reservaMeeting.endTime < endTime:
+                    salasDisponiveis.append(z)
+
+                elif reservaMeeting.startTime < startTime and reservaMeeting.endTime > endTime:
+                    salasDisponiveis.append(z)
+
+                z += 1
+
+            if len(salasDisponiveis) > 1:
+                disponibilidade = False
+
+            meetingRoomProvisoria.objects.create(
+                user=request.user,
+                date=meetingDate_Format,
+                startTime=startTime,
+                endTime=endTime
+            )
+
+            payWallet = False
+            reservationTime = datetime.combine(
+                date.today(), endTime) - datetime.combine(date.today(), startTime)
+
+            if user_wallet.mettingRoomHours >= (reservationTime.seconds/60/60):
+                payWallet = True
+
+            price = 10*reservationTime.seconds/60/60
+
+            if reservationTime.seconds/60/60 > 5:
+                price = 8*reservationTime.seconds/60/60
+            elif reservationTime.seconds/60/60 > 10:
+                price = 7*reservationTime.seconds/60/60
+
+            price = round(price, 2)
+
+            second_step = True
+
+            context = {
+                "second_step": second_step,
+                "price": price,
+                "startdate": meetingdate,
+                "startTime": startTime,
+                "endTime": endTime,
+                "walletHours": user_wallet.mettingRoomHours,
+                "disponibilidade": disponibilidade,
+                "payWallet": payWallet,
+                "startValeu": request.POST.get("starttime"),
+                "endValeu": request.POST.get("endtime")
+            }
+
+            return render(request, "meetingRoomPersonalizada.html", context)
 
     else:
         context = {
@@ -470,13 +495,17 @@ def wallet(request):
     reservasMeeting = meetingRoomCalendar.objects.filter(user=request.user)
     user_wallet = Wallet.objects.get(user=request.user)
     print(user_wallet.mettingRoomHours)
-
+    zeroHours = datetime.combine(date.today(
+    ), user_wallet.mettingRoomHours) - datetime.combine(date.today(
+    ), user_wallet.mettingRoomHours)
+    mettingRoomHours = timedelta(user_wallet.mettingRoomHours)
+    
     nrReservas = len(reservas)
     nrReservasMeeting = len(reservasMeeting)
     context = {
         "nrReservas": nrReservas,
         "reservas": reservas,
-        "meetingRoomHours": user_wallet.mettingRoomHours,
+        "meetingRoomHours": mettingRoomHours,
         "nrReservasMeeting": nrReservasMeeting,
         "reservasMeeting": reservasMeeting
     }
@@ -538,7 +567,6 @@ def signup(request):
             user.is_active = False
             user.save()
             activateEmail(request, user, form.cleaned_data.get('email'))
-            Wallet.objects.create(user=request.user, mettingRoomHours=0)
 
             messages.success(
                 request, 'Conta criada com sucesso. Entre já!', extra_tags='reg')
