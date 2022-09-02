@@ -382,20 +382,6 @@ def meetingRoomPersonalizada(request):
     if request.method == "POST":
         user_wallet = Wallet.objects.get(user=request.user)
         meetingRoomProv = meetingRoomProvisoria.objects.get(user=request.user)
-        if request.POST.get("useWallet"):
-            print("ENTROU wallet")
-            startTime = meetingRoomProv.startTime
-            endTime = meetingRoomProv.endTime
-            reservationTime = datetime.combine(
-                date.today(), endTime) - datetime.combine(date.today(), startTime)
-            user_wallet.mettingRoomHours = user_wallet.mettingRoomHours - \
-                (reservationTime.seconds/60/60)
-            user_wallet.save()
-            meetingRoomCalendar.objects.create(user=meetingRoomProv.user,
-                                               date=meetingRoomProv.date,
-                                               startTime=meetingRoomProv.startTime,
-                                               endTime=meetingRoomProv.endTime)
-            return redirect('wallet')
 
         if request.POST.get("daterange1"):
             print("ENTROU dateRange")
@@ -446,10 +432,17 @@ def meetingRoomPersonalizada(request):
             )
 
             payWallet = False
-            reservationTime = datetime.combine(
-                date.today(), endTime) - datetime.combine(date.today(), startTime)
+            reservationTime = datetime.combine(date.today(), endTime) - datetime.combine(date.today(), startTime)
+            
+            print("reservation time")
+            print(reservationTime)
 
-            if user_wallet.mettingRoomHours >= (reservationTime.seconds/60/60):
+            userHours = user_wallet.mettingRoomHours
+            userMinutes = user_wallet.mettingRoomMinutes
+            date_test = str(userHours)+':'+str(userMinutes)
+            datem = datetime.strptime(date_test, "%H:%M")
+            
+            if datem.hour * 60 + datem.minute >= (reservationTime.seconds/60):
                 payWallet = True
 
             price = 10*reservationTime.seconds/60/60
@@ -469,7 +462,7 @@ def meetingRoomPersonalizada(request):
                 "startdate": meetingdate,
                 "startTime": startTime,
                 "endTime": endTime,
-                "walletHours": user_wallet.mettingRoomHours,
+                "walletHours": str(user_wallet.mettingRoomHours)+":"+str(user_wallet.mettingRoomMinutes),
                 "disponibilidade": disponibilidade,
                 "payWallet": payWallet,
                 "startValeu": request.POST.get("starttime"),
@@ -477,6 +470,31 @@ def meetingRoomPersonalizada(request):
             }
 
             return render(request, "meetingRoomPersonalizada.html", context)
+        
+        if request.POST.get("useWallet"):
+            print("ENTROU wallet")
+            startTime = meetingRoomProv.startTime
+            endTime = meetingRoomProv.endTime
+            reservationTime = datetime.combine(date.today(), endTime) - datetime.combine(date.today(), startTime)
+            
+            userHours = user_wallet.mettingRoomHours
+            userMinutes = user_wallet.mettingRoomMinutes
+            date_test = str(userHours)+':'+str(userMinutes)
+            datem = datetime.strptime(date_test, "%H:%M")
+            userTime=datem-reservationTime
+
+            user_wallet.mettingRoomHours=userTime.hour
+            user_wallet.mettingRoomMinutes=userTime.minute
+            user_wallet.save()
+            
+            meetingRoomCalendar.objects.create(user=meetingRoomProv.user,
+                                               date=meetingRoomProv.date,
+                                               startTime=meetingRoomProv.startTime,
+                                               endTime=meetingRoomProv.endTime)
+            print("-------")
+            print(user_wallet.mettingRoomHours)
+            print("-------")
+            return redirect('wallet')
 
     else:
         context = {
