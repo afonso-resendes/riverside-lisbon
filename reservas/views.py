@@ -180,7 +180,7 @@ def index(request):
             return render(request, "admin.html", context)
         else:
             if not Wallet.objects.filter(user=request.user):
-                Wallet.objects.create(user=request.user, mettingRoomHours=0)
+                Wallet.objects.create(user=request.user, mettingRoomHours=0, mettingRoomMinutes=0)
             if request.method == "POST":
                 if request.POST.get("Industry"):
                     name = request.POST.get("name", False)
@@ -494,20 +494,31 @@ def wallet(request):
     reservas = reservas_Coworking.objects.filter(user=request.user)
     reservasMeeting = meetingRoomCalendar.objects.filter(user=request.user)
     user_wallet = Wallet.objects.get(user=request.user)
-    print(user_wallet.mettingRoomHours)
-    zeroHours = datetime.combine(date.today(
-    ), user_wallet.mettingRoomHours) - datetime.combine(date.today(
-    ), user_wallet.mettingRoomHours)
-    mettingRoomHours = timedelta(user_wallet.mettingRoomHours)
+    userHours = user_wallet.mettingRoomHours
+    userMinutes = user_wallet.mettingRoomMinutes
+    date = str(userHours)+':'+str(userMinutes)
+    datem = datetime.strptime(date, "%H:%M")
+    print(datem.hour) # 11.
+    print(datem.minute) # 22.
+   
+   
+   
+    #zeroHours = datetime.combine(date.today(
+    #), user_wallet.mettingRoomHours) - datetime.combine(date.today(
+    #), user_wallet.mettingRoomHours)
+    #mettingRoomHours = timedelta(user_wallet.mettingRoomHours)
+   
     
     nrReservas = len(reservas)
     nrReservasMeeting = len(reservasMeeting)
     context = {
         "nrReservas": nrReservas,
         "reservas": reservas,
-        "meetingRoomHours": mettingRoomHours,
+        "meetingRoomHours": userHours,
+         "meetingRoomMinutes": userMinutes,
         "nrReservasMeeting": nrReservasMeeting,
-        "reservasMeeting": reservasMeeting
+        "reservasMeeting": reservasMeeting,
+        
     }
     return render(request, "wallet.html", context)
 

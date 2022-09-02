@@ -26,13 +26,12 @@
       </div>
       <div class="walletBanner">
         <div class="card">
-            <h2>Pending requests</h2>
-            <h3>2</h3>
+          <h2>Pending requests</h2>
+          <h3>2</h3>
         </div>
         <div class="card">
-            <h2>Hours Available - Meeting Room</h2>
-            <h3>{{meetingRoomHours}} hours</h3>
-
+          <h2>Hours Available - Meeting Room</h2>
+          <h3>{% if  meetingRoomHours < 10 %}0{{meetingRoomHours}}{% else %}{{meetingRoomHours}}{% endif %}:{% if  meetingRoomMinutes < 10 %}0{{meetingRoomMinutes}}{% else %}{{meetingRoomMinutes}}{% endif %} hours</h3>
         </div>
       </div>
       <div class="dataTable">
@@ -64,7 +63,7 @@
           <caption>
             Meeting room Reservations:
           </caption>
-          <tr >
+          <tr>
             <th>Date of reservation</th>
             <th>Time</th>
             <th>Payment with wallet</th>
