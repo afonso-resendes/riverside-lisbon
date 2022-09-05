@@ -1,0 +1,105 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/nav2.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+<link rel="preconnect" href="https://fonts.gstatic.com">
+
+<nav id="web-mobile">
+  <div class="mobile_logo_lisbon">
+    <img src="{% static 'images/lisbonlogops_white.png' %}" alt="" />
+  </div>
+  <div id="burger" onclick="openNav()" class="open-main-nav">
+    <span class="burger"></span>
+  </div>
+</nav>
+<div id="mobile_href" class="mobile_href">
+  <ul>
+    {% if user.is_authenticated %}
+    <li><a href="/">Home</a></li>
+    {% else %}
+    <li><a type="submit" href="/signin">Login</a></li>
+    <li><a id="about_us_button" onclick="openNav()" href="#about_us">Sobre nós</a></li>
+    <li><a id="services_button" onclick="openNav()" href="#services">Serviços</a></li>
+    {% endif %}
+    <li><a href="/Gallery">Galeria</a></li>
+    <li><a id="location_button" onclick="openNav()" href="#location">Contactos</a></li>
+    {% if user.is_authenticated %}
+    <li><a href="/user_wallet">Carteira</a></li>
+    <li>
+      <a id="user">
+        <i class="fa fa-user"></i> {{request.user.username}}
+      </a>
+    </li>
+    <div id="signOut">
+      <li><a type="submit" href="/signout">Sair</a></li>
+    </div>
+    {% endif %}
+  </ul>
+</div>
+<nav id="web-pc">
+  <div class="logo_lisbon">
+    <img src="{% static 'images/lisbonlogops_white.png' %}" alt="" />
+  </div>
+  <ul>
+    <li><a href="/">Home</a></li>
+    {% if user.is_authenticated %} {% else %}
+    <li><a href="#about_us">Sobre nós</a></li>
+    <li><a href="#services">Serviços</a></li>
+    {% endif %}
+    <li><a href="/Gallery">Galeria</a></li>
+    <li><a href="#location">Contactos</a></li>
+    <li><a href="/">Switch to english</a></li>
+    {% if user.is_authenticated %}
+    <li><a href="/user_wallet">Carteira</a></li>
+   
+
+    {% endif %}
+  </ul>
+  <div class="social-icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" />
+    <a id="socialIcon" href="https://www.facebook.com/profile.php?id=100082891012715"><i
+        class="fab fa-facebook-f"></i></a>
+    <a id="socialIcon" href="https://www.instagram.com/lisbonriverside.cowork/"><i class="fab fa-instagram"></i></a
+      style="">
+    <a id="socialIcon" href="mailto:lisbonriverside@gmail.com"><i class="fas fa-envelope"></i></a>
+    <a id="socialIcon" href="https://www.linkedin.com/in/riverside-lisboncoworking/"><i class="fab fa-linkedin"></i></a>
+    {% if user.is_authenticated %}
+    <a id="user">
+      <i class="fa fa-user"></i> {{request.user.username}}
+    </a>
+    <div id="signOut">
+      <a type="submit" href="/signout">Sair</a>
+    </div>
+    {% else %}
+    <a type="submit" id="signIn" href="/pt/signin">Entrar</a>
+    {% endif %}
+  </div>
+</nav>
+
+<script>
+  function openNav() {
+    document.getElementById('burger').classList.toggle('is-open')
+    document.getElementById('main-nav').classList.toggle('is-open')
+    document.getElementById('logo-nav').classList.toggle('is-open')
+  }
+  $(document).ready(function(){
+      $("#user").click(function(){
+          $("#signOut").slideToggle("fast");
+      });
+  });
+  $(document).ready(function () {
+    $("#burger").click(function () {
+      $("#mobile_href").slideToggle("slow");
+    });
+    $("#about_us_button").click(function () {
+      $("#mobile_href").slideToggle("slow");
+    });
+    $("#services_button").click(function () {
+      $("#mobile_href").slideToggle("slow");
+    });
+    $("#location_button").click(function () {
+      $("#mobile_href").slideToggle("slow");
+    });
+
+  });
+
+</script>

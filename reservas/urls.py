@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views
+from . import views, views_pt
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -39,6 +39,47 @@ urlpatterns = [
          name="password_reset_confirm"),
 
     path('reset_password_complete/',
+         auth_views.PasswordResetCompleteView.as_view(
+             template_name='password_reset_done.html'),
+         name="password_reset_complete"),
+        
+    #--------------------PT-----------------------------
+
+
+    path("pt", views_pt.index, name="index_pt"),
+    path(
+        "pt/meetingRoomPersonalizada",
+        views_pt.meetingRoomPersonalizada,
+        name="meetingRoomPersonalizada_pt",
+    ),
+    path(
+        "pt/coworkingSimulation",
+        views_pt.coworkingSimulation,
+        name="coworkingSimulation",
+    ),
+    path("pt/ctanks", views_pt.coworkingTanks, name="coworkingTanks"),
+    path("pt/m5tanks", views_pt.m5Thanks, name="m5Thanks"),
+    path("pt/m10tanks", views_pt.m10Thanks, name="m10Thanks"),
+    path("pt/user_wallet", views_pt.wallet, name="wallet"),
+    path("pt/gallery", views_pt.gallery, name="gallery"),
+    path("pt/signup", views_pt.signup, name="signup_pt"),
+    path("pt/signin", views_pt.signin, name="signin_pt"),
+
+    path('pt/eset_password/', auth_views.PasswordResetView.as_view(
+        template_name='password_reset.html'), name="reset_password"),
+
+
+    path('pt/reset_password_sent/',
+         auth_views.PasswordResetDoneView.as_view(
+             template_name='password_reset_sent.html'),
+         name="password_reset_done"),
+
+    path('pt/reset/<uidb64>/<token>/',
+         auth_views.PasswordResetConfirmView.as_view(
+             template_name='password_reset_confirm.html'),
+         name="password_reset_confirm"),
+
+    path('pt/reset_password_complete/',
          auth_views.PasswordResetCompleteView.as_view(
              template_name='password_reset_done.html'),
          name="password_reset_complete"),

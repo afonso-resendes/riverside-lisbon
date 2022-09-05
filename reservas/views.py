@@ -20,6 +20,7 @@ from .models import (
     reservas_Coworking,
     reservas_Coworking_provisoria,
     Price,
+    AcmeWebhookMessage,
 )
 from django.db.models import Q
 from reservas.models import mensagens
@@ -34,6 +35,11 @@ from django.utils.encoding import force_bytes, force_str
 from django.core.mail import send_mail, EmailMessage
 from django.http import JsonResponse
 from .tokens import account_activation_token
+from Cryptodome.Cipher import AES
+
+import base64
+
+
 
 
 def get_qty(reserva):
@@ -96,46 +102,24 @@ def get_RealQty(reserva):
 
     return qty
 
-
+@csrf_exempt
 def coworkingTanks(request):
-    if request.method == "POST":
-        if request.POST.get("paymentStatus_input"):
-            success = request.POST.get("paymentStatus_input")
-            if success:
-                user_wallet = Wallet.objects.get(user=request.user)
+    if request.method=="POST":
+        payload = request.body
+        print(request.body["b"])
+        print(request.headers)
+        return HttpResponse(payload)
+    else:
+        return HttpResponse("ups!")
 
-                reserva_provisoria = reservas_Coworking_provisoria.objects.get(
-                    user=request.user)
-
-                multipy_nr = reserva_provisoria.nrDias / 7
-                user_wallet.mettingRoomHours = user_wallet.mettingRoomHours+multipy_nr*2
-                user_wallet.save()
-
-                nr_Lugares = get_RealQty(reserva_provisoria)
-                reservas_Coworking.objects.create(
-                    user=request.user,
-                    nrLugares=nr_Lugares,
-                    startDate=reserva_provisoria.startDate,
-                    endDate=reserva_provisoria.endDate,
-                    nrDias=reserva_provisoria.nrDias,
-                    cost_price=reserva_provisoria.cost_price,
-                    chair1=reserva_provisoria.chair1,
-                    chair2=reserva_provisoria.chair2,
-                    chair3=reserva_provisoria.chair3,
-                    chair4=reserva_provisoria.chair4,
-                    chair5=reserva_provisoria.chair5,
-                    chair6=reserva_provisoria.chair6,
-                    chair7=reserva_provisoria.chair7,
-                    chair8=reserva_provisoria.chair8,
-                    chair9=reserva_provisoria.chair9,
-                    chair10=reserva_provisoria.chair10,
-                    chair11=reserva_provisoria.chair11,
-                    chair12=reserva_provisoria.chair12,
-                )
-                reserva_provisoria.delete()
-            return redirect("wallet")
-    return render(request, "tanks_coworking.html")
-
+def decrypt_AES_GCM(encryptedMsg, authTag, secretKey, iv):
+    iv = base64.b64decode(iv)
+    encryptedMsg = base64.b64decode(encryptedMsg)
+    secretKey = base64.b64decode(secretKey)
+    authTag = base64.b64decode(authTag)
+    aesCipher = AES.new(secretKey, AES.MODE_GCM, iv)
+    plaintext = aesCipher.decrypt_and_verify(encryptedMsg, authTag)
+    return plaintext
 
 def m5Thanks(request):
     if request.method == "POST":
@@ -433,7 +417,7 @@ def meetingRoomPersonalizada(request):
 
             payWallet = False
             reservationTime = datetime.combine(date.today(), endTime) - datetime.combine(date.today(), startTime)
-            
+
             print("reservation time")
             print(reservationTime)
 
@@ -441,7 +425,7 @@ def meetingRoomPersonalizada(request):
             userMinutes = user_wallet.mettingRoomMinutes
             date_test = str(userHours)+':'+str(userMinutes)
             datem = datetime.strptime(date_test, "%H:%M")
-            
+
             if datem.hour * 60 + datem.minute >= (reservationTime.seconds/60):
                 payWallet = True
 
@@ -470,13 +454,13 @@ def meetingRoomPersonalizada(request):
             }
 
             return render(request, "meetingRoomPersonalizada.html", context)
-        
+
         if request.POST.get("useWallet"):
             print("ENTROU wallet")
             startTime = meetingRoomProv.startTime
             endTime = meetingRoomProv.endTime
             reservationTime = datetime.combine(date.today(), endTime) - datetime.combine(date.today(), startTime)
-            
+
             userHours = user_wallet.mettingRoomHours
             userMinutes = user_wallet.mettingRoomMinutes
             date_test = str(userHours)+':'+str(userMinutes)
@@ -486,7 +470,7 @@ def meetingRoomPersonalizada(request):
             user_wallet.mettingRoomHours=userTime.hour
             user_wallet.mettingRoomMinutes=userTime.minute
             user_wallet.save()
-            
+
             meetingRoomCalendar.objects.create(user=meetingRoomProv.user,
                                                date=meetingRoomProv.date,
                                                startTime=meetingRoomProv.startTime,
@@ -518,15 +502,15 @@ def wallet(request):
     datem = datetime.strptime(date, "%H:%M")
     print(datem.hour) # 11.
     print(datem.minute) # 22.
-   
-   
-   
+
+
+
     #zeroHours = datetime.combine(date.today(
     #), user_wallet.mettingRoomHours) - datetime.combine(date.today(
     #), user_wallet.mettingRoomHours)
     #mettingRoomHours = timedelta(user_wallet.mettingRoomHours)
-   
-    
+
+
     nrReservas = len(reservas)
     nrReservasMeeting = len(reservasMeeting)
     context = {
@@ -536,7 +520,7 @@ def wallet(request):
          "meetingRoomMinutes": userMinutes,
         "nrReservasMeeting": nrReservasMeeting,
         "reservasMeeting": reservasMeeting,
-        
+
     }
     return render(request, "wallet.html", context)
 

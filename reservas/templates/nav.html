@@ -24,6 +24,7 @@
     <li><a id="location_button" onclick="openNav()" href="#location">Contacts</a></li>
     {% if user.is_authenticated %}
     <li><a href="/user_wallet">Wallet</a></li>
+
     <li>
       <a id="user">
         <i class="fa fa-user"></i> {{request.user.username}}
@@ -47,8 +48,11 @@
     {% endif %}
     <li><a href="/Gallery">Gallery</a></li>
     <li><a href="#location">Contacts</a></li>
+    <li><a href="/pt">Mudar para Português</a></li>
     {% if user.is_authenticated %}
     <li><a href="/user_wallet">Wallet</a></li>
+    
+   
 
     {% endif %}
   </ul>

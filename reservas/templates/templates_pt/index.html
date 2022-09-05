@@ -1,0 +1,483 @@
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Business Center | Riverside Lisbon</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/index2.css' %}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Madurai&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap" rel="stylesheet">
+</head>
+</head>
+<header>
+    {% include "templates_pt/nav_pt.html" %}
+    <div class="banner">
+        <img src="{% static 'images/lisbonlogops.png' %}" alt="">
+        <a href="/signup"><button id="button_signup">Compra já</button></a>
+        <video preload="metadata" autoplay muted loop src="{% static 'images/dronelisbon.mp4' %}"></video>
+    </div>
+</header>
+<section id="about_us">
+    <h1>Sobre nós</h1>
+    
+    <p>Riverside foi estabelecida em 2022 como contribuição para a visão do mundo onde os profissionais são donos do seu tempo de trabalho e das suas condições de espaço enquanto é possibilitada a flexibilidade de um estilo de vida.
+        <br>Localizada no centro do Parque das Nações na cidade de Lisboa para acomodar qualquer profissional a precisar de um espaço de trabalho confortável e produtivo. Nas áreas circundantes podes apreciar a vista da margem do Rio Tejo, passear, alugar bicicletas e a melhor comida portuguesa.
+        Nós temos secretárias singulares num quarto partilhado que tem à disposição o setup partilhado, salas de reunião individuais e a possibilidade de hospedar endereços de empresas.<br>
+        O nosso espaço está equipado com as tecnologias mais recentes, incluindo internet wi-fi de grande banda larga, grandes televisões nas salas de reunião, uma kitchenette com uma máquina de café e uma maquina de snacks incluídas.
+        Confira a nossa pagina de galeria para ver melhor.
+    </p>
+</section>
+<section id="services" class="services">
+    <h1>Serviços</h1>
+    <div class="cards">
+        <div class="card">
+            <h2>Escritório virtual</h2>
+            <p>desde €29/mês</p>
+            <div id="line"></div>
+            <ul>
+                <li>Endereço de empresa prestigiado</li>
+                <li>Receção de emails</li>
+                <li>Salas de reunião individuais</li>
+                <li>Consultoria Legal e Fiscal</li>
+            </ul>
+            <button id="virtualplans">Veja os planos</button>
+        </div>
+        <div class="card">
+            <h2>Coworking</h2>
+            <p>desde €30/semana</p>
+            <div id="line"></div>
+            <ul>
+                <li>Secretária individual de trabalho</li>
+                <li>Wi-Fi de alta velocidade</li>
+                <li>Salas de reunião individuais</li>
+                <li>Privacidade e segurança</li>
+            </ul>
+            <button id="coworkingplans">Veja os planos</button>
+        </div>
+        <div class="card">
+            <h2>Sala de reunião</h2>
+            <p>desde €15/hora</p>
+            <div id="line"></div>
+            <ul>
+                <li>Quarto privado para 2 a 4 pessoas</li>
+                <li>Wi-Fi de alta velocidade</li>
+                <li>Grande ecrã de televisão</li>
+                <li>Privacidade e segurança</li>
+            </ul>
+            <button id="meetingplans">Veja os planos</button>
+        </div>
+    </div>
+    <div class="slideshow-container">
+
+        <div class="mySlides fade">
+            <div class="card">
+                <h2>Escritório virtual</h2>
+                <p>desde €29/mês</p>
+                <div id="line"></div>
+                <ul>
+                    <li>Endereço de empresa prestigiado</li>
+                    <li>Receção de emails</li>
+                    <li>Salas de reunião individuais</li>
+                    <li>Consultoria Legal e Fiscal</li>
+                </ul>
+                <button id="virtualplans_1">Veja os planos</button>
+            </div>
+        </div>
+
+        <div class="mySlides fade">
+            <div class="card">
+                <h2>Coworking</h2>
+                <p>desde €30/semana</p>
+                <div id="line"></div>
+                <ul>
+                    <li>Secretária individual de trabalho</li>
+                    <li>Wi-Fi de alta velocidade</li>
+                    <li>Salas de reunião individuais</li>
+                    <li>Privacidade e segurança</li>
+                </ul>
+                <button id="coworkingplans_1">Veja os planos</button>
+            </div>
+        </div>
+
+        <div class="mySlides fade">
+            <div class="card">
+                <h2>Sala de reunião</h2>
+                <p>desde €15/hora</p>
+                <div id="line"></div>
+                <ul>
+                    <li>Quarto privado para 2 a 4 pessoas</li>
+                    <li>Wi-Fi de alta velocidade</li>
+                    <li>Grande ecrã de televisão</li>
+                    <li>Privacidade e segurança</li>
+                </ul>
+                <button id="meetingplans_1">Veja os planos</button>
+            </div>
+        </div>
+        <a class="prev" onclick="plusSlides(-1)">❮</a>
+        <a class="next" onclick="plusSlides(1)">❯</a>
+        <div style="text-align:center">
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+        </div>
+    </div>
+    <script>
+        let slideIndex = 1;
+        showSlides(slideIndex);
+
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+        function showSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName("mySlides");
+            let dots = document.getElementsByClassName("dot");
+            if (n > slides.length) {slideIndex = 1}
+            if (n < 1) {slideIndex = slides.length}
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex - 1].style.display = "block";
+            dots[slideIndex - 1].className += " active";
+        }
+    </script>
+</section>
+
+{% include "templates_pt/footer.html" %}
+
+<script>
+    $(document).ready(function () {
+        $("#virtualplans").click(function () {
+            console.log("entrou")
+            $("#virtualoffice").slideToggle("fast");
+            $("#coworking").slideUp("fast");
+            $("#meeting").slideUp("fast");
+        });
+        $("#virtualplans_1").click(function () {
+            console.log("entrou")
+            $("#virtualoffice").slideToggle("fast");
+            $("#coworking").slideUp("fast");
+            $("#meeting").slideUp("fast");
+        });
+        $("#coworkingplans").click(function () {
+            $("#coworking").slideToggle("fast");
+            $("#virtualoffice").slideUp("fast");
+            $("#meeting").slideUp("fast");
+        });
+        $("#coworkingplans_1").click(function () {
+            $("#coworking").slideToggle("fast");
+            $("#virtualoffice").slideUp("fast");
+            $("#meeting").slideUp("fast");
+        });
+        $("#meetingplans").click(function () {
+            $("#meeting").slideToggle("fast");
+            $("#virtualoffice").slideUp("fast");
+            $("#coworking").slideUp("fast");
+        });
+        $("#meetingplans_1").click(function () {
+            $("#meeting").slideToggle("fast");
+            $("#virtualoffice").slideUp("fast");
+            $("#coworking").slideUp("fast");
+        });
+        $("#out1").click(function () {
+            $("#virtualoffice").slideUp("fast");
+        });
+        $("#out2").click(function () {
+            $("#coworking").slideUp("fast");
+        });
+        $("#out3").click(function () {
+            $("#meeting").slideUp("fast");
+        });
+    });
+</script>
+<section id="virtualoffice">
+    <h1>Planos do escritório virtual</h1>
+    <div id="line"></div>
+    <div class="out" id="out1">
+        <div class="line" id="left"></div>
+        <div class="line" id="right"></div>
+    </div>
+    <div class="slideshow-container">
+
+        <div class="mySlides_1 fade">
+            <div class="card">
+                <h2>Básico</h2>
+                <h4 style="padding-bottom: 10px;">Para colocares o teu negócio em Lisboa</h4>
+                <ul>
+                    <li>Endereço de empresa prestigiado</li>
+                    <li>Conformidade fiscal</li>
+                    <li>Caixa de Correio individual</li>
+                    <li>Recepção e encaminhamento de correio</li>
+                    <li>Suporte virtual pessoal</li>
+                </ul>
+                <button><a href="/pt/signin">Selecionar plano</a></button>
+            </div>
+        </div>
+
+        <div class="mySlides_1 fade">
+            <div class="card">
+                <h2>Premium</h2>
+                <h4 style="padding-bottom: 10px;">Para hospedar seus clientes e parceiros
+                </h4>
+                <ul>
+                    <li>Endereço de empresa prestigiado</li>
+                    <li>Conformidade fiscal</li>
+                    <li>Caixa de Correio individual</li>
+                    <li>Recepção e encaminhamento de correio</li>
+                    <li>Suporte virtual pessoal</li>
+                    <li>4h/semana salas de reuinão individuais</li>
+                </ul>
+                <button><a href="/pt/signin">Selecionar plano</a></button>
+            </div>
+        </div>
+
+        <a class="prev" style="margin-top: -60px;" onclick="plusSlides_1(-1)">❮</a>
+        <a class="next" style="margin-top: -60px;" onclick="plusSlides_1(1)">❯</a>
+
+        <div style="text-align:center">
+            <span class="dot_1" onclick="currentSlide_1(1)"></span>
+            <span class="dot_1" onclick="currentSlide_1(2)"></span>
+        </div>
+    </div>
+
+    <script>
+        let slideIndex_1 = 1;
+        showSlides_1(slideIndex_1);
+
+        function plusSlides_1(n) {
+            showSlides_1(slideIndex_1 += n);
+        }
+
+        function currentSlide_1(n) {
+            showSlides_1(slideIndex_1 = n);
+        }
+
+        function showSlides_1(n) {
+            let i_1;
+            let slides_1 = document.getElementsByClassName("mySlides_1");
+            let dots_1 = document.getElementsByClassName("dot_1");
+            if (n > slides_1.length) {slideIndex_1 = 1}
+            if (n < 1) {slideIndex_1 = slides_1.length}
+            for (i_1 = 0; i_1 < slides_1.length; i_1++) {
+                slides_1[i_1].style.display = "none";
+            }
+            for (i_1 = 0; i_1 < dots_1.length; i_1++) {
+                dots_1[i_1].className = dots_1[i_1].className.replace(" active", "");
+            }
+            slides_1[slideIndex_1 - 1].style.display = "block";
+            dots_1[slideIndex_1 - 1].className += " active";
+        }
+    </script>
+    <div class="cards_slideUp">
+        <div class="card">
+            <h2>Basic</h2>
+            <h4 style="padding-bottom: 10px;">Para colocares o teu negócio em Lisboa</h4>
+            <ul>
+                <li>Endereço de empresa prestigiado</li>
+                <li>Conformidade fiscal</li>
+                <li>Caixa de Correio individual</li>
+                <li>Recepção e encaminhamento de correio</li>
+                <li>Suporte virtual pessoal</li>
+            </ul>
+            <button><a href="/pt/signin">Selecionar plano</a></button>
+        </div>
+        <div class="card">
+            <h2>Premium</h2>
+            <h4 style="padding-bottom: 10px;">Para hospedar seus clientes e parceiros
+            </h4>
+            <ul>
+                
+                <li>Endereço de empresa prestigiado</li>
+                <li>Conformidade fiscal</li>
+                <li>Caixa de Correio individual</li>
+                <li>Recepção e encaminhamento de correio</li>
+                <li>Suporte virtual pessoal</li>
+                <li>4h/semana salas de reuinão individuais</li>
+            </ul>
+            <button><a href="/pt/signin">Seleciona o plano</a></button>
+        </div>
+    </div>
+</section>
+<section id="coworking">
+    <h1>Planos de secretária coworking</h1>
+    <div id="line"></div>
+    <div class="out" id="out2">
+        <div class="line" id="left"></div>
+        <div class="line" id="right"></div>
+    </div>
+    <div class="slideshow-container">
+
+        <div class="mySlides_2 fade">
+            <div class="card">
+                <h2>Customizado</h2>
+                <h4 style="padding-bottom: 10px;">Aluga a tua secretária individual para o tempo que precisares</h4>
+                <ul>
+                    <li>Secretária individual privada</li>
+                    <li>Cadeira de escritório premium</li>
+                    <li>Internet de alta velociadade</li>
+                    <li>Sala de reunião 2h/semana</li>
+                    <li>Café e amenidades</li>
+                </ul>
+                <button><a href="/pt/signin">Select plan</a></button>
+            </div>
+        </div>
+    </div>
+    <div class="cards_slideUp">
+        <div class="card">
+            <h2>Customizado</h2>
+            <h4 style="padding-bottom: 10px;">Aluga a tua secretária individual para o tempo que precisares</h4>
+            <ul>
+                <li>Secretária individual privada</li>
+                    <li>Cadeira de escritório premium</li>
+                    <li>Internet de alta velociadade</li>
+                    <li>Sala de reunião 2h/semana</li>
+                    <li>Café e amenidades</li>
+            </ul>
+            <button><a href="/pt/signin">Selecionar plano</a></button>
+        </div>
+    </div>
+</section>
+<section id="meeting">
+    <h1>Meeting room plans</h1>
+    <div id="line"></div>
+    <div class="out" id="out3">
+        <div class="line" id="left"></div>
+        <div class="line" id="right"></div>
+    </div>
+    <div class="slideshow-container">
+
+        <div class="mySlides_3 fade">
+            <div class="card">
+                <h2>Bundle 5 horas</h2>
+                <p>€8/hora</p>
+                <div id="line"></div>
+                <ul>
+                    <li>Sala de reunião para 2 a 4 pessoas</li>
+                    <li>Ecrã de telivisão LCD grande</li>
+                    <li>Wi-fi de alta velociadade</li>
+                    <li>Flexibilidade de horário</li>
+                </ul>
+                <button><a href="/pt/signin">Selecionar plano</a></button>
+            </div>
+        </div>
+
+        <div class="mySlides_3 fade">
+            <div class="card">
+                <h2>Bundle 10 horas</h2>
+                <p>€7/hora</p>
+                <div id="line"></div>
+                <ul>
+                    <li>Sala de reunião para 2 a 4 pessoas</li>
+                    <li>Ecrã de telivisão LCD grande</li>
+                    <li>Wi-fi de alta velociadade</li>
+                    <li>Flexibilidade de horário</li>
+                </ul>
+                <button><a href="/pt/signin">Selecionar plano</a></button>
+            </div>
+        </div>
+
+        <div class="mySlides_3 fade">
+            <div class="card">
+                <h2>Reserva pelo número de horas</h2>
+                <p>€10/hora</p>
+                <div id="line"></div>
+                <ul>
+                    <li>Sala de reunião para 2 a 4 pessoas</li>
+                    <li>Ecrã de telivisão LCD grande</li>
+                    <li>Wi-fi de alta velociadade</li>
+                    <li>Flexibilidade de horário</li>
+                </ul>
+                <button><a href="/pt/signin">Select plan</a></button>
+            </div>
+        </div>
+
+        <a class="prev" style="margin-top: -60px;" onclick="plusSlides_3(-1)">❮</a>
+        <a class="next" style="margin-top: -60px;" onclick="plusSlides_3(1)">❯</a>
+
+        <div style="text-align:center">
+            <span class="dot_3" onclick="currentSlide_3(1)"></span>
+            <span class="dot_3" onclick="currentSlide_3(2)"></span>
+            <span class="dot_3" onclick="currentSlide_3(3)"></span>
+        </div>
+    </div>
+    <script>
+        let slideIndex_3 = 1;
+        showSlides_3(slideIndex_3);
+
+        function plusSlides_3(n) {
+            showSlides_3(slideIndex_3 += n);
+        }
+
+        function currentSlide_3(n) {
+            showSlides_3(slideIndex_3 = n);
+        }
+
+        function showSlides_3(n) {
+            let i_3;
+            let slides_3 = document.getElementsByClassName("mySlides_3");
+            let dots_3 = document.getElementsByClassName("dot_3");
+            if (n > slides_3.length) {slideIndex_3 = 1}
+            if (n < 1) {slideIndex_3 = slides_3.length}
+            for (i_3 = 0; i_3 < slides_3.length; i_3++) {
+                slides_3[i_3].style.display = "none";
+            }
+            for (i_3 = 0; i_3 < dots_3.length; i_3++) {
+                dots_3[i_3].className = dots_3[i_3].className.replace(" active", "");
+            }
+            slides_3[slideIndex_3 - 1].style.display = "block";
+            dots_3[slideIndex_3 - 1].className += " active";
+        }
+    </script>
+    <div class="cards_slideUp">
+        <div class="card">
+            <h2>Bundle 5 horas</h2>
+            <p>€8/hora</p>
+            <div id="line"></div>
+            <ul>
+                <li>Sala de reunião para 2 a 4 pessoas</li>
+                <li>Ecrã de telivisão LCD grande</li>
+                <li>Wi-fi de alta velociadade</li>
+                <li>Flexibilidade de horário</li>
+            </ul>
+            <button onclick="bundleFiveRequest()">Selecionar plano</button>
+        </div>
+        <div class="card">
+            <h2>Bundle 10 horas</h2>
+            <p>€7/hora</p>
+            <div id="line"></div>
+            <ul>
+                <li>Sala de reunião para 2 a 4 pessoas</li>
+                    <li>Ecrã de telivisão LCD grande</li>
+                    <li>Wi-fi de alta velociadade</li>
+                    <li>Flexibilidade de horário</li>
+            </ul>
+            <button onclick="bundleTenRequest()">Selecionar plano</button>
+        </div>
+        <div class="card">
+            <h2>Reserva pelo número de horas</h2>
+            <p>€10/hora</p>
+            <div id="line"></div>
+            <ul>
+                <li>Sala de reunião para 2 a 4 pessoas</li>
+                    <li>Ecrã de telivisão LCD grande</li>
+                    <li>Wi-fi de alta velociadade</li>
+                    <li>Flexibilidade de horário</li>
+            </ul>
+            <button><a href="/meetingRoomPersonalizada">Selecionar plano</a></button>
+        </div>
+    </div>
+</section>
+
+</html>

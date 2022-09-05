@@ -1,0 +1,88 @@
+{% load static %}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>SignUp | Riverside Lisbon</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="{% static 'css/signup1.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/nav2.css' %}" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Hind+Madurai&display=swap" rel="stylesheet">
+    </head>
+    <header>
+        <nav id="web-mobile">
+            <div class="mobile_logo_lisbon">
+              <img src="{% static 'images/lisbonlogops_white.png' %}" alt="" />
+            </div>
+            <div class="social-icons" style="height: 3rem; right: 1rem">
+                <a type="submit" id="signIn" style="right: 2rem;" href="/pt">Voltar</a>
+            </div>
+        </nav>
+        <nav id="web-pc">
+            <div class="logo_lisbon">
+              <img src="{% static 'images/lisbonlogops_white.png' %}" alt="" />
+            </div>
+            <div class="social-icons">
+              <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" />
+              <a id="socialIcon" href="https://www.facebook.com/profile.php?id=100082891012715"><i class="fab fa-facebook-f"></i></a>
+              <a id="socialIcon" href="https://www.instagram.com/lisbonriverside.cowork/"><i class="fab fa-instagram"></i></a style="">
+              <a id="socialIcon" href="mailto:lisbonriverside@gmail.com"><i class="fas fa-envelope"></i></a>
+              <a id="socialIcon" href="https://www.linkedin.com/in/riverside-lisboncoworking/"><i class="fab fa-linkedin"></i></a>
+              <a type="submit" id="signIn" href="/pt">Back</a>
+            </div>
+          </nav>
+    </header>
+    <video autoplay muted preload='none' loop src="{% static 'images/dronelisbon.mp4' %}"></video>
+    <div class="window">
+        <section class="form">
+            <div class="logo">
+                <img src="{% static 'images/lisbonlogops.png' %}" alt="">
+            </div>
+            <h2>Criar Conta</h2>
+            <form action="/pt/signup"  method="post">
+            {% csrf_token %}
+            <label id="label-firstname">Nome</label>
+            <br />
+            {{form.first_name}}
+
+            <br />
+
+            <label id="label-username">Nome de utilizador</label>
+            <br />
+
+            {{form.username}}
+
+            <br />
+            <label id="label-email">Email</label>
+            <br />
+            {{form.email}}
+
+            <br />
+            <label id="label-pass">Palavra-passe</label>
+            <br />
+            {{form.password1}}
+
+
+            <br />
+            <label id="label-confirm-pass">Reescreva a Palavra-passe</label>
+            <br />
+            {{form.password2}}
+            <br />
+                {{form.errors.username}}
+                {{form.errors.email}}
+                {{form.errors.password1}}
+                {{form.errors.password2}}
+                <br />
+                <button type="submit">Criar Conta</button>
+            </form>
+            {% for message in messages %}
+            <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+                {{message}}
+            </div>
+            {% endfor %}
+            <p>Já tens conta? <a style="text-decoration: underline;" href="/pt/signin">Entra</a></p>
+        </section>
+    </div>
+</html>

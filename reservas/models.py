@@ -101,14 +101,14 @@ class meetingRoomCalendar(models.Model):
     date = models.DateField(null=True)
     startTime = models.TimeField()
     endTime = models.TimeField()
-    
+
 class meetingRoomProvisoria(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     sala = models.ForeignKey(meetingRooms, on_delete=models.CASCADE, null=True)
     date = models.DateField(null=True)
     startTime = models.TimeField()
     endTime = models.TimeField()
-    
+
 
 
 
@@ -138,3 +138,8 @@ class Wallet(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     mettingRoomHours = models.IntegerField(default=0)
     mettingRoomMinutes = models.IntegerField(default=0)
+
+
+
+class AcmeWebhookMessage(models.Model):
+    payload = models.CharField(max_length=500,null=True)
