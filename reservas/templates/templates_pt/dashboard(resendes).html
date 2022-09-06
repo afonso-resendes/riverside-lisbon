@@ -12,7 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Hind+Madurai&display=swap" rel="stylesheet" />
 </head>
 <header>
-  {% include "nav.html" %}
+  {% include "templates_pt/nav_pt.html" %}
   <div class="banner">
     <img src="{% static 'images/dashback.jpg' %}" alt="" />
   </div>
@@ -27,50 +27,51 @@
       <h2>Bem vindo {{request.user.username}}.</h2>
     </div>
     <section id="services" class="services">
-      <h1>Make your reservation:</h1>
+      <h1>Faz a tua reserva:</h1>
       <div class="slideshow-container">
         <div class="mySlides fade">
           <div class="service-card">
-            <h2>Virtual office</h2>
-            <p>from €29/month</p>
+            <h2>Escritório Virtual</h2>
+            <p>desde €29/mês</p>
             <div id="line"></div>
             <ul>
-              <li>Prestige company address</li>
-              <li>Mail reception</li>
-              <li>Individual meeting rooms</li>
-              <li>Legal & Fiscal consulting</li>
+              <li>Endereço de empresa prestigiado</li>
+              <li>Receção de emails</li>
+              <li>Salas de reunião individuais</li>
+              <li>Consultoria Legal e Fiscal</li>
             </ul>
-            <button id="virtualplans_1">See plans</button>
+           
+            <button id="virtualplans">Choose plans</button>
           </div>
         </div>
 
         <div class="mySlides fade">
           <div class="service-card">
             <h2>Coworking</h2>
-            <p>from €30/week</p>
+            <p>desde €30/semana</p>
             <div id="line"></div>
             <ul>
-              <li>Individual working desk</li>
-              <li>High speed Wi-Fi</li>
-              <li>Individual meeting rooms</li>
-              <li>Privacy and security</li>
+              <li>Secretária individual de trabalho</li>
+              <li>Wi-Fi de alta velocidade</li>
+              <li>Salas de reunião individuais</li>
+              <li>Privacidade e segurança</li>
             </ul>
-            <button><a href="/coworkingSimulation">See plans</a></button>
+            <button><a href="/coworkingSimulation">Veja os planos</a></button>
           </div>
         </div>
 
         <div class="mySlides fade">
           <div class="service-card">
-            <h2>Meeting room</h2>
-            <p>from €15/hour</p>
+            <h2>Sala de reunião</h2>
+            <p>desde €15/mês</p>
             <div id="line"></div>
             <ul>
-              <li>Private 2 to 4 pax room</li>
-              <li>High speed Wi-Fi</li>
-              <li>Large TV screen</li>
-              <li>Privacy and security</li>
-            </ul>
-            <button id="meetingplans_1">See plans</button>
+              <li>Quarto privado para 2 a 4 pessoas</li>
+              <li>Wi-Fi de alta velocidade</li>
+              <li>Grande ecrã de televisão</li>
+              <li>Privacidade e segurança</li>
+          </ul>
+          <button id="meetingplans_1">Veja os planos</button>
           </div>
         </div>
         <a class="prev" onclick="plusSlides(-1)">❮</a>
@@ -115,40 +116,40 @@
       </script>
       <div id="dashCards" class="cards">
         <div class="service-card">
-          <h2>Virtual office</h2>
-          <p>from €29/month</p>
+          <h2>Escritório virtual</h2>
+          <p>desde €29/mês</p>
           <div id="line"></div>
           <ul>
-            <li>Prestige company address</li>
-            <li>Mail reception</li>
-            <li>Individual meeting rooms</li>
-            <li>Legal & Fiscal consulting</li>
+              <li>Endereço de empresa prestigiado</li>
+              <li>Receção de emails</li>
+              <li>Salas de reunião individuais</li>
+              <li>Consultoria Legal e Fiscal</li>
           </ul>
-          <button id="virtualplans">Choose plans</button>
+          <button id="virtualplans_1">Veja os planos</button>
         </div>
         <div class="service-card">
           <h2>Coworking</h2>
-          <p>from €30/week</p>
+          <p>desde €30/semana</p>
           <div id="line"></div>
           <ul>
-            <li>Individual working desk</li>
-            <li>High speed Wi-Fi</li>
-            <li>Individual meeting rooms</li>
-            <li>Privacy and security</li>
+              <li>Secretária individual de trabalho</li>
+              <li>Wi-Fi de alta velocidade</li>
+              <li>Salas de reunião individuais</li>
+              <li>Privacidade e segurança</li>
           </ul>
-          <button><a href="/coworkingSimulation">Choose plans</a></button>
+          <button><a href="/coworkingSimulation">Veja os planos</a></button>
         </div>
         <div class="service-card">
-          <h2>Meeting room</h2>
-          <p>from €15/hour</p>
+          <h2>Sala de reunião</h2>
+          <p>desde €15/hora</p>
           <div id="line"></div>
           <ul>
-            <li>Private 2 to 4 Pax room</li>
-            <li>High speed Wi-Fi</li>
-            <li>Large Tv screen</li>
-            <li>Privacy and security</li>
+              <li>Quarto privado para 2 a 4 pessoas</li>
+              <li>Wi-Fi de alta velocidade</li>
+              <li>Grande ecrã de televisão</li>
+              <li>Privacidade e segurança</li>
           </ul>
-          <button id="meetingplans">Choose plans</button>
+          <button id="meetingplans">Veja os planos</button>
         </div>
       </div>
     </section>
@@ -157,7 +158,7 @@
 
 </html>
 <section class="template" id="virtualoffice">
-  <h1>Choose your virtual office plan</h1>
+  <h1>Escolhe um plano do Virtual office</h1>
   <div id="line"></div>
   <div class="out" id="out1">
     <div class="line" id="left"></div>
@@ -166,24 +167,24 @@
   <div class="slideshow-container">
     <div class="mySlides_1 fade">
       <div class="card">
-        <h2>Basic</h2>
-        <h4 style="padding-bottom: 10px">To place your business in Lisbon</h4>
+        <h2>Básico</h2>
+        <h4 style="padding-bottom: 10px">Para colocares o teu negócio em Lisboa</h4>
         <ul>
-          <li>Prestige Office Address</li>
-          <li>Fiscal compliant</li>
-          <li>Individual Mailbox</li>
-          <li>Mail reception and forwarding</li>
-          <li>Personal virtual support</li>
+          <li>Endereço de empresa prestigiado</li>
+          <li>Conformidade fiscal</li>
+          <li>Caixa de Correio individual</li>
+          <li>Recepção e encaminhamento de correio</li>
+          <li>Suporte virtual pessoal</li>
           <li><br /></li>
         </ul>
-        <button id="virtualofficeButton1_1">Get in Touch</button>
+        <button id="virtualofficeButton1_1">Entrar em contacto</button>
       </div>
     </div>
 
     <div class="mySlides_1 fade">
       <div class="card">
         <h2>Premium</h2>
-        <h4 style="padding-bottom: 10px">To host your clients and partners</h4>
+        <h4 style="padding-bottom: 10px">Para hospedar seus clientes e parceiros</h4>
         <ul>
           <li>Prestige Office Address</li>
           <li>Fiscal compliant</li>
@@ -192,7 +193,7 @@
           <li>Personal virtual support</li>
           <li><b>4h/week meeting room included</b></li>
         </ul>
-        <button id="virtualofficeButton2_1">Get in Touch</button>
+        <button id="virtualofficeButton2_1">Entrar em contacto</button>
       </div>
     </div>
 
@@ -239,38 +240,38 @@
   </script>
   <div id="dashCards" class="cards">
     <div class="card">
-      <h2>Basic</h2>
-      <h4 style="padding-bottom: 10px">To place your business in Lisbon</h4>
+      <h2>Básico</h2>
+      <h4 style="padding-bottom: 10px">Para colocares o teu negócio em Lisboa</h4>
       <ul>
-        <li>Prestige Office Address</li>
-        <li>Fiscal compliant</li>
-        <li>Individual Mailbox</li>
-        <li>Mail reception and forwarding</li>
-        <li>Personal virtual support</li>
+        <li>Endereço de empresa prestigiado</li>
+                    <li>Conformidade fiscal</li>
+                    <li>Caixa de Correio individual</li>
+                    <li>Recepção e encaminhamento de correio</li>
+                    <li>Suporte virtual pessoal</li>
         <li><br /></li>
       </ul>
-      <button id="virtualofficeButton1">Get in Touch</button>
+      <button id="virtualofficeButton1">Entrar em contacto</button>
     </div>
     <div class="card">
       <h2>Premium</h2>
-      <h4 style="padding-bottom: 10px">To host your clients and partners</h4>
+      <h4 style="padding-bottom: 10px">Para hospedar seus clientes e parceiros</h4>
       <ul>
-        <li>Prestige Office Address</li>
-        <li>Fiscal compliant</li>
-        <li>Individual Mailbox</li>
-        <li>Mail reception and forwarding</li>
-        <li>Personal virtual support</li>
-        <li><b>4h/week meeting room included</b></li>
+       <li>Endereço de empresa prestigiado</li>
+                    <li>Conformidade fiscal</li>
+                    <li>Caixa de Correio individual</li>
+                    <li>Recepção e encaminhamento de correio</li>
+                    <li>Suporte virtual pessoal</li>
+                    <li>4h/semana salas de reuinão individuais</li>
       </ul>
-      <button id="virtualofficeButton2">Get in Touch</button>
+      <button id="virtualofficeButton2">Entrar em contacto</button>
     </div>
   </div>
 </section>
 <section class="template" id="meeting">
-  <h1>Choose your meeting room plan</h1>
+  <h1>Escolhe o teu plano da sala de reunião</h1>
   <div id="line"></div>
   <div class="out">
-    <a href="/">
+    <a href="/pt">
       <div class="line" id="left"></div>
       <div class="line" id="right"></div>
     </a>
@@ -278,46 +279,46 @@
   <div class="slideshow-container">
     <div class="mySlides_2 fade">
       <div class="card">
-        <h2>Bundle 5 hours</h2>
-        <p>€8/hour</p>
+        <h2>Bundle 5 horas</h2>
+        <p>€8/hora</p>
         <div id="line"></div>
         <ul>
-          <li>2-4 Pax private meeting room</li>
-          <li>Large TV LCD screen</li>
-          <li>High speed Wi-Fi</li>
-          <li>Scheduling flexibility</li>
+         <li>Sala de reunião para 2 a 4 pessoas</li>
+                    <li>Ecrã de telivisão LCD grande</li>
+                    <li>Wi-fi de alta velociadade</li>
+                    <li>Flexibilidade de horário</li>
         </ul>
-        <button onclick="bundleFiveRequest()">Select plan</button>
+        <button onclick="bundleFiveRequest()">Selecionar plano</button>
       </div>
     </div>
 
     <div class="mySlides_2 fade">
       <div class="card">
-        <h2>Bundle 10 hours</h2>
-        <p>€7/hour</p>
+        <h2>Bundle 10 horas</h2>
+        <p>€7/hora</p>
         <div id="line"></div>
         <ul>
-          <li>2-4 Pax private meeting room</li>
-          <li>Large TV LCD screen</li>
-          <li>High speed Wi-Fi</li>
-          <li>Scheduling flexibility</li>
+         <li>Sala de reunião para 2 a 4 pessoas</li>
+                    <li>Ecrã de telivisão LCD grande</li>
+                    <li>Wi-fi de alta velociadade</li>
+                    <li>Flexibilidade de horário</li>
         </ul>
-        <button><a href="">Select plan</a></button>
+        <button><a href="">Selecionar plano</a></button>
       </div>
     </div>
 
     <div class="mySlides_2 fade">
       <div class="card">
-        <h2>Book by the hour</h2>
-        <p>€10/hour</p>
+        <h2>Reserva pelo número de horas</h2>
+        <p>€10/hora</p>
         <div id="line"></div>
         <ul>
-          <li>2-4 Pax private meeting room</li>
-          <li>Large TV LCD screen</li>
-          <li>High speed Wi-Fi</li>
-          <li>Scheduling flexibility</li>
+         <li>Sala de reunião para 2 a 4 pessoas</li>
+                    <li>Ecrã de telivisão LCD grande</li>
+                    <li>Wi-fi de alta velociadade</li>
+                    <li>Flexibilidade de horário</li>
         </ul>
-        <button><a href="/meetingRoomPersonalizada">Select plan</a></button>
+        <button><a href="/meetingRoomPersonalizada">Selecionar plano</a></button>
       </div>
     </div>
 
@@ -363,40 +364,40 @@
   </script>
   <div id="bundle_cards" class="cards">
     <div class="card">
-      <h2>Bundle 5 hours</h2>
-      <p>€8/hour</p>
+      <h2>Bundle 5 horas</h2>
+      <p>€8/hora</p>
       <div id="line"></div>
       <ul>
-        <li>2-4 Pax private meeting room</li>
-        <li>Large TV LCD screen</li>
-        <li>High speed Wi-Fi</li>
-        <li>Scheduling flexibility</li>
+        <li>Sala de reunião para 2 a 4 pessoas</li>
+                    <li>Ecrã de telivisão LCD grande</li>
+                    <li>Wi-fi de alta velociadade</li>
+                    <li>Flexibilidade de horário</li>
       </ul>
-      <button onclick="bundleFiveRequest()">Select plan</button>
+      <button onclick="bundleFiveRequest()">Selecionar plano</button>
     </div>
     <div class="card">
-      <h2>Bundle 10 hours</h2>
-      <p>€7/hour</p>
+      <h2>Bundle 10 horas</h2>
+      <p>€7/hora</p>
       <div id="line"></div>
       <ul>
-        <li>2-4 Pax private meeting room</li>
-        <li>Large TV LCD screen</li>
-        <li>High speed Wi-Fi</li>
-        <li>Scheduling flexibility</li>
+        <li>Sala de reunião para 2 a 4 pessoas</li>
+                    <li>Ecrã de telivisão LCD grande</li>
+                    <li>Wi-fi de alta velociadade</li>
+                    <li>Flexibilidade de horário</li>
       </ul>
-      <button onclick="bundleTenRequest()">Select plan</button>
+      <button onclick="bundleTenRequest()">Selecionar plano</button>
     </div>
     <div class="card">
-      <h2>Book by the hour</h2>
-      <p>€10/hour</p>
+      <h2>Reserva pelo número de horas</h2>
+      <p>€10/hora</p>
       <div id="line"></div>
       <ul>
-        <li>2-4 Pax private meeting room</li>
-        <li>Large TV LCD screen</li>
-        <li>High speed Wi-Fi</li>
-        <li>Scheduling flexibility</li>
+        <li>Sala de reunião para 2 a 4 pessoas</li>
+                    <li>Ecrã de telivisão LCD grande</li>
+                    <li>Wi-fi de alta velociadade</li>
+                    <li>Flexibilidade de horário</li>
       </ul>
-      <button><a href="/meetingRoomPersonalizada">Select plan</a></button>
+      <button><a href="/meetingRoomPersonalizada">Selecionar plano</a></button>
     </div>
   </div>
   <div class="payment_part">
@@ -412,11 +413,11 @@
     <div class="line" id="right"></div>
   </div>
   <h3>
-    For this type of service, we ask you kindly to provide us a few details
-    about your needs so that we can design the most suitable setup for you.
+    Para este tipo de serviço, nós pedimos-te que, por favor, nos dês alguns detalhes
+    sobre o que precisas, para que possamos desenhar o setup que mais se adeque a si.
   </h3>
   <button style="float: right; margin: 2rem 15rem 0rem 0rem" id="continueToMessage">
-    Complete form
+    Completar formulário
   </button>
 </section>
 <section class="template" id="sendmessage">
@@ -433,7 +434,7 @@
     <input type="text" id="employees" name="employees" placeholder="Number of employees" /><br />
     <input type="text" id="country" name="country" placeholder="Company's HQ" /><br />
     <input type="text" id="description" name="description" placeholder="description" /><br />
-    <button type="submit">Send</button>
+    <button type="submit">Enviar</button>
   </form>
 </section>
 <div class="notification" id="messageTable">
@@ -479,7 +480,7 @@
     {% endfor %}
   </table>
 </div>
-{% endif %} {% include "footer.html" %}
+{% endif %} {% include "templates_pt/footer.html" %}
 <script>
   var price_js;
   var customerName = "{{user.username}}";

@@ -1,0 +1,88 @@
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Business Center | Riverside Lisbon</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/wallet.css' %}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Hind+Madurai&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <header>
+    {% include "templates_pt/nav_pt.html" %}
+    <div class="banner">
+      <img src="{% static 'images/dashback.jpg' %}" alt="" />
+    </div>
+  </header>
+  <body>
+    <section class="Html">
+      <div class="welcome">
+        <h2>A tua carteira.</h2>
+      </div>
+      <div class="walletBanner">
+        <div class="card">
+          <h2>Pedidos pendentes</h2>
+          <h3>2</h3>
+        </div>
+        <div class="card">
+          <h2>Horas disponíveis - Sala de Reunião</h2>
+          <h3>{% if  meetingRoomHours < 10 %}0{{meetingRoomHours}}{% else %}{{meetingRoomHours}}{% endif %}:{% if  meetingRoomMinutes < 10 %}0{{meetingRoomMinutes}}{% else %}{{meetingRoomMinutes}}{% endif %} horas</h3>
+        </div>
+      </div>
+      <div class="dataTable">
+        {% if nrReservas %}
+        <table>
+          <caption>
+            Reservas Coworking:
+          </caption>
+          <tr>
+            <th>Data da reserva</th>
+            <th>Número de dias</th>
+            <th>Preço pago</th>
+          </tr>
+          {% for reserva in reservas %}
+          <tr>
+            <td>{{reserva.startDate}} - {{reserva.endDate}}</td>
+            <td>{{reserva.nrDias}} days</td>
+            <td>{{reserva.cost_price}}€</td>
+          </tr>
+          {% endfor %}
+        </table>
+        {% else %}
+        <h2>Não tens nenhuma reserva</h2>
+        {% endif %}
+      </div>
+      <div class="dataTable">
+        {% if nrReservasMeeting %}
+        <table>
+          <caption>
+            Reservas de sala de reunião:
+          </caption>
+          <tr>
+            <th>Data da reserva</th>
+            <th>Tempo</th>
+            <th>Pagamento com carteira</th>
+            <th>Preço pago</th>
+          </tr>
+          {% for reserva in reservasMeeting %}
+          <tr>
+            <td>{{reserva.date}}</td>
+            <td>{{reserva.startTime}} - {{reserva.endTime}}</td>
+            <td>Sim</td>
+            <td>{{reserva.cost_price}}€</td>
+          </tr>
+          {% endfor %}
+        </table>
+        {% else %}
+        <h2>Não tens nehuma reserva na sala de reunião</h2>
+        {% endif %}
+      </div>
+    </section>
+  </body>
+</html>
+{% include "templates_pt/footer.html" %}

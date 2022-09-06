@@ -538,7 +538,7 @@ def wallet(request):
         "reservasMeeting": reservasMeeting,
         
     }
-    return render(request, "wallet.html", context)
+    return render(request, "templates_pt/wallet.html", context)
 
 
 def activate(request, uidb64, token):

@@ -23,7 +23,7 @@
     <li><a href="/Gallery">Galeria</a></li>
     <li><a id="location_button" onclick="openNav()" href="#location">Contactos</a></li>
     {% if user.is_authenticated %}
-    <li><a href="/user_wallet">Carteira</a></li>
+    <li><a href="/pt/user_wallet">Carteira</a></li>
     <li>
       <a id="user">
         <i class="fa fa-user"></i> {{request.user.username}}
@@ -49,7 +49,7 @@
     <li><a href="#location">Contactos</a></li>
     <li><a href="/">Switch to english</a></li>
     {% if user.is_authenticated %}
-    <li><a href="/user_wallet">Carteira</a></li>
+    <li><a href="/pt/user_wallet">Carteira</a></li>
    
 
     {% endif %}
