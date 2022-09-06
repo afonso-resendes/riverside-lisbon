@@ -84,24 +84,24 @@
           Check availability
         </button>
         {% if viewChairs %}
-        <p>Lugares disponíveis de {{dates}}:</p>
+        <p>Seats available from {{dates}}:</p>
         <div class="free_chairs">          
           {% for cadeira in freeChair %}
           <div class="chair">
-            Cadeira {{cadeira}}<input type="checkbox" name="cadeiras_escolhidas"
+            Chair {{cadeira}}<input type="checkbox" name="cadeiras_escolhidas"
              placeholder="Cadeira {{cadeira}}" value="{{cadeira}}" />
           </div>
           {% endfor %}
         </div>
         <br />
         <button type="submit" name="submit_r_form" style="margin: 0; background-color: gray">
-          Confirmar
+          Confirm
         </button>
         {% endif %}
       </form>
       {% if cadeirasSubmit %}
       <div class="checkout_price">
-        <h1 style="margin-right: 5px;">Preço: {{provPrice}} €</h1>
+        <h1 style="margin-right: 5px;">Price: {{provPrice}} €</h1>
         <button type="button" style="margin: 0;" onclick="requestCheckout()" id="button-checkout">
           Checkout
         </button>
@@ -132,7 +132,76 @@
   var customerName = "{{customer_name}}";
   var customerEmail = "{{customer_mail}}";
   var transactionID;
+  window.onload = () => {
+    if (window.location.href.indexOf("form") > -1) {
+      $(".coworking_banner .model").css({display: "none"});
+      $(".coworking_banner .form").css({display: "none"});
+      $(".coworking_banner .checkout_info").css({display: "flex"});
+      $("#checkout-form").css({display: "block"});
 
+      const FORM_CONFIG = {
+        paymentMethodList: [],
+        amount: {value: parseFloat(price), currency: "EUR"},
+        language: "en",
+        redirectUrl: "http://127.0.0.1:8000/",
+        customerData: null,
+      };
+      const FORM_STYLE = {
+        layout: "default",
+        theme: "--light",
+        color: {
+          primary: "",
+          secondary: "",
+          border: "",
+          surface: "",
+          header: {
+            text: "",
+            background: "white",
+          },
+          body: {
+            text: "",
+            background: "white",
+          },
+        },
+        font: "Roboto",
+      };
+      const ta_ConfigValue = JSON.stringify(FORM_CONFIG, undefined, 4);
+      const ta_StyleValue = JSON.stringify(FORM_STYLE, undefined, 4);
+      const form = document.createElement("form");
+      const script = document.createElement("script");
+      var base_url = "https://spg.qly.site1.sibs.pt/assets/js/widget.js?id=";
+      console.log(window.location.href.split("/"))
+      var transactionSignature = window.location.href.split("/")[7].replace("<","/");
+      console.log(transactionSignature)
+      var formContext = window.location.href.split("/")[5];
+      transactionID = window.location.href.split("/")[6];
+      console.log(transactionID)
+      base_url += transactionID;
+
+      script.setAttribute("src", base_url);
+
+      form.classList.add("paymentSPG");
+
+      form.setAttribute("spg-context", formContext);
+
+      if (isValidJSON(ta_ConfigValue)) {
+        const configParams = JSON.parse(ta_ConfigValue);
+        form.setAttribute("spg-config", JSON.stringify(configParams));
+      } else {
+        alert("Invalid Form Configuration json!");
+      }
+      if (isValidJSON(ta_StyleValue)) {
+        const styleParams = JSON.parse(ta_StyleValue);
+        form.setAttribute("spg-style", JSON.stringify(styleParams));
+      } else {
+        alert("Invalid Form Style json!");
+      }
+      document.getElementById("checkout-form").appendChild(script);
+      document.getElementById("checkout-form").appendChild(form);
+      document.getElementById("page_title").innerHTML =
+        "Reserve your coworking plan";
+    }
+  };
   $('input[name="daterange"]').daterangepicker({
     startDate: startdate,
     endDate: enddate,
@@ -240,71 +309,13 @@
 
     $.ajax(settings).done(function (response) {
       console.log(response)
-      $(".coworking_banner .model").css({display: "none"});
-      $(".coworking_banner .form").css({display: "none"});
-      $(".coworking_banner .checkout_info").css({display: "flex"});
-      $("#checkout-form").css({display: "block"});
-      console.log(response);
-      const FORM_CONFIG = {
-        paymentMethodList: [],
-        amount: {value: parseFloat(price), currency: "EUR"},
-        language: "en",
-        redirectUrl: "http://127.0.0.1:8000/ctanks",
-        customerData: null,
-      };
-      const FORM_STYLE = {
-        layout: "default",
-        theme: "--light",
-        color: {
-          primary: "",
-          secondary: "",
-          border: "",
-          surface: "",
-          header: {
-            text: "",
-            background: "white",
-          },
-          body: {
-            text: "",
-            background: "white",
-          },
-        },
-        font: "Roboto",
-      };
-      const ta_ConfigValue = JSON.stringify(FORM_CONFIG, undefined, 4);
-      const ta_StyleValue = JSON.stringify(FORM_STYLE, undefined, 4);
-      const form = document.createElement("form");
-      const script = document.createElement("script");
-      var base_url = "https://spg.qly.site1.sibs.pt/assets/js/widget.js?id=";
-      var transactionSignature = response.transactionSignature;
-      var formContext = response.formContext;
-
       transactionID = response.transactionID;
-
-      base_url += transactionID;
-
-      script.setAttribute("src", base_url);
-
-      form.classList.add("paymentSPG");
-
-      form.setAttribute("spg-context", formContext);
-
-      if (isValidJSON(ta_ConfigValue)) {
-        const configParams = JSON.parse(ta_ConfigValue);
-        form.setAttribute("spg-config", JSON.stringify(configParams));
-      } else {
-        alert("Invalid Form Configuration json!");
-      }
-      if (isValidJSON(ta_StyleValue)) {
-        const styleParams = JSON.parse(ta_StyleValue);
-        form.setAttribute("spg-style", JSON.stringify(styleParams));
-      } else {
-        alert("Invalid Form Style json!");
-      }
-      document.getElementById("checkout-form").appendChild(script);
-      document.getElementById("checkout-form").appendChild(form);
-      document.getElementById("page_title").innerHTML =
-        "Reserve your coworking plan";
+      var formContext = response.formContext;
+      var transactionSignature=response.transactionSignature.replace("/","<")
+      console.log(transactionID)
+      console.log(formContext)
+      console.log(transactionSignature)
+      window.location.replace("http://localhost:8000/coworkingSimulation/form/"+formContext+"/"+transactionID+"/"+transactionSignature);
     });
   }
   function requestCancelation() {

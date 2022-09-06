@@ -14,7 +14,7 @@
 <div id="mobile_href" class="mobile_href">
   <ul>
     {% if user.is_authenticated %}
-    <li><a href="/">Home</a></li>
+    <li><a href="/pt">Home</a></li>
     {% else %}
     <li><a type="submit" href="/signin">Login</a></li>
     <li><a id="about_us_button" onclick="openNav()" href="#about_us">Sobre nós</a></li>
@@ -40,7 +40,7 @@
     <img src="{% static 'images/lisbonlogops_white.png' %}" alt="" />
   </div>
   <ul>
-    <li><a href="/">Home</a></li>
+    <li><a href="/pt">Home</a></li>
     {% if user.is_authenticated %} {% else %}
     <li><a href="#about_us">Sobre nós</a></li>
     <li><a href="#services">Serviços</a></li>

@@ -359,7 +359,7 @@ def coworkingSimulation(request):
             "viewChairs": viewChairs,
             "cadeirasSubmit": reservasProv.second_step,
         }
-        return render(request, "coworkingSimulation.html", context)
+        return render(request, "templates_pt/coworkingSimulation.html", context)
     startdate = datetime.now().strftime("%m/%d/%Y")
     enddate = datetime.now().strftime("%m/%d/%Y")
     context = {
@@ -371,7 +371,7 @@ def coworkingSimulation(request):
         "viewChairs": viewChairs,
     }
 
-    return render(request, "coworkingSimulation.html", context)
+    return render(request, "templates_pt/coworkingSimulation.html", context)
 
 
 class SuccessView(TemplateView):
@@ -505,7 +505,7 @@ def meetingRoomPersonalizada(request):
 
 def gallery(request):
 
-    return render(request, "gallery.html")
+    return render(request, "template_pt/gallery.html")
 
 
 def wallet(request):

@@ -9,11 +9,8 @@ urlpatterns = [
         views.meetingRoomPersonalizada,
         name="meetingRoomPersonalizada",
     ),
-    path(
-        "coworkingSimulation",
-        views.coworkingSimulation,
-        name="coworkingSimulation",
-    ),
+    path("coworkingSimulation",views.coworkingSimulation,name="coworkingSimulation"),
+    path("coworkingSimulation/form/<str:spgContext>/<str:transactionID>/<str:transactionSignature>",views.coworkingSimulation,name="coworkingSimulation"),
     path("ctanks", views.coworkingTanks, name="coworkingTanks"),
     path("m5tanks", views.m5Thanks, name="m5Thanks"),
     path("m10tanks", views.m10Thanks, name="m10Thanks"),

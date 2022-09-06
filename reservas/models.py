@@ -28,7 +28,7 @@ class reservas_Coworking_provisoria(models.Model):
     chair10 = models.BooleanField(default=False)
     chair11 = models.BooleanField(default=False)
     chair12 = models.BooleanField(default=False)
-
+    transactionId = models.CharField(max_length=500, null=True)
 
 class Product(models.Model):
     nrLugares = models.IntegerField(default=0)

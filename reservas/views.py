@@ -34,6 +34,7 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import send_mail, EmailMessage
 from django.http import JsonResponse
+import json
 from .tokens import account_activation_token
 from Cryptodome.Cipher import AES
 
@@ -106,9 +107,20 @@ def get_RealQty(reserva):
 def coworkingTanks(request):
     if request.method=="POST":
         payload = request.body
-        print(request.body["b"])
-        print(request.headers)
-        return HttpResponse(payload)
+        authTag=request.headers["X-Authentication-Tag"]
+        iv=request.headers["X-Initialization-Vector"]
+        secretKey="jeGJfbaWQO2zurC2tM7nMuo7ZD9E12dVZZgb+qa3+PA="
+        decryptedBody=json.loads(decrypt_AES_GCM(payload, authTag, secretKey, iv).decode('utf8').replace("'", '"'))
+        checkWebhook(decryptedBody)
+        statusMsg = decryptedBody['returnStatus']['statusMsg']
+        notificationID = decryptedBody["notificationID"]
+        statusCode=decryptedBody['returnStatus']['statusCode']
+        data = {
+            'statusCode': statusCode,
+            'statusMsg': statusMsg,
+            'notificationID': notificationID
+        }
+        return JsonResponse(data)
     else:
         return HttpResponse("ups!")
 
@@ -120,6 +132,30 @@ def decrypt_AES_GCM(encryptedMsg, authTag, secretKey, iv):
     aesCipher = AES.new(secretKey, AES.MODE_GCM, iv)
     plaintext = aesCipher.decrypt_and_verify(encryptedMsg, authTag)
     return plaintext
+
+def checkWebhook(payload):
+    reserva_cow_prov=reservas_Coworking_provisoria.objects.get(transactionId=payload['transactionID'])
+    if reserva_cow_prov and payload['paymentStatus']=='Success':
+        reservas_Coworking.objects.create(
+            user=reserva_cow_prov.user,
+            nrLugares=get_RealQty(reserva_cow_prov),
+            startDate=reserva_cow_prov.startDate,
+            endDate=reserva_cow_prov.endDate,
+            nrDias=reserva_cow_prov.nrDias,
+            cost_price=reserva_cow_prov.cost_price,
+            chair1=reserva_cow_prov.chair1,
+            chair2=reserva_cow_prov.chair2,
+            chair3=reserva_cow_prov.chair3,
+            chair4=reserva_cow_prov.chair4,
+            chair5=reserva_cow_prov.chair5,
+            chair6=reserva_cow_prov.chair6,
+            chair7=reserva_cow_prov.chair7,
+            chair8=reserva_cow_prov.chair8,
+            chair9=reserva_cow_prov.chair9,
+            chair10=reserva_cow_prov.chair10,
+            chair11=reserva_cow_prov.chair11,
+            chair12=reserva_cow_prov.chair12
+            )
 
 def m5Thanks(request):
     if request.method == "POST":
@@ -218,12 +254,24 @@ def index(request):
         return render(request, "index.html")
 
 
-def coworkingSimulation(request):
+def coworkingSimulation(request, spgContext=None, transactionID=None, transactionSignature=None):
     r_form = ReservaModelForm()
     reservaprovisoria = reservas_Coworking_provisoria.objects.filter(
-        user=request.user)
+        user=request.user.id)
     reservas = reservas_Coworking.objects.all()
     viewChairs = False
+    if transactionID:
+        print(transactionID)
+        reserva_prov=reservas_Coworking_provisoria.objects.get(user=request.user.id)
+        reserva_prov.transactionId=transactionID
+        reserva_prov.save()
+        context = {
+            "dates": str(reserva_prov.startDate)+" / "+str(reserva_prov.endDate),
+            "nrChairs": get_RealQty(reserva_prov),
+            "reservaprovisoria": reserva_prov,
+            "provPrice": reserva_prov.cost_price,
+        }
+        return render(request, "coworkingSimulation.html", context)
     if request.method == "POST":
 
         reservaprovisoria.delete()
@@ -240,7 +288,6 @@ def coworkingSimulation(request):
         enddate = datetime(int(endDateSplit[2]), int(
             endDateSplit[0]), int(endDateSplit[1]), 0, 0, 0)
         cadeirasSelecionadas = request.POST.getlist('cadeiras_escolhidas')
-        print(cadeirasSelecionadas)
         if '1' in cadeirasSelecionadas:
             instance.chair1 = True
         if '2' in cadeirasSelecionadas:
@@ -368,7 +415,6 @@ def meetingRoomPersonalizada(request):
         meetingRoomProv = meetingRoomProvisoria.objects.get(user=request.user)
 
         if request.POST.get("daterange1"):
-            print("ENTROU dateRange")
             meetingRoomProv.delete()
             meetingdate = request.POST.get("daterange1", False)
             startTime = request.POST.get("starttime")
@@ -418,9 +464,6 @@ def meetingRoomPersonalizada(request):
             payWallet = False
             reservationTime = datetime.combine(date.today(), endTime) - datetime.combine(date.today(), startTime)
 
-            print("reservation time")
-            print(reservationTime)
-
             userHours = user_wallet.mettingRoomHours
             userMinutes = user_wallet.mettingRoomMinutes
             date_test = str(userHours)+':'+str(userMinutes)
@@ -456,7 +499,6 @@ def meetingRoomPersonalizada(request):
             return render(request, "meetingRoomPersonalizada.html", context)
 
         if request.POST.get("useWallet"):
-            print("ENTROU wallet")
             startTime = meetingRoomProv.startTime
             endTime = meetingRoomProv.endTime
             reservationTime = datetime.combine(date.today(), endTime) - datetime.combine(date.today(), startTime)
@@ -475,9 +517,7 @@ def meetingRoomPersonalizada(request):
                                                date=meetingRoomProv.date,
                                                startTime=meetingRoomProv.startTime,
                                                endTime=meetingRoomProv.endTime)
-            print("-------")
-            print(user_wallet.mettingRoomHours)
-            print("-------")
+
             return redirect('wallet')
 
     else:
@@ -500,8 +540,7 @@ def wallet(request):
     userMinutes = user_wallet.mettingRoomMinutes
     date = str(userHours)+':'+str(userMinutes)
     datem = datetime.strptime(date, "%H:%M")
-    print(datem.hour) # 11.
-    print(datem.minute) # 22.
+
 
 
 
@@ -544,7 +583,6 @@ def activate(request, uidb64, token):
 
 
 def activateEmail(request, user, to_email):
-    print("ativar mail")
     mail_subject = "Activate your user account"
     message = render_to_string("activate.html", {
         'user': user.username,
@@ -556,11 +594,9 @@ def activateEmail(request, user, to_email):
     })
     email = EmailMessage(mail_subject, message, to=[to_email])
     if email.send():
-        print("enviou")
         messages.success(
             request, f'Dear <b>{user}</b>, please go to your email <b>{to_email}</b> inbox and click on')
     else:
-        print("não enviou")
         messages.error(request, )
 
 
