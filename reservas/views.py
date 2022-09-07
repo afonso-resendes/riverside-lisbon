@@ -112,7 +112,7 @@ def coworkingTanks(request):
         iv=request.headers["X-Initialization-Vector"]
         secretKey="jeGJfbaWQO2zurC2tM7nMuo7ZD9E12dVZZgb+qa3+PA="
         decryptedBody=json.loads(decrypt_AES_GCM(payload, authTag, secretKey, iv).decode('utf8').replace("'", '"'))
-        checkWebhook(decryptedBody)
+        checkWebhook(decryptedBody, request)
         statusMsg = decryptedBody['returnStatus']['statusMsg']
         notificationID = decryptedBody["notificationID"]
         statusCode=decryptedBody['returnStatus']['statusCode']
@@ -134,7 +134,7 @@ def decrypt_AES_GCM(encryptedMsg, authTag, secretKey, iv):
     plaintext = aesCipher.decrypt_and_verify(encryptedMsg, authTag)
     return plaintext
 
-def checkWebhook(payload):
+def checkWebhook(payload, request):
     reserva_cow_prov=reservas_Coworking_provisoria.objects.get(transactionId=payload['transactionID'])
     if reserva_cow_prov and payload['paymentStatus']=='Success':
         reservas_Coworking.objects.create(
@@ -157,7 +157,7 @@ def checkWebhook(payload):
             chair11=reserva_cow_prov.chair11,
             chair12=reserva_cow_prov.chair12
             )
-        confirmPurchaseEmail(request, reserva_cow_prov.user, reserva_cow_prov.user.email)
+        confirmPurchase(request, reserva_cow_prov.user, reserva_cow_prov.user.email)
 
 def m5Thanks(request):
     if request.method == "POST":
@@ -582,6 +582,11 @@ def wallet(request):
     userMinutes = user_wallet.mettingRoomMinutes
     date = str(userHours)+':'+str(userMinutes)
     datem = datetime.strptime(date, "%H:%M")
+    print(request.user)
+    print(request.user.email)
+    
+    
+    
 
 
 
@@ -632,6 +637,7 @@ def activateEmail(request, user, to_email):
         'uid': urlsafe_base64_encode(force_bytes(user.pk)),
         'token': account_activation_token.make_token(user),
         'protocol': 'https' if request.is_secure() else 'http'
+    
 
     })
     email = EmailMessage(mail_subject, message, to=[to_email])
@@ -641,9 +647,9 @@ def activateEmail(request, user, to_email):
     else:
         messages.error(request, )
 
-def confirmPurchaseEmail(request, user, to_email):
-    mail_subject = "Obrigado pelo guito, foste roubado btw"
-    message = render_to_string("activate.html", {
+def confirmPurchase(request, user, to_email):
+    mail_subject = "Activate your user account"
+    message = render_to_string("confirmPurchase.html", {
         'user': user.username,
         'domain': get_current_site(request).domain,
         'protocol': 'https' if request.is_secure() else 'http'
@@ -655,6 +661,8 @@ def confirmPurchaseEmail(request, user, to_email):
             request, f'Dear <b>{user}</b>, please go to your email <b>{to_email}</b> inbox and click on')
     else:
         messages.error(request, )
+
+
 
 
 def signup(request):
