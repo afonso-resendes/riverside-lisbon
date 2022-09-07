@@ -271,7 +271,7 @@ def coworkingSimulation(request, spgContext=None, transactionID=None, transactio
             "dates": str(reserva_prov.startDate)+" / "+str(reserva_prov.endDate),
             "nrChairs": get_RealQty(reserva_prov),
             "reservaprovisoria": reserva_prov,
-            "provPrice": reserva_prov.cost_price,
+            "provPrice": round(reserva_prov.cost_price, 2),
         }
         return render(request, "coworkingSimulation.html", context)
     if request.method == "POST":
@@ -451,13 +451,32 @@ class SuccessView(TemplateView):
     template_name = "success.html"
 
 
-def meetingRoomPersonalizada(request):
+def meetingRoomPersonalizada(request, spgContext=None, transactionID=None, transactionSignature=None):
+    if transactionID:
+        print(transactionID)
+        user_wallet = Wallet.objects.get(user=request.user)
+        meet_prov=meetingRoomProvisoria.objects.get(user=request.user.id)
+        meet_prov.transactionId=transactionID
+        meet_prov.save()
+        context = {
+            "price": meet_prov.cost_price,
+            "startdate": meet_prov.date,
+            "startTime": meet_prov.startTime,
+            "endTime": meet_prov.endTime,
+            "walletHours": str(user_wallet.mettingRoomHours)+":"+str(user_wallet.mettingRoomMinutes),
+        }
+        return render(request, "coworkingSimulation.html", context)
     if request.method == "POST":
         user_wallet = Wallet.objects.get(user=request.user)
-        meetingRoomProv = meetingRoomProvisoria.objects.get(user=request.user)
-
+        try:
+            meetingRoomProv = meetingRoomProvisoria.objects.get(user=request.user)
+        except:
+            pass
         if request.POST.get("daterange1"):
-            meetingRoomProv.delete()
+            try:
+                meetingRoomProv.delete()
+            except:
+                pass            
             meetingdate = request.POST.get("daterange1", False)
             startTime = request.POST.get("starttime")
             endTime = request.POST.get("endtime")
@@ -496,12 +515,6 @@ def meetingRoomPersonalizada(request):
             if len(salasDisponiveis) > 1:
                 disponibilidade = False
 
-            meetingRoomProvisoria.objects.create(
-                user=request.user,
-                date=meetingDate_Format,
-                startTime=startTime,
-                endTime=endTime
-            )
 
             payWallet = False
             reservationTime = datetime.combine(date.today(), endTime) - datetime.combine(date.today(), startTime)
@@ -525,6 +538,13 @@ def meetingRoomPersonalizada(request):
 
             second_step = True
 
+            meetingRoomProvisoria.objects.create(
+                user=request.user,
+                date=meetingDate_Format,
+                startTime=startTime,
+                endTime=endTime,
+                cost_price=price
+            )
             context = {
                 "second_step": second_step,
                 "price": price,
@@ -575,7 +595,7 @@ def gallery(request):
 
 
 def wallet(request):
-    reservas = reservas_Coworking.objects.filter(user=request.user)
+    reservas = reservas_Coworking.objects.filter(user=request.user.id)
     reservasMeeting = meetingRoomCalendar.objects.filter(user=request.user)
     user_wallet = Wallet.objects.get(user=request.user)
     userHours = user_wallet.mettingRoomHours
@@ -623,10 +643,10 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.save()
 
-        messages.success(request, "caralgo")
+        messages.success(request, "success")
         return redirect('signin')
     else:
-        messages.error(request, "sdfsf")
+        messages.error(request, "error")
 
 
 def activateEmail(request, user, to_email):
@@ -643,7 +663,7 @@ def activateEmail(request, user, to_email):
     email = EmailMessage(mail_subject, message, to=[to_email])
     if email.send():
         messages.success(
-            request, f'Dear <b>{user}</b>, please go to your email <b>{to_email}</b> inbox and click on')
+            request, f'Dear {user}, please go to your emai x{to_email} inbox and click on')
     else:
         messages.error(request, )
 

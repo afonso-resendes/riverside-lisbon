@@ -505,7 +505,7 @@ def meetingRoomPersonalizada(request):
 
 def gallery(request):
 
-    return render(request, "template_pt/gallery.html")
+    return render(request, "templates_pt/gallery.html")
 
 
 def wallet(request):

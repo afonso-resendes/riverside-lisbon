@@ -101,6 +101,7 @@ class meetingRoomCalendar(models.Model):
     date = models.DateField(null=True)
     startTime = models.TimeField()
     endTime = models.TimeField()
+    cost_price = models.FloatField(default=0.0)    
 
 class meetingRoomProvisoria(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
@@ -108,6 +109,8 @@ class meetingRoomProvisoria(models.Model):
     date = models.DateField(null=True)
     startTime = models.TimeField()
     endTime = models.TimeField()
+    cost_price = models.FloatField(default=0.0)
+    transactionId = models.CharField(max_length=500, null=True)
 
 
 
