@@ -311,7 +311,7 @@
       console.log(response)
       transactionID = response.transactionID;
       var formContext = response.formContext;
-      var transactionSignature=response.transactionSignature.replace("/","<")
+      var transactionSignature=response.transactionSignature.replaceAll("/","<")
       console.log(transactionID)
       console.log(formContext)
       console.log(transactionSignature)

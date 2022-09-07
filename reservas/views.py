@@ -345,25 +345,65 @@ def coworkingSimulation(request, spgContext=None, transactionID=None, transactio
 
         for reserva in reservas:
             if reserva.chair1 == True:
-                freeChair.remove(1)
+                try:
+                    freeChair.remove(1)
+                except:
+                    pass
             if reserva.chair2 == True:
-                freeChair.remove(2)
+                try:
+                    freeChair.remove(2)
+                except:
+                    pass
             if reserva.chair3 == True:
-                freeChair.remove(3)
+                try:
+                    freeChair.remove(3)
+                except:
+                    pass
             if reserva.chair4 == True:
-                freeChair.remove(4)
+                try:
+                    freeChair.remove(4)
+                except:
+                    pass
             if reserva.chair5 == True:
-                freeChair.remove(5)
+                try:
+                    freeChair.remove(5)
+                except:
+                    pass
             if reserva.chair6 == True:
-                freeChair.remove(6)
+                try:
+                    freeChair.remove(6)
+                except:
+                    pass
             if reserva.chair7 == True:
-                freeChair.remove(7)
+                try:
+                    freeChair.remove(7)
+                except:
+                    pass
             if reserva.chair8 == True:
-                freeChair.remove(8)
+                try:
+                    freeChair.remove(8)
+                except:
+                    pass
             if reserva.chair9 == True:
-                freeChair.remove(9)
+                try:
+                    freeChair.remove(9)
+                except:
+                    pass
             if reserva.chair10 == True:
-                freeChair.remove(10)
+                try:
+                    freeChair.remove(10)
+                except:
+                    pass
+            if reserva.chair11 == True:
+                try:
+                    freeChair.remove(11)
+                except:
+                    pass
+            if reserva.chair12 == True:
+                try:
+                    freeChair.remove(12)
+                except:
+                    pass
 
         reservasProv = reservas_Coworking_provisoria.objects.get(
             user=request.user)
