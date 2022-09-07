@@ -1,0 +1,7 @@
+{% autoescape off %}
+Hi {{user.username}}
+
+Obrigado pelo guito parceiro. Ve se nao foste roubado aqui:
+
+http://{{domain}}{% url 'wallet'  %}
+{% endautoescape %}

@@ -6,6 +6,7 @@ from re import T
 from sre_constants import SUCCESS
 from time import time
 
+
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
@@ -156,6 +157,7 @@ def checkWebhook(payload):
             chair11=reserva_cow_prov.chair11,
             chair12=reserva_cow_prov.chair12
             )
+        confirmPurchaseEmail(request, reserva_cow_prov.user, reserva_cow_prov.user.email)
 
 def m5Thanks(request):
     if request.method == "POST":
@@ -629,6 +631,21 @@ def activateEmail(request, user, to_email):
         'domain': get_current_site(request).domain,
         'uid': urlsafe_base64_encode(force_bytes(user.pk)),
         'token': account_activation_token.make_token(user),
+        'protocol': 'https' if request.is_secure() else 'http'
+
+    })
+    email = EmailMessage(mail_subject, message, to=[to_email])
+    if email.send():
+        messages.success(
+            request, f'Dear <b>{user}</b>, please go to your email <b>{to_email}</b> inbox and click on')
+    else:
+        messages.error(request, )
+
+def confirmPurchaseEmail(request, user, to_email):
+    mail_subject = "Obrigado pelo guito, foste roubado btw"
+    message = render_to_string("activate.html", {
+        'user': user.username,
+        'domain': get_current_site(request).domain,
         'protocol': 'https' if request.is_secure() else 'http'
 
     })

@@ -17,7 +17,13 @@
     <img src="{% static 'images/dashback.jpg' %}" alt="" />
   </div>
 </header>
-
+<div class="window">
+  <section class="form">
+      <div id="payment_info_board">
+          <form action="" method="post" id="paymentStatus">{% csrf_token %}</form>
+      </div>
+  </section>
+</div>
 <body>
   <div id="payment_info_board">
     <form action="" method="post" id="paymentStatus">{% csrf_token %}</form>
@@ -485,6 +491,101 @@
   var customerName = "{{user.username}}";
   var customerEmail = "{{user.mail}}";
   var url
+  window.onload = () => {
+        if (window.location.href.indexOf("?id=") > -1) {
+            var id = window.location.href;
+            transactionID = id.split("=")[1];
+            console.log("statusTid = " + transactionID);
+            getTransactionStatus(transactionID);
+        }
+    };
+    function getTransactionStatus(k) {
+    console.log(
+      "https://spg.qly.site1.sibs.pt/api/v1/payments/" + k + "/status"
+    );
+    url = "https://spg.qly.site1.sibs.pt/api/v1/payments/" + k + "/status";
+    var settings = {
+      url: url,
+      method: "GET",
+      timeout: 0,
+      headers: {
+        "X-IBM-Client-Id": "10f87673-1058-4da6-8bfd-3de4a6cd5555",
+        "Content-Type": "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJlNzYyMzE3Yi03N2IxLTQ0ZWItYTUzYy0zMjY1ZDY5NTllZGIifQ.eyJpYXQiOjE2NTg4NDIzNTYsImp0aSI6IjkzMjJkYTFlLTgxY2UtNDUxZS1hZmUyLTFjMTJkNWQzMjY5NyIsImlzcyI6Imh0dHBzOi8vcWx5LnNpdGUxLnNzby5zeXMuc2licy5wdC9hdXRoL3JlYWxtcy9RTFkuU1BHLkFQSSIsImF1ZCI6Imh0dHBzOi8vcWx5LnNpdGUxLnNzby5zeXMuc2licy5wdC9hdXRoL3JlYWxtcy9RTFkuU1BHLkFQSSIsInN1YiI6Ijg2YTQ4MDlkLTIyM2MtNDEzZC1iZTA5LWIxNmZiYWVkMzc3MSIsInR5cCI6Ik9mZmxpbmUiLCJhenAiOiJRTFkuU1BHLkFQSS1DTEkiLCJzZXNzaW9uX3N0YXRlIjoiMjY5YWZhMTEtYzc5OC00MmM4LThlNTctN2I1ZGUwYzhmMTU5Iiwic2NvcGUiOiJvcGVuaWQgb2ZmbGluZV9hY2Nlc3MifQ.MObgJ4bCY_17H378BDRbdCZuceGqMcFIS4PEElGA4U8.eyJtYyI6Ijk5OTk5OTkiLCJ0YyI6IjU1OTExIn0=.C63F60B306287AE4A426B0EE933019BCDFD8C7CEA213B34ABFEFD6BD49E753A8",
+      },
+    };
+
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+      var payment_Method = response.paymentMethod;
+      var url = "/" + response.transactionID;
+      console.log(payment_Method);
+      const paymentInfo = document.createElement("div");
+
+      if (payment_Method === "MBWAY" || payment_Method === "CARD") {
+        document.getElementById("payment_info_board").style.display = "block";
+        if (
+          response.returnStatus.statusDescription === "Success" &&
+          response.paymentStatus === "Pending"
+        ) {
+          const continue_button = document.createElement("button");
+          const continue_button_link = document.createElement("a");
+          var send_phone = response.token.value;
+
+          paymentInfo.classList.add("payment_info");
+
+          continue_button_link.innerHTML = "Continue";
+          continue_button_link.setAttribute("href", url);
+          continue_button.appendChild(continue_button_link);
+
+          paymentInfo.innerHTML =
+            "<p>The MBWAY payment request was sent to " +
+            send_phone +
+            ".</br>" +
+            " You have 4 minutes to procced the payment before it's expired.</p>";
+          paymentInfo.appendChild(continue_button);
+        } else if (response.paymentStatus === "Success") {
+          const form = document.getElementById("paymentStatus");
+
+          const input = document.createElement("input");
+          input.setAttribute("id", "paymentStatus_input");
+          input.setAttribute("name", "paymentStatus_input");
+          input.setAttribute("type", "checkbox");
+          input.setAttribute("valeu", "true");
+          input.setAttribute("style", "display:none;");
+          input.checked = true;
+          form.appendChild(input);
+
+          const continue_button = document.createElement("button");
+          continue_button.setAttribute("type", "submit");
+          continue_button.innerHTML = "Exit";
+          form.appendChild(continue_button);
+
+          paymentInfo.classList.add("payment_info");
+          paymentInfo.innerHTML =
+            "<p>Your Payment was made with SUCCESS." +
+            "</br>" +
+            "Please go to your wallet if you want to see your reservation</p>";
+          paymentInfo.appendChild(form);
+        } else if (response.paymentStatus === "Declined") {
+          const continue_button_link = document.createElement("a");
+
+          paymentInfo.classList.add("payment_info");
+
+          continue_button_link.innerHTML = "&#x2716;";
+          continue_button_link.setAttribute("href", url);
+
+          paymentInfo.innerHTML =
+            "<p>Your Payment was DECLINED." +
+            "</br>" +
+            "Please try again later</p>";
+          paymentInfo.appendChild(continue_button_link);
+        }
+      }
+      document.getElementById("payment_info_board").appendChild(paymentInfo);
+    });
+  }
   function isValidJSON(text) {
     if (
       /^[\],:{}\s]*$/.test(
@@ -553,7 +654,7 @@
       endDatetime.getSeconds() +
       ".040Z"
     );
-    var settings = {
+    var settings1 = {
       url: "https://spg.qly.site1.sibs.pt/api/v1/payments",
       method: "POST",
       timeout: 0,
@@ -602,7 +703,7 @@
       }),
     };
 
-    $.ajax(settings).done(function (response) {
+    $.ajax(settings1).done(function (response) {
       console.log(response);
       $(".coworking_banner .model").css({display: "none"});
       $(".coworking_banner .form").css({display: "none"});
