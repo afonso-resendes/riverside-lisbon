@@ -426,7 +426,7 @@ def coworkingSimulation(request, spgContext=None, transactionID=None, transactio
             "nrChairs": nrChairs,
             "reservaprovisoria": reservasProv,
             "freeChair": freeChair,
-            "provPrice": standPrice*quantaty,
+            "provPrice": round(standPrice*quantaty, 2),
             "viewChairs": viewChairs,
             "cadeirasSubmit": reservasProv.second_step,
         }
