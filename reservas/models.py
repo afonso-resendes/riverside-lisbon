@@ -57,7 +57,7 @@ class reservas_Coworking(models.Model):
     startDate = models.DateField(null=True, blank=True)
     endDate = models.DateField(null=True, blank=True)
     nrDias = models.IntegerField(default=0)
-    cost_price = models.IntegerField(default=0)
+    cost_price = models.FloatField(default=0.0)
     active = models.BooleanField(default=False)
     chair1 = models.BooleanField(default=False)
     chair2 = models.BooleanField(default=False)
