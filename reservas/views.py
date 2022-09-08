@@ -136,6 +136,7 @@ def decrypt_AES_GCM(encryptedMsg, authTag, secretKey, iv):
 
 def checkWebhook(payload, request):
     reserva_cow_prov=reservas_Coworking_provisoria.objects.get(transactionId=payload['transactionID'])
+    meet_prov=meetingRoomProvisoria.objects.get(transactionId=payload['transactionID'])
     if reserva_cow_prov and payload['paymentStatus']=='Success':
         reservas_Coworking.objects.create(
             user=reserva_cow_prov.user,
@@ -158,6 +159,15 @@ def checkWebhook(payload, request):
             chair12=reserva_cow_prov.chair12
             )
         confirmPurchase(request, reserva_cow_prov.user, reserva_cow_prov.user.email)
+    elif meet_prov and payload['paymentStatus']=='Success':
+        meetingRoomCalendar.objects.create(
+            user = meet_prov.user,
+            date = meet_prov.date,
+            startTime =meet_prov.startTime,
+            endTime = meet_prov.endTime,
+            cost_price =  meet_prov.cost_price
+        )
+        confirmPurchase(request, meet_prov.user, reserva_cow_prov.user.email)
 
 def m5Thanks(request):
     if request.method == "POST":
@@ -463,9 +473,10 @@ def meetingRoomPersonalizada(request, spgContext=None, transactionID=None, trans
             "startdate": meet_prov.date,
             "startTime": meet_prov.startTime,
             "endTime": meet_prov.endTime,
+            "price":meet_prov.cost_price,
             "walletHours": str(user_wallet.mettingRoomHours)+":"+str(user_wallet.mettingRoomMinutes),
         }
-        return render(request, "coworkingSimulation.html", context)
+        return render(request, "meetingRoomPersonalizada.html", context)
     if request.method == "POST":
         user_wallet = Wallet.objects.get(user=request.user)
         try:
@@ -555,7 +566,9 @@ def meetingRoomPersonalizada(request, spgContext=None, transactionID=None, trans
                 "disponibilidade": disponibilidade,
                 "payWallet": payWallet,
                 "startValeu": request.POST.get("starttime"),
-                "endValeu": request.POST.get("endtime")
+                "endValeu": request.POST.get("endtime"),
+                "customer_name": request.user.username,
+                "customer_mail":request.user.email
             }
 
             return render(request, "meetingRoomPersonalizada.html", context)

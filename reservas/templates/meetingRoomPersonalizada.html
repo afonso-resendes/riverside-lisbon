@@ -1,71 +1,76 @@
 {% load static %}
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Business Center | Riverside Lisbon</title>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <link rel="stylesheet" href="{% static 'css/dashboard1.css' %}" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Hind+Madurai&display=swap" rel="stylesheet">
-</head>
-<header>
-  {% include "nav.html" %}
-  <div class="banner">
-    <img src="{% static 'images/dashback.jpg' %}" alt="">
-  </div>
-</header>
-
-<body>
-  <div class="welcome">
-    <h2>Olá {{request.user.username}}.</h2>
-  </div>
-  <section id="services" class="services">
-    <h1>Escolhe o teu plano:</h1>
-    <div class="cards">
-      <div class="card">
-        <h2>Virtual office</h2>
-        <p>from €29/month</p>
-        <div id="line"></div>
-        <ul>
-          <li>Prestige company address</li>
-          <li>Mail reception</li>
-          <li>Individual meeting rooms</li>
-        </ul>
-        <button id="virtualplans">Choose plans</button>
-      </div>
-      <div class="card">
-        <h2>Coworking</h2>
-        <p>from €30/week</p>
-        <div id="line"></div>
-        <ul>
-          <li>Individual working desk</li>
-          <li>High speed Wi-Fi</li>
-          <li>Individual meeting rooms</li>
-          <li>Privacy and security</li>
-        </ul>
-        <button id="coworkingplans">Choose plans</button>
-      </div>
-      <div class="card">
-        <h2>Meeting room</h2>
-        <p>from €15/hour</p>
-        <div id="line"></div>
-        <ul>
-          <li>Private 2 to 4 pax room</li>
-          <li>High speed Wi-Fi</li>
-          <li>Large Tv screen</li>
-          <li>Privacy and security</li>
-        </ul>
-        <button id="meetingplans">Choose plans</button>
-      </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Business Center | Riverside Lisbon</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/dashboard1.css' %}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Hind+Madurai&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <header>
+    {% include "nav.html" %}
+    <div class="banner">
+      <img src="{% static 'images/dashback.jpg' %}" alt="" />
     </div>
-  </section>
-</body>
+  </header>
 
+  <body>
+    <div class="welcome">
+      <h2>Olá {{request.user.username}}.</h2>
+    </div>
+    <section id="services" class="services">
+      <h1>Escolhe o teu plano:</h1>
+      <div class="cards">
+        <div class="card">
+          <h2>Virtual office</h2>
+          <p>from €29/month</p>
+          <div id="line"></div>
+          <ul>
+            <li>Prestige company address</li>
+            <li>Mail reception</li>
+            <li>Individual meeting rooms</li>
+          </ul>
+          <button id="virtualplans">Choose plans</button>
+        </div>
+        <div class="card">
+          <h2>Coworking</h2>
+          <p>from €30/week</p>
+          <div id="line"></div>
+          <ul>
+            <li>Individual working desk</li>
+            <li>High speed Wi-Fi</li>
+            <li>Individual meeting rooms</li>
+            <li>Privacy and security</li>
+          </ul>
+          <button id="coworkingplans">Choose plans</button>
+        </div>
+        <div class="card">
+          <h2>Meeting room</h2>
+          <p>from €15/hour</p>
+          <div id="line"></div>
+          <ul>
+            <li>Private 2 to 4 pax room</li>
+            <li>High speed Wi-Fi</li>
+            <li>Large Tv screen</li>
+            <li>Privacy and security</li>
+          </ul>
+          <button id="meetingplans">Choose plans</button>
+        </div>
+      </div>
+    </section>
+  </body>
 </html>
-<section class="template" style="display: block;" id="meetingRoomPersonalization">
+<section
+  class="template"
+  style="display: block"
+  id="meetingRoomPersonalization"
+>
   <h1>Personaliza o teu plano meeting room</h1>
   <div id="line"></div>
   <div class="out">
@@ -75,72 +80,132 @@
     </a>
   </div>
   <div id="chooseForm">
-
     <form action="" id="chooseForm" method="post">
       {% csrf_token %}
       <div id="myCal" class="cal-content">
         <h3>Choose your start date:</h3>
-        <input type="daterange" name="daterange1" required value="01/01/2022 - 01/01/2022" />
+        <input
+          type="daterange"
+          name="daterange1"
+          required
+          value="01/01/2022 - 01/01/2022"
+        />
         <h3>Choose your start and end time:</h3>
-        <input type="time" value="{{startValeu}}" step="1800" name="starttime" required />
-        <input type="time" value="{{endValeu}}" step="1800" name="endtime" required />
+        <input
+          type="time"
+          value="{{startValeu}}"
+          step="1800"
+          name="starttime"
+          required
+        />
+        <input
+          type="time"
+          value="{{endValeu}}"
+          step="1800"
+          name="endtime"
+          required
+        />
       </div>
 
-      <button type="submit">Verificar</button><br>
+      <button type="submit">Verificar</button><br />
     </form>
-    {% if second_step %}
-    {% if disponibilidade %}
+    {% if second_step %} {% if disponibilidade %}
     <h3>Price: {{price}} €</h3>
     <button onclick="requestCheckout()">Checkout</button>
     {% if payWallet %}
-    <button id="use_wallet" style="background-color: rgb(114, 88, 55);">Use wallet</button>
-    {% endif %}
-    {% else %}
+    <button id="use_wallet" style="background-color: rgb(114, 88, 55)">
+      Use wallet
+    </button>
+    {% endif %} {% else %}
     <h2>We don`t have availability for thoose dates.</h2>
-    {% endif %}
-    {% endif %}
+    {% endif %} {% endif %}
   </div>
-  <div class="checkout_info">
-    <div class="checkout_info_text">
-      <h2>Your reservation</h2>
-      <p>Chossen date: {{startdate}}</p>
-      <p>Time: {{startTime}} - {{endTime}}</p>
-      <p id="price_info">Price: {{price}} €</p>
-    </div>
-    <div class="wallet_status">
-        <form action="" method="POST">
-        <h2>Your Wallet</h2>
-        <p>meeting room: {{walletHours}} hours</p>
-        {% csrf_token %}
-        <input type="checkbox" name="useWallet" checked style="display: none">
-        <button type="submit" style="background-color: rgb(114, 88, 55);">Use wallet</button>
-      </form>
+  <div class="coworking_banner">
+
+    <div class="checkout_info_wallet">
+      <div class="checkout_info_text">
+        <h2>Your reservation</h2>
+        <p>Chossen date: {{startdate}}</p>
+        <p>Time: {{startTime}} - {{endTime}}</p>
+        <p id="price_info">Price: {{price}} €</p>
       </div>
+      <div class="wallet_status">
+        <form action="" method="POST">
+          <h2>Your Wallet</h2>
+          <p>meeting room: {{walletHours}} hours</p>
+          {% csrf_token %}
+          <input type="checkbox" name="useWallet" checked style="display: none" />
+          <button type="submit" style="background-color: rgb(114, 88, 55)">
+            Use wallet
+          </button>
+        </form>
+      </div>
+    </div>
+    <div class="checkout_info">
+      <div class="checkout_info_text">
+        <h2>Your reservation</h2>
+        <p>Chossen date: {{startdate}}</p>
+        <p>Time: {{startTime}} - {{endTime}}</p>
+        <p id="price_info">Price: {{price}} €</p>
+      </div>
+    </div>
+    <div id="checkout-form"></div>
   </div>
-  <div id="checkout-form"></div>
   {% for message in messages %}
   <div class="alert alert-{{message.tags}}" role="alert">
     <h1>{{message}}</h1>
   </div>
   {% endfor %}
 </section>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-<link rel="stylesheet" type="text/css" href="{% static 'css/datePicker.css' %}" />
+<script
+  type="text/javascript"
+  src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"
+></script>
+<script
+  type="text/javascript"
+  src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"
+></script>
+<script
+  type="text/javascript"
+  src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"
+></script>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'css/datePicker.css' %}"
+/>
 
 <script>
   var startdate = "{{startdate}}";
+  var price = "{{price}}";
+  var customerName = "{{customer_name}}";
+  var customerEmail = "{{customer_mail}}";
+  function isValidJSON(text) {
+    if (
+      /^[\],:{}\s]*$/.test(
+        text
+          .replace(/\\["\\\/bfnrtu]/g, "@")
+          .replace(
+            /"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,
+            "]"
+          )
+          .replace(/(?:^|:|,)(?:\s*\[)+/g, "")
+      )
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   window.onload = () => {
     if (window.location.href.indexOf("form") > -1) {
-      $(".coworking_banner .model").css({display: "none"});
-      $(".coworking_banner .form").css({display: "none"});
-      $(".coworking_banner .checkout_info").css({display: "flex"});
-      $("#checkout-form").css({display: "block"});
+      $("#chooseForm").css({ display: "none" });
+      $(".template .checkout_info").css({ display: "flex" });
+      $("#checkout-form").css({ display: "block" });
 
       const FORM_CONFIG = {
         paymentMethodList: [],
-        amount: {value: parseFloat(price), currency: "EUR"},
+        amount: { value: parseFloat(price), currency: "EUR" },
         language: "en",
         redirectUrl: "http://127.0.0.1:8000/",
         customerData: null,
@@ -169,12 +234,14 @@
       const form = document.createElement("form");
       const script = document.createElement("script");
       var base_url = "https://spg.qly.site1.sibs.pt/assets/js/widget.js?id=";
-      console.log(window.location.href.split("/"))
-      var transactionSignature = window.location.href.split("/")[7].replace("<","/");
-      console.log(transactionSignature)
+      console.log(window.location.href.split("/"));
+      var transactionSignature = window.location.href
+        .split("/")[7]
+        .replace("<", "/");
+      console.log(transactionSignature);
       var formContext = window.location.href.split("/")[5];
       transactionID = window.location.href.split("/")[6];
-      console.log(transactionID)
+      console.log(transactionID);
       base_url += transactionID;
 
       script.setAttribute("src", base_url);
@@ -202,20 +269,20 @@
     }
   };
   $('input[name="daterange1"]').daterangepicker({
-    "singleDatePicker": true,
-    "linkedCalendars": false,
-    "autoUpdateInput": true,
-    "showCustomRangeLabel": false,
-    "alwaysShowCalendars": true,
-    "startDate": startdate,
-    "opens": "left",
+    singleDatePicker: true,
+    linkedCalendars: false,
+    autoUpdateInput: true,
+    showCustomRangeLabel: false,
+    alwaysShowCalendars: true,
+    startDate: startdate,
+    opens: "left",
   });
   $(document).ready(function () {
-    $('#use_wallet').click(function () {
-      $("#chooseForm").css({display: "none"});
-      $("#price_info").css({display: "none"});
-      $(".checkout_info").css({display: "flex", width: "100%"});
-      $(".wallet_status").css({display: "block"});
+    $("#use_wallet").click(function () {
+      $("#chooseForm").css({ display: "none" });
+      $("#price_info").css({ display: "none" });
+      $(".checkout_info_wallet").css({ display: "flex", width: "100%" });
+      $(".wallet_status").css({ display: "block" });
     });
   });
   function requestCheckout() {
@@ -225,31 +292,31 @@
     );
     console.log(
       startDatetime.getFullYear() +
-      "-" +
-      startDatetime.getMonth() +
-      "-" +
-      startDatetime.getDay() +
-      "T" +
-      startDatetime.getHours() +
-      ":" +
-      startDatetime.getMinutes() +
-      ":" +
-      startDatetime.getSeconds() +
-      ".040Z"
+        "-" +
+        startDatetime.getMonth() +
+        "-" +
+        startDatetime.getDay() +
+        "T" +
+        startDatetime.getHours() +
+        ":" +
+        startDatetime.getMinutes() +
+        ":" +
+        startDatetime.getSeconds() +
+        ".040Z"
     );
     console.log(
       endDatetime.getFullYear() +
-      "-" +
-      endDatetime.getMonth() +
-      "-" +
-      endDatetime.getDay() +
-      "T" +
-      endDatetime.getHours() +
-      ":" +
-      endDatetime.getMinutes() +
-      ":" +
-      endDatetime.getSeconds() +
-      ".040Z"
+        "-" +
+        endDatetime.getMonth() +
+        "-" +
+        endDatetime.getDay() +
+        "T" +
+        endDatetime.getHours() +
+        ":" +
+        endDatetime.getMinutes() +
+        ":" +
+        endDatetime.getSeconds() +
+        ".040Z"
     );
     var settings = {
       url: "https://spg.qly.site1.sibs.pt/api/v1/payments",
@@ -301,72 +368,24 @@
     };
 
     $.ajax(settings).done(function (response) {
-      console.log(response)
-      $("chooseForm").css({display: "none"});
-      $(".checkout_info").css({display: "flex"});
-      $("#checkout-form").css({display: "block"});
       console.log(response);
-      const FORM_CONFIG = {
-        paymentMethodList: [],
-        amount: {value: parseFloat(price), currency: "EUR"},
-        language: "en",
-        redirectUrl: "http://127.0.0.1:8000/ctanks",
-        customerData: null,
-      };
-      const FORM_STYLE = {
-        layout: "default",
-        theme: "--light",
-        color: {
-          primary: "",
-          secondary: "",
-          border: "",
-          surface: "",
-          header: {
-            text: "",
-            background: "white",
-          },
-          body: {
-            text: "",
-            background: "white",
-          },
-        },
-        font: "Roboto",
-      };
-      const ta_ConfigValue = JSON.stringify(FORM_CONFIG, undefined, 4);
-      const ta_StyleValue = JSON.stringify(FORM_STYLE, undefined, 4);
-      const form = document.createElement("form");
-      const script = document.createElement("script");
-      var base_url = "https://spg.qly.site1.sibs.pt/assets/js/widget.js?id=";
-      var transactionSignature = response.transactionSignature;
-      var formContext = response.formContext;
-
       transactionID = response.transactionID;
-
-      base_url += transactionID;
-
-      script.setAttribute("src", base_url);
-
-      form.classList.add("paymentSPG");
-
-      form.setAttribute("spg-context", formContext);
-
-      if (isValidJSON(ta_ConfigValue)) {
-        const configParams = JSON.parse(ta_ConfigValue);
-        form.setAttribute("spg-config", JSON.stringify(configParams));
-      } else {
-        alert("Invalid Form Configuration json!");
-      }
-      if (isValidJSON(ta_StyleValue)) {
-        const styleParams = JSON.parse(ta_StyleValue);
-        form.setAttribute("spg-style", JSON.stringify(styleParams));
-      } else {
-        alert("Invalid Form Style json!");
-      }
-      document.getElementById("checkout-form").appendChild(script);
-      document.getElementById("checkout-form").appendChild(form);
-      document.getElementById("page_title").innerHTML =
-        "Reserve your coworking plan";
+      var formContext = response.formContext;
+      var transactionSignature = response.transactionSignature.replaceAll(
+        "/",
+        "<"
+      );
+      console.log(transactionID);
+      console.log(formContext);
+      console.log(transactionSignature);
+      window.location.replace(
+        "http://localhost:8000/meetingRoomPersonalizada/form/" +
+          formContext +
+          "/" +
+          transactionID +
+          "/" +
+          transactionSignature
+      );
     });
   }
-
 </script>
