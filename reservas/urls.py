@@ -4,17 +4,13 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path(
-        "meetingRoomPersonalizada",
-        views.meetingRoomPersonalizada,
-        name="meetingRoomPersonalizada",
-    ),
-    path("meetingRoomPersonalizada/form/<str:spgContext>/<str:transactionID>/<str:transactionSignature>",views.meetingRoomPersonalizada,name="meetingRoomPersonalizada"),
+    path("status/<str:price>/<str:payment_Method>/<str:payment_status>/<str:transactionID>/", views.index, name="index"),
+    path("<str:transactionID>/cancelation", views.cancelation, name="cacelatio"),
+    path("meetingRoomPersonalizada",views.meetingRoomPersonalizada,name="meetingRoomPersonalizada",),
+    path("meetingRoomPersonalizada/form/<str:spgContext>/<str:transactionID>/<str:transactionSignature>/<str:bundleType>",views.meetingRoomPersonalizada,name="meetingRoomPersonalizada"),
     path("coworkingSimulation",views.coworkingSimulation,name="coworkingSimulation"),
     path("coworkingSimulation/form/<str:spgContext>/<str:transactionID>/<str:transactionSignature>",views.coworkingSimulation,name="coworkingSimulation"),
     path("ctanks", views.coworkingTanks, name="coworkingTanks"),
-    path("m5tanks", views.m5Thanks, name="m5Thanks"),
-    path("m10tanks", views.m10Thanks, name="m10Thanks"),
     path("user_wallet", views.wallet, name="wallet"),
     path("gallery", views.gallery, name="gallery"),
     path("signup", views.signup, name="signup"),

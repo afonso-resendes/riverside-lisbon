@@ -1,4 +1,5 @@
 import datetime
+from pickle import FALSE
 from pyexpat import model
 from statistics import mode
 from django.db import models
@@ -74,6 +75,9 @@ class reservas_Coworking(models.Model):
 
     def get_display_price(self):
         return "{0:.2f}".format(self.cost_price / 100)
+    
+   
+    
 
     def __str__(self):
         return str(self.user.username+" | "+str(self.startDate)+"-"+str(self.endDate))
@@ -95,13 +99,21 @@ class meetingRooms(models.Model):
         return self.ids
 
 
+
+
 class meetingRoomCalendar(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     sala = models.ForeignKey(meetingRooms, on_delete=models.CASCADE, null=True)
     date = models.DateField(null=True)
     startTime = models.TimeField()
     endTime = models.TimeField()
-    cost_price = models.FloatField(default=0.0)    
+    cost_price = models.FloatField(default=0.0)
+
+    def __str__(self):
+        return str(self.user.username + " | " + str(self.date) + " | " + str(self.startTime) + " - " + str(self.endTime))
+
+
+
 
 class meetingRoomProvisoria(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
@@ -116,7 +128,7 @@ class meetingRoomProvisoria(models.Model):
 
 
 
-class mensagens(models.Model):
+class mensagen(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     date = models.DateTimeField(null=True)
     ClientName = models.CharField(max_length=30)
@@ -126,7 +138,7 @@ class mensagens(models.Model):
     Pendente = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.ClientName
+        return self.ClientName + " | " +  self.ClientMessage + " | Pending: " +  str(self.Pendente)
 
 
 class gallery(models.Model):
@@ -142,7 +154,39 @@ class Wallet(models.Model):
     mettingRoomHours = models.IntegerField(default=0)
     mettingRoomMinutes = models.IntegerField(default=0)
 
+    def __str__(self):
+        return str(self.user.username + " | "+ str(self.mettingRoomHours)+":"+str(self.mettingRoomMinutes) + " hours")
+    
+
 
 
 class AcmeWebhookMessage(models.Model):
     payload = models.CharField(max_length=500,null=True)
+
+
+class bundleProvisorio(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    bundle_5 = models.BooleanField(default=False)
+    bundle_10 = models.BooleanField(default=False)
+    transaction_id = models.CharField(max_length=50, null=True)
+
+    def __str__(self):
+        if self.bundle_10 == True:
+            return str(self.user.username + " | bundle 10"+ self.transaction_id)
+        else:
+            return str(self.user.username + " | bundle 5 | "+ self.transaction_id)
+
+type = (("", ""), ("MBWAY", "MBWAY"), ("REFERENCE", "REFERENCE"), ("CARD", "CARD"))
+status = (("", ""), ("Pending", "Pending"), ("Success", "Success"), ("Declined", "Declined"))
+
+class transaction(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    transactionId = models.CharField(max_length=500, null=True)
+    status = models.CharField(max_length=50,null=True, choices=status)
+    payment_Method = models.CharField(max_length=50,null=True, choices=type)
+    price = models.FloatField(null=True)
+
+    def __str__(self):
+        return str(self.user.username + " | " + str(self.status) +  " | " + str(self.payment_Method) + " | "+ str(self.price)+ "€ | " + str(self.transactionId))
+
+

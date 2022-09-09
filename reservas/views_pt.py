@@ -22,7 +22,7 @@ from .models import (
     Price,
 )
 from django.db.models import Q
-from reservas.models import mensagens
+from reservas.models import mensagen
 
 from django.views.generic import TemplateView
 from django.conf import settings
@@ -164,7 +164,7 @@ def index(request):
         if request.user.is_superuser:
             all_users = get_user_model().objects.all()
             all_reservas = reservas_Coworking.objects.all()
-            nrMensagens = mensagens.objects.all()
+            nrMensagens = mensagen.objects.all()
             if request.method == "POST":
                 users_to_delete = request.POST.getlist("users_to_delete")
                 for user in users_to_delete:
@@ -187,7 +187,7 @@ def index(request):
                     Industry = request.POST.get("Industry")
                     employees = request.POST.get("employees", False)
                     description = request.POST.get("description")
-                    mensagens.objects.create(
+                    mensagen.objects.create(
                         user=request.user,
                         date=datetime.now(),
                         ClientName=name,

@@ -22,9 +22,11 @@ from .models import (
     reservas_Coworking_provisoria,
     Price,
     AcmeWebhookMessage,
+    bundleProvisorio,
+    transaction
 )
 from django.db.models import Q
-from reservas.models import mensagens
+from reservas.models import mensagen
 
 from django.views.generic import TemplateView
 from django.conf import settings
@@ -135,68 +137,91 @@ def decrypt_AES_GCM(encryptedMsg, authTag, secretKey, iv):
     return plaintext
 
 def checkWebhook(payload, request):
-    reserva_cow_prov=reservas_Coworking_provisoria.objects.get(transactionId=payload['transactionID'])
-    meet_prov=meetingRoomProvisoria.objects.get(transactionId=payload['transactionID'])
-    if reserva_cow_prov and payload['paymentStatus']=='Success':
-        reservas_Coworking.objects.create(
-            user=reserva_cow_prov.user,
-            nrLugares=get_RealQty(reserva_cow_prov),
-            startDate=reserva_cow_prov.startDate,
-            endDate=reserva_cow_prov.endDate,
-            nrDias=reserva_cow_prov.nrDias,
-            cost_price=reserva_cow_prov.cost_price,
-            chair1=reserva_cow_prov.chair1,
-            chair2=reserva_cow_prov.chair2,
-            chair3=reserva_cow_prov.chair3,
-            chair4=reserva_cow_prov.chair4,
-            chair5=reserva_cow_prov.chair5,
-            chair6=reserva_cow_prov.chair6,
-            chair7=reserva_cow_prov.chair7,
-            chair8=reserva_cow_prov.chair8,
-            chair9=reserva_cow_prov.chair9,
-            chair10=reserva_cow_prov.chair10,
-            chair11=reserva_cow_prov.chair11,
-            chair12=reserva_cow_prov.chair12
-            )
-        confirmPurchase(request, reserva_cow_prov.user, reserva_cow_prov.user.email)
-    elif meet_prov and payload['paymentStatus']=='Success':
-        meetingRoomCalendar.objects.create(
-            user = meet_prov.user,
-            date = meet_prov.date,
-            startTime =meet_prov.startTime,
-            endTime = meet_prov.endTime,
-            cost_price =  meet_prov.cost_price
-        )
-        confirmPurchase(request, meet_prov.user, reserva_cow_prov.user.email)
+    transactions=transaction.objects.get(transactionId=payload['transactionID'])
+    print(transactions)
+    print(transactions.transactionId)
+    transactions.status=payload['paymentStatus']
+    transactions.save() 
+    try:
+        reserva_cow_prov=reservas_Coworking_provisoria.objects.get(transactionId=payload['transactionID'])
+        if reserva_cow_prov and payload['paymentStatus']=='Success':
+            print("reserva_cow_prov")
+            reservas_Coworking.objects.create(
+                user=reserva_cow_prov.user,
+                nrLugares=get_RealQty(reserva_cow_prov),
+                startDate=reserva_cow_prov.startDate,
+                endDate=reserva_cow_prov.endDate,
+                nrDias=reserva_cow_prov.nrDias,
+                cost_price=reserva_cow_prov.cost_price,
+                chair1=reserva_cow_prov.chair1,
+                chair2=reserva_cow_prov.chair2,
+                chair3=reserva_cow_prov.chair3,
+                chair4=reserva_cow_prov.chair4,
+                chair5=reserva_cow_prov.chair5,
+                chair6=reserva_cow_prov.chair6,
+                chair7=reserva_cow_prov.chair7,
+                chair8=reserva_cow_prov.chair8,
+                chair9=reserva_cow_prov.chair9,
+                chair10=reserva_cow_prov.chair10,
+                chair11=reserva_cow_prov.chair11,
+                chair12=reserva_cow_prov.chair12
+                )
+            confirmPurchase(request, reserva_cow_prov.user, reserva_cow_prov.user.email)
+    except:
+        try:
+            meet_prov=meetingRoomProvisoria.objects.get(transactionId=payload['transactionID'])
+            if meet_prov and payload['paymentStatus']=='Success':
+                print("meet_prov")
+                meetingRoomCalendar.objects.create(
+                    user = meet_prov.user,
+                    date = meet_prov.date,
+                    startTime =meet_prov.startTime,
+                    endTime = meet_prov.endTime,
+                    cost_price =  meet_prov.cost_price
+                )
+                confirmPurchase(request, meet_prov.user, reserva_cow_prov.user.email)
+        except:
+            try:
+                bundle_prov=bundleProvisorio.objects.get(transaction_id=payload['transactionID'])
+                if bundle_prov and payload['paymentStatus']=='Success':
+                    print("bundle_prov")
+                    user_wallet=Wallet.objects.get(user=bundle_prov.user)
+                    if bundle_prov.bundle_5:
+                        user_wallet.mettingRoomHours=user_wallet.mettingRoomHours+5
+                        user_wallet.save()
+                        confirmPurchase(request, meet_prov.user, reserva_cow_prov.user.email)
 
-def m5Thanks(request):
-    if request.method == "POST":
-        if request.POST.get("paymentStatus_input"):
-            success = request.POST.get("paymentStatus_input")
-            if success:
-                user_wallet = Wallet.objects.get(user=request.user)
-                user_wallet.mettingRoomHours = user_wallet.mettingRoomHours+5
-                return redirect("wallet")
-    return render(request, "m5thanks.html")
+                    elif bundle_prov.bundle_10:
+                        user_wallet.mettingRoomHours=user_wallet.mettingRoomHours+10
+                        user_wallet.save()
+                        confirmPurchase(request, meet_prov.user, reserva_cow_prov.user.email)
+            except:
+                pass
 
+def cancelation(request, transactionID=None):
+    if request.user.is_superuser:
+        return render(request, "cancelation.html")
+    else:
+        return redirect('index')
+def index(request, price=None, payment_Method=None, payment_status=None, transactionID=None):
+    if price and payment_Method and payment_status and transactionID:
+        try:
+            transaction.objects.get(transactionId=transactionID)
+        except:
+            transaction.objects.create(
+                            user=request.user,
+                            transactionId=transactionID,
+                            status = payment_status,
+                            payment_Method = payment_Method,
+                            price = float(price),
+                        )
+        return render(request, "dashboard(resendes).html")
 
-def m10Thanks(request):
-    if request.method == "POST":
-        if request.POST.get("paymentStatus_input"):
-            success = request.POST.get("paymentStatus_input")
-            if success:
-                user_wallet = Wallet.objects.get(user=request.user)
-                user_wallet.mettingRoomHours += 10
-                return redirect("wallet")
-    return render(request, "m5thanks.html")
-
-
-def index(request):
     if request.user.is_authenticated:
         if request.user.is_superuser:
             all_users = get_user_model().objects.all()
             all_reservas = reservas_Coworking.objects.all()
-            nrMensagens = mensagens.objects.all()
+            nrMensagens = mensagen.objects.all()
             if request.method == "POST":
                 users_to_delete = request.POST.getlist("users_to_delete")
                 for user in users_to_delete:
@@ -219,7 +244,7 @@ def index(request):
                     Industry = request.POST.get("Industry")
                     employees = request.POST.get("employees", False)
                     description = request.POST.get("description")
-                    mensagens.objects.create(
+                    mensagen.objects.create(
                         user=request.user,
                         date=datetime.now(),
                         ClientName=name,
@@ -227,35 +252,6 @@ def index(request):
                         ClientEmail=request.user.email,
                         ClientMessage=description,
                     )
-
-                    return redirect("index")
-                if request.POST.get("paymentStatus_input"):
-                    success = request.POST.get("paymentStatus_input")
-                    if success:
-                        reserva_provisoria = reservas_Coworking_provisoria.objects.get(
-                            user=request.user)
-                        nr_Lugares = get_RealQty(reserva_provisoria)
-                        reservas_Coworking.objects.create(
-                            user=request.user,
-                            nrLugares=nr_Lugares,
-                            startDate=reserva_provisoria.startDate,
-                            endDate=reserva_provisoria.endDate,
-                            nrDias=reserva_provisoria.nrDias,
-                            cost_price=reserva_provisoria.cost_price,
-                            chair1=reserva_provisoria.chair1,
-                            chair2=reserva_provisoria.chair2,
-                            chair3=reserva_provisoria.chair3,
-                            chair4=reserva_provisoria.chair4,
-                            chair5=reserva_provisoria.chair5,
-                            chair6=reserva_provisoria.chair6,
-                            chair7=reserva_provisoria.chair7,
-                            chair8=reserva_provisoria.chair8,
-                            chair9=reserva_provisoria.chair9,
-                            chair10=reserva_provisoria.chair10,
-                            chair11=reserva_provisoria.chair11,
-                            chair12=reserva_provisoria.chair12,
-                        )
-                        reserva_provisoria.delete()
                     return redirect("index")
             else:
                 context = {
@@ -461,8 +457,35 @@ class SuccessView(TemplateView):
     template_name = "success.html"
 
 
-def meetingRoomPersonalizada(request, spgContext=None, transactionID=None, transactionSignature=None):
+def meetingRoomPersonalizada(request, spgContext=None, transactionID=None, transactionSignature=None, bundleType=None):
     if transactionID:
+        if bundleType:
+            if bundleType=="5":
+                bundleProvisorio.objects.create(
+                    user=request.user,
+                    bundle_5=True,
+                    bundle_10=False,
+                    transaction_id=transactionID
+                )
+                price=50
+                context={
+                    "price": price,
+                }
+                return render(request, "meetingRoomPersonalizada.html", context)
+            elif bundleType=="10":
+                bundleProvisorio.objects.create(
+                    user=request.user,
+                    bundle_5=False,
+                    bundle_10=True,
+                    transaction_id=transactionID
+                )
+                price=90
+                context={
+                    "price": price,
+                }
+                return render(request, "meetingRoomPersonalizada.html", context)
+
+
         print(transactionID)
         user_wallet = Wallet.objects.get(user=request.user)
         meet_prov=meetingRoomProvisoria.objects.get(user=request.user.id)
@@ -487,18 +510,37 @@ def meetingRoomPersonalizada(request, spgContext=None, transactionID=None, trans
             try:
                 meetingRoomProv.delete()
             except:
-                pass            
+                pass
             meetingdate = request.POST.get("daterange1", False)
-            startTime = request.POST.get("starttime")
-            endTime = request.POST.get("endtime")
+            startHour = int(request.POST.get("startHour"))
+            startMinute = int(request.POST.get("startMinute"))
+            startAm_PM = request.POST.get("startAm_PM")
+            endHour = int(request.POST.get("endHour"))
+            endMinute = int(request.POST.get("endMinute"))
+            endAm_PM = request.POST.get("endAm_PM")
             meetingdate.replace(" ", "")
             disponibilidade = True
             dateSplit = meetingdate.split("/")
             meetingDate_Format = datetime(
                 int(dateSplit[2]), int(dateSplit[0]), int(dateSplit[1]))
+            
+            if startAm_PM == "PM":
+                if startHour == 12:
+                    startHour = 0
+                else:
+                    startHour += 12
+            if endAm_PM == "PM":
+                if endHour == 12:
+                    endHour = 0
+                else:
+                    endHour += 12
+            s_date = str(startHour)+':'+str(startMinute)
+            e_date = str(endHour)+':'+str(endMinute)
 
-            startTime = datetime.strptime(startTime, '%H:%M').time()
-            endTime = datetime.strptime(endTime, '%H:%M').time()
+                
+
+            startTime = datetime.strptime(s_date, '%H:%M').time()
+            endTime = datetime.strptime(e_date, '%H:%M').time()
 
             salasDisponiveis = []
             z = 0
@@ -529,13 +571,27 @@ def meetingRoomPersonalizada(request, spgContext=None, transactionID=None, trans
 
             payWallet = False
             reservationTime = datetime.combine(date.today(), endTime) - datetime.combine(date.today(), startTime)
+            splitRT = str(reservationTime).split(":")
+            reservationHour = int(splitRT[0])
+            reservationMinute = int(splitRT[1])
 
             userHours = user_wallet.mettingRoomHours
             userMinutes = user_wallet.mettingRoomMinutes
-            date_test = str(userHours)+':'+str(userMinutes)
-            datem = datetime.strptime(date_test, "%H:%M")
+    
 
-            if datem.hour * 60 + datem.minute >= (reservationTime.seconds/60):
+            if userHours > reservationHour:
+                left_user_hour = userHours - reservationHour
+                if userMinutes > reservationMinute:
+                    left_user_minute = userMinutes - reservationMinute
+                else:
+                    left_user_hour -= 1
+                    left_user_minute = 60 - reservationMinute + userMinutes
+                    if left_user_minute == 60:
+                        left_user_minute = 0
+                        left_user_hour += 1
+            
+
+            if left_user_hour * 60 + left_user_minute >= (reservationTime.seconds/60):
                 payWallet = True
 
             price = 10*reservationTime.seconds/60/60
@@ -580,12 +636,27 @@ def meetingRoomPersonalizada(request, spgContext=None, transactionID=None, trans
 
             userHours = user_wallet.mettingRoomHours
             userMinutes = user_wallet.mettingRoomMinutes
-            date_test = str(userHours)+':'+str(userMinutes)
-            datem = datetime.strptime(date_test, "%H:%M")
-            userTime=datem-reservationTime
+            
+            
+            splitRT = str(reservationTime).split(":")
+            reservationHour = int(splitRT[0])
+            reservationMinute = int(splitRT[1])
+            userHours = user_wallet.mettingRoomHours
+            userMinutes = user_wallet.mettingRoomMinutes
+            if userHours > reservationHour:
+                left_user_hour = userHours - reservationHour
+                if userMinutes > reservationMinute:
+                    left_user_minute = userMinutes - reservationMinute
+                else:
+                    left_user_hour -= 1
+                    left_user_minute = 60 - reservationMinute + userMinutes
+                    if left_user_minute == 60:
+                        left_user_minute = 0
+                        left_user_hour += 1
+            
 
-            user_wallet.mettingRoomHours=userTime.hour
-            user_wallet.mettingRoomMinutes=userTime.minute
+            user_wallet.mettingRoomHours=left_user_hour
+            user_wallet.mettingRoomMinutes=left_user_minute
             user_wallet.save()
 
             meetingRoomCalendar.objects.create(user=meetingRoomProv.user,
@@ -613,13 +684,12 @@ def wallet(request):
     user_wallet = Wallet.objects.get(user=request.user)
     userHours = user_wallet.mettingRoomHours
     userMinutes = user_wallet.mettingRoomMinutes
-    date = str(userHours)+':'+str(userMinutes)
-    datem = datetime.strptime(date, "%H:%M")
+    
     print(request.user)
     print(request.user.email)
-    
-    
-    
+
+
+
 
 
 
@@ -670,7 +740,7 @@ def activateEmail(request, user, to_email):
         'uid': urlsafe_base64_encode(force_bytes(user.pk)),
         'token': account_activation_token.make_token(user),
         'protocol': 'https' if request.is_secure() else 'http'
-    
+
 
     })
     email = EmailMessage(mail_subject, message, to=[to_email])

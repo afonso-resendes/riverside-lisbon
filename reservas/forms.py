@@ -1,7 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import reservas_Coworking_provisoria
+
+
+from .models import reservas_Coworking_provisoria, meetingRoomProvisoria
 
 
 class CreateUserForm(UserCreationForm):
@@ -48,3 +50,5 @@ class ReservaModelForm(forms.ModelForm):
             "chair11",
             "chair12",
         )
+
+

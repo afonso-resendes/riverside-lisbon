@@ -1,6 +1,6 @@
 {% load static %}
 <html id="Html" lang="en">
-
+ 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -490,13 +490,76 @@
   var price_js;
   var customerName = "{{user.username}}";
   var customerEmail = "{{user.mail}}";
-  var url
+  var bundleType;
   window.onload = () => {
         if (window.location.href.indexOf("?id=") > -1) {
-            var id = window.location.href;
-            transactionID = id.split("=")[1];
-            console.log("statusTid = " + transactionID);
-            getTransactionStatus(transactionID);
+          var id = window.location.href;
+          transactionID = id.split("=")[1];
+          getTransactionStatus(transactionID)
+        }else if(window.location.href.indexOf("status")){
+          console.log(window.location.href.split("/"))
+          var payment_Method = window.location.href.split("/")[5];
+          var payment_status = window.location.href.split("/")[6];
+          var transactionID =  window.location.href.split("/")[7];
+          const paymentInfo = document.createElement("div");
+          if (payment_Method === "MBWAY" || payment_Method === "CARD") {
+            document.getElementById("payment_info_board").style.display = "block";
+            if (  payment_status === "Pending") {
+              const continue_button = document.createElement("button");
+              const continue_button_link = document.createElement("a");
+            
+              paymentInfo.classList.add("payment_info");
+            
+              continue_button_link.innerHTML = "Continue";
+              continue_button_link.setAttribute("href", "/");
+              continue_button.appendChild(continue_button_link);
+            
+              paymentInfo.innerHTML =
+                "<p>The MBWAY payment request was sent with Success.</br>" +
+                " You have 4 minutes to procced the payment before it's expired.</p>";
+              paymentInfo.appendChild(continue_button);
+                
+            } else if (payment_status === "Success") {
+            
+              const form = document.getElementById("paymentStatus");
+            
+              const input = document.createElement("input");
+              input.setAttribute("id", "paymentStatus_input");
+              input.setAttribute("name", "paymentStatus_input");
+              input.setAttribute("type", "checkbox");
+              input.setAttribute("valeu", "true");
+              input.setAttribute("style", "display:none;");
+              input.checked = true;
+              form.appendChild(input);
+            
+              const continue_button = document.createElement("button");
+              continue_button.setAttribute("href", "/");
+              continue_button.innerHTML = "Exit";
+              form.appendChild(continue_button);
+            
+              paymentInfo.classList.add("payment_info");
+              paymentInfo.innerHTML =
+                "<p>Your Payment was made with SUCCESS." +
+                "</br>" +
+                "Please go to your wallet if you want to see your reservation</p>";
+              paymentInfo.appendChild(form);
+                
+            } else if (payment_status === "Declined") {
+              const continue_button_link = document.createElement("a");
+            
+              paymentInfo.classList.add("payment_info");
+            
+              continue_button_link.innerHTML = "&#x2716;";
+              continue_button_link.setAttribute("href", "/");
+            
+              paymentInfo.innerHTML =
+                "<p>Your Payment was DECLINED." +
+                "</br>" +
+                "Please try again later</p>";
+              paymentInfo.appendChild(continue_button_link);
+            }
+          }
+          document.getElementById("payment_info_board").appendChild(paymentInfo);
         }
     };
     function getTransactionStatus(k) {
@@ -518,17 +581,17 @@
 
     $.ajax(settings).done(function (response) {
       console.log(response);
+      var price = response.amount.value
       var payment_Method = response.paymentMethod;
-      var url = "/" + response.transactionID;
-      console.log(payment_Method);
-      const paymentInfo = document.createElement("div");
+      var payment_status = response.paymentStatus;
+      var transactionID = response.transactionID;
+      window.location.replace("http://localhost:8000/status/"+price+"/"+payment_Method+"/"+payment_status+"/"+transactionID);
 
+    /*const paymentInfo = document.createElement("div");
+      console.log("caralhinho")
       if (payment_Method === "MBWAY" || payment_Method === "CARD") {
         document.getElementById("payment_info_board").style.display = "block";
-        if (
-          response.returnStatus.statusDescription === "Success" &&
-          response.paymentStatus === "Pending"
-        ) {
+        if ( response.paymentStatus === "Pending") {
           const continue_button = document.createElement("button");
           const continue_button_link = document.createElement("a");
           var send_phone = response.token.value;
@@ -545,7 +608,9 @@
             ".</br>" +
             " You have 4 minutes to procced the payment before it's expired.</p>";
           paymentInfo.appendChild(continue_button);
+
         } else if (response.paymentStatus === "Success") {
+
           const form = document.getElementById("paymentStatus");
 
           const input = document.createElement("input");
@@ -568,6 +633,7 @@
             "</br>" +
             "Please go to your wallet if you want to see your reservation</p>";
           paymentInfo.appendChild(form);
+
         } else if (response.paymentStatus === "Declined") {
           const continue_button_link = document.createElement("a");
 
@@ -583,7 +649,7 @@
           paymentInfo.appendChild(continue_button_link);
         }
       }
-      document.getElementById("payment_info_board").appendChild(paymentInfo);
+      document.getElementById("payment_info_board").appendChild(paymentInfo);*/
     });
   }
   function isValidJSON(text) {
@@ -605,20 +671,14 @@
   }
   function bundleFiveRequest() {
     console.log("Entrou");
+    bundleType=5
     price_js = 50;
-    url = "http://127.0.0.1:8000/m5tanks"
-    $(".slideshow-container").css({display: "none"});
-    $("#bundle_cards").css({display: "none"});
-
     requestCheckout();
   }
   function bundleTenRequest() {
     console.log("Entrou");
+    bundleType=10
     price_js = 90;
-    url = "http://127.0.0.1:8000/m10tanks"
-    $(".slideshow-container").css({display: "none"});
-    $("#bundle_cards").css({display: "none"});
-
     requestCheckout();
   }
   function requestCheckout() {
@@ -704,85 +764,14 @@
     };
 
     $.ajax(settings1).done(function (response) {
-      console.log(response);
-      $(".coworking_banner .model").css({display: "none"});
-      $(".coworking_banner .form").css({display: "none"});
-      $(".coworking_banner .checkout_info").css({display: "flex"});
-      $("#checkout-form").css({display: "block"});
-      console.log(response);
-      const FORM_CONFIG = {
-        paymentMethodList: [],
-        amount: {value: price_js, currency: "EUR"},
-        language: "en",
-        redirectUrl: url,
-        customerData: null,
-      };
-      const FORM_STYLE = {
-        layout: "default",
-        theme: "--light",
-        color: {
-          primary: "",
-          secondary: "",
-          border: "",
-          surface: "",
-          header: {
-            text: "",
-            background: "white",
-          },
-          body: {
-            text: "",
-            background: "white",
-          },
-        },
-        font: "Roboto",
-      };
-      const ta_ConfigValue = JSON.stringify(FORM_CONFIG, undefined, 4);
-      const ta_StyleValue = JSON.stringify(FORM_STYLE, undefined, 4);
-      const form = document.createElement("form");
-      const script = document.createElement("script");
-      var base_url = "https://spg.qly.site1.sibs.pt/assets/js/widget.js?id=";
-      var transactionSignature = response.transactionSignature;
-      var formContext = response.formContext;
-
+      console.log(response)
       transactionID = response.transactionID;
-
-      base_url += transactionID;
-
-      script.setAttribute("src", base_url);
-
-      form.classList.add("paymentSPG");
-
-      form.setAttribute("spg-context", formContext);
-
-      if (isValidJSON(ta_ConfigValue)) {
-        const configParams = JSON.parse(ta_ConfigValue);
-        form.setAttribute("spg-config", JSON.stringify(configParams));
-      } else {
-        alert("Invalid Form Configuration json!");
-      }
-      if (isValidJSON(ta_StyleValue)) {
-        const styleParams = JSON.parse(ta_StyleValue);
-        form.setAttribute("spg-style", JSON.stringify(styleParams));
-      } else {
-        alert("Invalid Form Style json!");
-      }
-      $(".payment_part").css({display: "flex"});
-      if (price_js === 50) {
-        console.log("Entrou");
-        document.getElementById("checkout_info_text").innerHTML =
-          "<h2>Your Product</h2> <p>Product: 5h Bundle</p> <p>Price: " +
-          price_js +
-          "€</p>";
-      }
-      if (price_js === 90) {
-        console.log("Entrou");
-        document.getElementById("checkout_info_text").innerHTML =
-          "<h2>Your Product</h2> <p>Product: 10h Bundle</p> <p>Price: " +
-          price_js +
-          "€</p>";
-      }
-      document.getElementById("checkout-form").appendChild(script);
-      document.getElementById("checkout-form").appendChild(form);
+      var formContext = response.formContext;
+      var transactionSignature=response.transactionSignature.replaceAll("/","<")
+      console.log(transactionID)
+      console.log(formContext)
+      console.log(transactionSignature)
+      window.location.replace("http://localhost:8000/meetingRoomPersonalizada/form/"+formContext+"/"+transactionID+"/"+transactionSignature+"/"+bundleType);
     });
   }
 

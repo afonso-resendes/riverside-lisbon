@@ -91,20 +91,62 @@
           value="01/01/2022 - 01/01/2022"
         />
         <h3>Choose your start and end time:</h3>
-        <input
-          type="time"
-          value="{{startValeu}}"
-          step="1800"
-          name="starttime"
-          required
-        />
-        <input
-          type="time"
-          value="{{endValeu}}"
-          step="1800"
-          name="endtime"
-          required
-        />
+        <label for="cars">Start Time:</label>
+
+        <select name="startHour" id="startHour">
+          <option value="" selected disabled hidden>Hours</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="11">11</option>
+          <option value="12">12</option>
+        </select>
+        <select name="startMinute" id="startMinute">
+          <option value="" selected disabled hidden>Minutes</option>
+          <option value="00">00</option>
+          <option value="30">30</option>
+        </select>
+        <select name="startAm_PM" id="startAm_PM">
+          <option value="" selected disabled hidden>AM/PM</option>
+          <option value="AM">AM</option>
+          <option value="PM">PM</option>
+        </select>
+        <br>
+        <label for="cars">End Time:</label>
+     
+
+        <select name="endHour" id="endHour">
+          <option value="" selected disabled hidden>Hours</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="11">11</option>
+          <option value="12">12</option>
+        </select>
+        <select name="endMinute" id="endMinute">
+          <option value="" selected disabled hidden>Minutes</option>
+          <option value="00">00</option>
+          <option value="30">30</option>
+        </select>
+        <select name="endAm_PM" id="endAm_PM">
+          <option value="" selected disabled hidden>AM/PM</option>
+          <option value="AM">AM</option>
+          <option value="PM">PM</option>
+        </select>
       </div>
 
       <button type="submit">Verificar</button><br />
@@ -141,7 +183,7 @@
         </form>
       </div>
     </div>
-    <div class="checkout_info">
+    <div id="checkout_info" class="checkout_info">
       <div class="checkout_info_text">
         <h2>Your reservation</h2>
         <p>Chossen date: {{startdate}}</p>
@@ -202,6 +244,15 @@
       $("#chooseForm").css({ display: "none" });
       $(".template .checkout_info").css({ display: "flex" });
       $("#checkout-form").css({ display: "block" });
+      price = "{{price}}";
+      console.log(price)
+      var bundleType=window.location.href.split("/")[8]
+      if (!(bundleType==="0")){
+        const info=document.getElementById("checkout_info");
+        info.innerHTML="<h2>Your Bundle:</h2>"+
+        "<p>Type: "+bundleType+" hour bundle</p>"+
+        "<p>Price: "+price+"€</p>"
+      }
 
       const FORM_CONFIG = {
         paymentMethodList: [],
@@ -375,16 +426,14 @@
         "/",
         "<"
       );
-      console.log(transactionID);
-      console.log(formContext);
-      console.log(transactionSignature);
+      var bundleType=0
       window.location.replace(
         "http://localhost:8000/meetingRoomPersonalizada/form/" +
           formContext +
           "/" +
           transactionID +
           "/" +
-          transactionSignature
+          transactionSignature+"/"+bundleType
       );
     });
   }
