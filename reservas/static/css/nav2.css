@@ -19,6 +19,7 @@
 #web-pc .logo_lisbon {
   display: flex;
   flex-direction: column;
+  
   align-items: center;
   position: fixed;
   left: 4rem;

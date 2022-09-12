@@ -40,6 +40,7 @@ from django.http import JsonResponse
 import json
 from .tokens import account_activation_token
 from Cryptodome.Cipher import AES
+from django.contrib.auth.decorators import login_required
 
 import base64
 
@@ -106,6 +107,7 @@ def get_RealQty(reserva):
 
     return qty
 
+@login_required(login_url='login')
 @csrf_exempt
 def coworkingTanks(request):
     if request.method=="POST":
@@ -197,10 +199,26 @@ def checkWebhook(payload, request):
                         confirmPurchase(request, meet_prov.user, reserva_cow_prov.user.email)
             except:
                 pass
-
+            
+def refund(request, transactionID=None):
+    if request.user.is_superuser:
+        transact=transaction.objects.get(transactionId=transactionID)
+        price=transact.price
+        context={
+            "price":price
+        }
+        return render(request, "refund.html", context)
+    else:
+        return redirect('index')
+    
 def cancelation(request, transactionID=None):
     if request.user.is_superuser:
-        return render(request, "cancelation.html")
+        transact=transaction.objects.get(transactionId=transactionID)
+        price=transact.price
+        context={
+            "price":price
+        }
+        return render(request, "cancelation.html", context)
     else:
         return redirect('index')
 def index(request, price=None, payment_Method=None, payment_status=None, transactionID=None):
@@ -221,6 +239,7 @@ def index(request, price=None, payment_Method=None, payment_status=None, transac
         if request.user.is_superuser:
             all_users = get_user_model().objects.all()
             all_reservas = reservas_Coworking.objects.all()
+            all_transactions=transaction.objects.all()
             nrMensagens = mensagen.objects.all()
             if request.method == "POST":
                 users_to_delete = request.POST.getlist("users_to_delete")
@@ -229,6 +248,8 @@ def index(request, price=None, payment_Method=None, payment_status=None, transac
                     user_to_delete.delete()
             context = {
                 "nrUsers": len(all_users),
+                "all_transactions":all_transactions,
+                "nrTransactions":len(all_transactions),
                 "all_users": all_users,
                 "nrReservas": len(all_reservas),
                 "all_reservas": all_reservas,

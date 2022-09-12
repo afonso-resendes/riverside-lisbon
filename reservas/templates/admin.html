@@ -192,6 +192,34 @@
             {% endif %}
         </div>
     </section>
+    <section class="transactions">
+        <div class="dataTable">
+            <table>
+                <caption>Transactions</caption>
+                <tr>
+                    <th>user</th>
+                    <th>transactionId</th>
+                    <th>status</th>
+                    <th>payment_Method</th>
+                    <th>price</th>
+                </tr>
+                {% for transaction in all_transactions%}
+                <tr>
+                    <td>{{transaction.user}}</td>
+                    <td>{{transaction.transactionId}}</td>
+                    <td>{{transaction.status}}</td>
+                    <td>{{transaction.payment_Method}}</td>
+                    <td>{{transaction.price}}</td>
+                    {% if transaction.status == "Pending" and transaction.payment_Method == "REFERENCE" %}
+                    <td><a href="/{{transaction.transactionId}}/cancelation"><button>Cancel</button></a></td>
+                    {% elif transaction.status == "Success" %}
+                    <td><a href="/{{transaction.transactionId}}/refund"><button>Refund</button></a></td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </section>
 </body>
 
 </html>

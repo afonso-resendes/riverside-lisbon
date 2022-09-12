@@ -43,10 +43,11 @@
     </section>
   </div>
   <script>
+    const price="{{price}}";
     window.onload = () => {
-      if (window.location.href.indexOf("?id=") > -1) {
-        var id = window.location.href;
-        var transactionID = id.split("=")[1];
+      if (window.location.href.indexOf("cancelation") > -1) {
+        console.log(window.location.href.split("/"));
+        var transactionID =window.location.href.split("/")[3];
         console.log("statusTid = " + transactionID);
         requestCancelation(transactionID);
       }
@@ -64,7 +65,7 @@
         timeout: 0,
         headers: {
           Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJlNzYyMzE3Yi03N2IxLTQ0ZWItYTUzYy0zMjY1ZDY5NTllZGIifQ.eyJpYXQiOjE2NTg4NDIzNTYsImp0aSI6IjkzMjJkYTFlLTgxY2UtNDUxZS1hZmUyLTFjMTJkNWQzMjY5NyIsImlzcyI6Imh0dHBzOi8vcWx5LnNpdGUxLnNzby5zeXMuc2licy5wdC9hdXRoL3JlYWxtcy9RTFkuU1BHLkFQSSIsImF1ZCI6Imh0dHBzOi8vcWx5LnNpdGUxLnNzby5zeXMuc2licy5wdC9hdXRoL3JlYWxtcy9RTFkuU1BHLkFQSSIsInN1YiI6Ijg2YTQ4MDlkLTIyM2MtNDEzZC1iZTA5LWIxNmZiYWVkMzc3MSIsInR5cCI6Ik9mZmxpbmUiLCJhenAiOiJRTFkuU1BHLkFQSS1DTEkiLCJzZXNzaW9uX3N0YXRlIjoiMjY5YWZhMTEtYzc5OC00MmM4LThlNTctN2I1ZGUwYzhmMTU5Iiwic2NvcGUiOiJvcGVuaWQgb2ZmbGluZV9hY2Nlc3MifQ.MObgJ4bCY_17H378BDRbdCZuceGqMcFIS4PEElGA4U8.eyJtYyI6Ijk5OTk5OTkiLCJ0YyI6IjU1OTExIn0=.C63F60B306287AE4A426B0EE933019BCDFD8C7CEA213B34ABFEFD6BD49E753A8",
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJlNzYyMzE3Yi03N2IxLTQ0ZWItYTUzYy0zMjY1ZDY5NTllZGIifQ.eyJpYXQiOjE2NTg4NDIzNTYsImp0aSI6IjkzMjJkYTFlLTgxY2UtNDUxZS1hZmUyLTFjMTJkNWQzMjY5NyIsImlzcyI6Imh0dHBzOi8vcWx5LnNpdGUxLnNzby5zeXMuc2licy5wdC9hdXRoL3JlYWxtcy9RTFkuU1BHLkFQSSIsImF1ZCI6Imh0dHBzOi8vcWx5LnNpdGUxLnNzby5zeXMuc2licy5wdC9hdXRoL3JlYWxtcy9RTFkuU1BHLkFQSSIsInN1YiI6Ijg2YTQ4MDlkLTIyM2MtNDEzZC1iZTA5LWIxNmZiYWVkMzc3MSIsInR5cCI6Ik9mZmxpbmUiLCJhenAiOiJRTFkuU1BHLkFQSS1DTEkiLCJzZXNzaW9uX3N0YXRlIjoiMjY5YWZhMTEtYzc5OC00MmM4LThlNTctN2I1ZGUwYzhmMTU5Iiwic2NvcGUiOiJvcGVuaWQgb2ZmbGluZV9hY2Nlc3MifQ.MObgJ4bCY_17H378BDRbdCZuceGqMcFIS4PEElGA4U8.eyJtYyI6Ijk5OTk5OTkiLCJ0YyI6IjU1OTExIn0=.C63F60B306287AE4A426B0EE933019BCDFD8C7CEA213B34ABFEFD6BD49E753A8",
           "X-IBM-Client-Id": "10f87673-1058-4da6-8bfd-3de4a6cd5555",
           "Content-Type": "application/json",
         },
@@ -82,7 +83,7 @@
               currency: "EUR",
             },
             originalTransaction: {
-              id: "",
+              id: transactionID,
             },
           },
         }),
