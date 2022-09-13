@@ -85,6 +85,9 @@
 
   $.ajax(settings).done(function (response) {
     console.log(response);
+    window.location.replace(
+        "http://localhost:8000/pass/"+transactionID+"/refund"
+      );
   });
     }
 </script>

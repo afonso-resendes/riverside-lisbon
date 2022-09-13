@@ -37,11 +37,11 @@
   </ul>
 </div>
 <nav id="web-pc">
-  <a href="/">
+  <a href="/" style="padding: 0;z-index:100;">
   <div class="logo_lisbon">
-    <img src="{% static 'images/lisbonlogops_white.png' %}" alt="" />
-  </div>
-</a>
+      <img src="{% static 'images/lisbonlogops_white.png' %}" alt="" />
+    </div>
+  </a>
   <ul>
     <li><a href="/">Home</a></li>
     {% if user.is_authenticated %} {% else %}

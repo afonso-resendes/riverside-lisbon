@@ -204,7 +204,9 @@
                     <th>price</th>
                 </tr>
                 {% for transaction in all_transactions%}
+                {% if transaction.status != "Pending" %}
                 <tr>
+
                     <td>{{transaction.user}}</td>
                     <td>{{transaction.transactionId}}</td>
                     <td>{{transaction.status}}</td>
@@ -216,6 +218,7 @@
                     <td><a href="/{{transaction.transactionId}}/refund"><button>Refund</button></a></td>
                     {% endif %}
                 </tr>
+                {% endif %}
                 {% endfor %}
             </table>
         </div>

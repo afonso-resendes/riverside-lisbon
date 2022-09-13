@@ -177,7 +177,7 @@ class bundleProvisorio(models.Model):
             return str(self.user.username + " | bundle 5 | "+ self.transaction_id)
 
 type = (("", ""), ("MBWAY", "MBWAY"), ("REFERENCE", "REFERENCE"), ("CARD", "CARD"))
-status = (("", ""), ("Pending", "Pending"), ("Success", "Success"), ("Declined", "Declined"))
+status = (("", ""), ("Pending", "Pending"), ("Success", "Success"), ("Declined", "Declined"), ("Refunded", "Refunded"))
 
 class transaction(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -185,6 +185,7 @@ class transaction(models.Model):
     status = models.CharField(max_length=50,null=True, choices=status)
     payment_Method = models.CharField(max_length=50,null=True, choices=type)
     price = models.FloatField(null=True)
+    expireDate = models.DateTimeField(null=True)
 
     def __str__(self):
         return str(self.user.username + " | " + str(self.status) +  " | " + str(self.payment_Method) + " | "+ str(self.price)+ "€ | " + str(self.transactionId))

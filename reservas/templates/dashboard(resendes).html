@@ -1,41 +1,127 @@
 {% load static %}
 <html id="Html" lang="en">
- 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Business Center | Riverside Lisbon</title>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <link rel="stylesheet" href="{% static 'css/dashboard1.css' %}" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Hind+Madurai&display=swap" rel="stylesheet" />
-</head>
-<header>
-  {% include "nav.html" %}
-  <div class="banner">
-    <img src="{% static 'images/dashback.jpg' %}" alt="" />
-  </div>
-</header>
-<div class="window">
-  <section class="form">
-      <div id="payment_info_board">
-          <form action="" method="post" id="paymentStatus">{% csrf_token %}</form>
-      </div>
-  </section>
-</div>
-<body>
-  <div id="payment_info_board">
-    <form action="" method="post" id="paymentStatus">{% csrf_token %}</form>
-  </div>
-  <section class="Html">
-    <div class="welcome">
-      <h2>Welcome {{request.user.username}}.</h2>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Business Center | Riverside Lisbon</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/dashboard1.css' %}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Hind+Madurai&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <header>
+    {% include "nav.html" %}
+    <div class="banner">
+      <img src="{% static 'images/dashback.jpg' %}" alt="" />
     </div>
-    <section id="services" class="services">
-      <h1>Make your reservation:</h1>
-      <div class="slideshow-container">
-        <div class="mySlides fade">
+  </header>
+  <div class="window">
+    <section class="form">
+      <div id="payment_info_board">
+        <form action="" method="post" id="paymentStatus">{% csrf_token %}</form>
+      </div>
+    </section>
+  </div>
+  <body>
+    <div id="payment_info_board">
+      <form action="" method="post" id="paymentStatus">{% csrf_token %}</form>
+    </div>
+    <section class="Html">
+      <div class="welcome">
+        <h2>Welcome {{request.user.username}}.</h2>
+      </div>
+      <section id="services" class="services">
+        <h1>Make your reservation:</h1>
+        <div class="slideshow-container">
+          <div class="mySlides fade">
+            <div class="service-card">
+              <h2>Virtual office</h2>
+              <p>from €29/month</p>
+              <div id="line"></div>
+              <ul>
+                <li>Prestige company address</li>
+                <li>Mail reception</li>
+                <li>Individual meeting rooms</li>
+                <li>Legal & Fiscal consulting</li>
+              </ul>
+              <button id="virtualplans_1">See plans</button>
+            </div>
+          </div>
+
+          <div class="mySlides fade">
+            <div class="service-card">
+              <h2>Coworking</h2>
+              <p>from €30/week</p>
+              <div id="line"></div>
+              <ul>
+                <li>Individual working desk</li>
+                <li>High speed Wi-Fi</li>
+                <li>Individual meeting rooms</li>
+                <li>Privacy and security</li>
+              </ul>
+              <button><a href="/coworkingSimulation">See plans</a></button>
+            </div>
+          </div>
+
+          <div class="mySlides fade">
+            <div class="service-card">
+              <h2>Meeting room</h2>
+              <p>from €15/hour</p>
+              <div id="line"></div>
+              <ul>
+                <li>Private 2 to 4 pax room</li>
+                <li>High speed Wi-Fi</li>
+                <li>Large TV screen</li>
+                <li>Privacy and security</li>
+              </ul>
+              <button id="meetingplans_1">See plans</button>
+            </div>
+          </div>
+          <a class="prev" onclick="plusSlides(-1)">❮</a>
+          <a class="next" onclick="plusSlides(1)">❯</a>
+          <div style="text-align: center">
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+          </div>
+        </div>
+        <script>
+          let slideIndex = 1;
+          showSlides(slideIndex);
+
+          function plusSlides(n) {
+            showSlides((slideIndex += n));
+          }
+
+          function currentSlide(n) {
+            showSlides((slideIndex = n));
+          }
+
+          function showSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName("mySlides");
+            let dots = document.getElementsByClassName("dot");
+            if (n > slides.length) {
+              slideIndex = 1;
+            }
+            if (n < 1) {
+              slideIndex = slides.length;
+            }
+            for (i = 0; i < slides.length; i++) {
+              slides[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+              dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex - 1].style.display = "block";
+            dots[slideIndex - 1].className += " active";
+          }
+        </script>
+        <div id="dashCards" class="cards">
           <div class="service-card">
             <h2>Virtual office</h2>
             <p>from €29/month</p>
@@ -46,11 +132,8 @@
               <li>Individual meeting rooms</li>
               <li>Legal & Fiscal consulting</li>
             </ul>
-            <button id="virtualplans_1">See plans</button>
+            <button id="virtualplans">Choose plans</button>
           </div>
-        </div>
-
-        <div class="mySlides fade">
           <div class="service-card">
             <h2>Coworking</h2>
             <p>from €30/week</p>
@@ -61,106 +144,24 @@
               <li>Individual meeting rooms</li>
               <li>Privacy and security</li>
             </ul>
-            <button><a href="/coworkingSimulation">See plans</a></button>
+            <button><a href="/coworkingSimulation">Choose plans</a></button>
           </div>
-        </div>
-
-        <div class="mySlides fade">
           <div class="service-card">
             <h2>Meeting room</h2>
             <p>from €15/hour</p>
             <div id="line"></div>
             <ul>
-              <li>Private 2 to 4 pax room</li>
+              <li>Private 2 to 4 Pax room</li>
               <li>High speed Wi-Fi</li>
-              <li>Large TV screen</li>
+              <li>Large Tv screen</li>
               <li>Privacy and security</li>
             </ul>
-            <button id="meetingplans_1">See plans</button>
+            <button id="meetingplans">Choose plans</button>
           </div>
         </div>
-        <a class="prev" onclick="plusSlides(-1)">❮</a>
-        <a class="next" onclick="plusSlides(1)">❯</a>
-        <div style="text-align: center">
-          <span class="dot" onclick="currentSlide(1)"></span>
-          <span class="dot" onclick="currentSlide(2)"></span>
-          <span class="dot" onclick="currentSlide(3)"></span>
-        </div>
-      </div>
-      <script>
-        let slideIndex = 1;
-        showSlides(slideIndex);
-
-        function plusSlides(n) {
-          showSlides((slideIndex += n));
-        }
-
-        function currentSlide(n) {
-          showSlides((slideIndex = n));
-        }
-
-        function showSlides(n) {
-          let i;
-          let slides = document.getElementsByClassName("mySlides");
-          let dots = document.getElementsByClassName("dot");
-          if (n > slides.length) {
-            slideIndex = 1;
-          }
-          if (n < 1) {
-            slideIndex = slides.length;
-          }
-          for (i = 0; i < slides.length; i++) {
-            slides[i].style.display = "none";
-          }
-          for (i = 0; i < dots.length; i++) {
-            dots[i].className = dots[i].className.replace(" active", "");
-          }
-          slides[slideIndex - 1].style.display = "block";
-          dots[slideIndex - 1].className += " active";
-        }
-      </script>
-      <div id="dashCards" class="cards">
-        <div class="service-card">
-          <h2>Virtual office</h2>
-          <p>from €29/month</p>
-          <div id="line"></div>
-          <ul>
-            <li>Prestige company address</li>
-            <li>Mail reception</li>
-            <li>Individual meeting rooms</li>
-            <li>Legal & Fiscal consulting</li>
-          </ul>
-          <button id="virtualplans">Choose plans</button>
-        </div>
-        <div class="service-card">
-          <h2>Coworking</h2>
-          <p>from €30/week</p>
-          <div id="line"></div>
-          <ul>
-            <li>Individual working desk</li>
-            <li>High speed Wi-Fi</li>
-            <li>Individual meeting rooms</li>
-            <li>Privacy and security</li>
-          </ul>
-          <button><a href="/coworkingSimulation">Choose plans</a></button>
-        </div>
-        <div class="service-card">
-          <h2>Meeting room</h2>
-          <p>from €15/hour</p>
-          <div id="line"></div>
-          <ul>
-            <li>Private 2 to 4 Pax room</li>
-            <li>High speed Wi-Fi</li>
-            <li>Large Tv screen</li>
-            <li>Privacy and security</li>
-          </ul>
-          <button id="meetingplans">Choose plans</button>
-        </div>
-      </div>
+      </section>
     </section>
-  </section>
-</body>
-
+  </body>
 </html>
 <section class="template" id="virtualoffice">
   <h1>Choose your virtual office plan</h1>
@@ -421,7 +422,10 @@
     For this type of service, we ask you kindly to provide us a few details
     about your needs so that we can design the most suitable setup for you.
   </h3>
-  <button style="float: right; margin: 2rem 15rem 0rem 0rem" id="continueToMessage">
+  <button
+    style="float: right; margin: 2rem 15rem 0rem 0rem"
+    id="continueToMessage"
+  >
     Complete form
   </button>
 </section>
@@ -434,11 +438,38 @@
   </div>
   <form action="" method="post">
     {% csrf_token %}
-    <input type="text" id="name" name="name" placeholder="Name" required /><br />
-    <input type="text" id="Industry" name="Industry" placeholder="Industry" required /><br />
-    <input type="text" id="employees" name="employees" placeholder="Number of employees" /><br />
-    <input type="text" id="country" name="country" placeholder="Company's HQ" /><br />
-    <input type="text" id="description" name="description" placeholder="description" /><br />
+    <input
+      type="text"
+      id="name"
+      name="name"
+      placeholder="Name"
+      required
+    /><br />
+    <input
+      type="text"
+      id="Industry"
+      name="Industry"
+      placeholder="Industry"
+      required
+    /><br />
+    <input
+      type="text"
+      id="employees"
+      name="employees"
+      placeholder="Number of employees"
+    /><br />
+    <input
+      type="text"
+      id="country"
+      name="country"
+      placeholder="Company's HQ"
+    /><br />
+    <input
+      type="text"
+      id="description"
+      name="description"
+      placeholder="description"
+    /><br />
     <button type="submit">Send</button>
   </form>
 </section>
@@ -492,77 +523,74 @@
   var customerEmail = "{{user.mail}}";
   var bundleType;
   window.onload = () => {
-        if (window.location.href.indexOf("?id=") > -1) {
-          var id = window.location.href;
-          transactionID = id.split("=")[1];
-          getTransactionStatus(transactionID)
-        }else if(window.location.href.indexOf("status")){
-          console.log(window.location.href.split("/"))
-          var payment_Method = window.location.href.split("/")[5];
-          var payment_status = window.location.href.split("/")[6];
-          var transactionID =  window.location.href.split("/")[7];
-          const paymentInfo = document.createElement("div");
-          if (payment_Method === "MBWAY" || payment_Method === "CARD") {
-            document.getElementById("payment_info_board").style.display = "block";
-            if (  payment_status === "Pending") {
-              const continue_button = document.createElement("button");
-              const continue_button_link = document.createElement("a");
-            
-              paymentInfo.classList.add("payment_info");
-            
-              continue_button_link.innerHTML = "Continue";
-              continue_button_link.setAttribute("href", "/");
-              continue_button.appendChild(continue_button_link);
-            
-              paymentInfo.innerHTML =
-                "<p>The MBWAY payment request was sent with Success.</br>" +
-                " You have 4 minutes to procced the payment before it's expired.</p>";
-              paymentInfo.appendChild(continue_button);
-                
-            } else if (payment_status === "Success") {
-            
-              const form = document.getElementById("paymentStatus");
-            
-              const input = document.createElement("input");
-              input.setAttribute("id", "paymentStatus_input");
-              input.setAttribute("name", "paymentStatus_input");
-              input.setAttribute("type", "checkbox");
-              input.setAttribute("valeu", "true");
-              input.setAttribute("style", "display:none;");
-              input.checked = true;
-              form.appendChild(input);
-            
-              const continue_button = document.createElement("button");
-              continue_button.setAttribute("href", "/");
-              continue_button.innerHTML = "Exit";
-              form.appendChild(continue_button);
-            
-              paymentInfo.classList.add("payment_info");
-              paymentInfo.innerHTML =
-                "<p>Your Payment was made with SUCCESS." +
-                "</br>" +
-                "Please go to your wallet if you want to see your reservation</p>";
-              paymentInfo.appendChild(form);
-                
-            } else if (payment_status === "Declined") {
-              const continue_button_link = document.createElement("a");
-            
-              paymentInfo.classList.add("payment_info");
-            
-              continue_button_link.innerHTML = "&#x2716;";
-              continue_button_link.setAttribute("href", "/");
-            
-              paymentInfo.innerHTML =
-                "<p>Your Payment was DECLINED." +
-                "</br>" +
-                "Please try again later</p>";
-              paymentInfo.appendChild(continue_button_link);
-            }
-          }
-          document.getElementById("payment_info_board").appendChild(paymentInfo);
+    if (window.location.href.indexOf("?id=") > -1) {
+      var id = window.location.href;
+      transactionID = id.split("=")[1];
+      getTransactionStatus(transactionID);
+    } else if (window.location.href.indexOf("status")) {
+      console.log(window.location.href.split("/"));
+      var payment_Method = window.location.href.split("/")[5];
+      var payment_status = window.location.href.split("/")[6];
+      var transactionID = window.location.href.split("/")[7];
+      const paymentInfo = document.createElement("div");
+      if (payment_Method === "MBWAY" || payment_Method === "CARD") {
+        document.getElementById("payment_info_board").style.display = "block";
+        if (payment_status === "Pending") {
+          const continue_button = document.createElement("button");
+          const continue_button_link = document.createElement("a");
+
+          paymentInfo.classList.add("payment_info");
+
+          continue_button_link.innerHTML = "Continue";
+          continue_button_link.setAttribute("href", "/");
+          continue_button.appendChild(continue_button_link);
+
+          paymentInfo.innerHTML =
+            "<p>The MBWAY payment request was sent with Success.</br>" +
+            " You have 4 minutes to procced the payment before it's expired.</p>";
+          paymentInfo.appendChild(continue_button);
+        } else if (payment_status === "Success") {
+          const form = document.getElementById("paymentStatus");
+
+          const input = document.createElement("input");
+          input.setAttribute("id", "paymentStatus_input");
+          input.setAttribute("name", "paymentStatus_input");
+          input.setAttribute("type", "checkbox");
+          input.setAttribute("valeu", "true");
+          input.setAttribute("style", "display:none;");
+          input.checked = true;
+          form.appendChild(input);
+
+          const continue_button = document.createElement("button");
+          continue_button.setAttribute("href", "/");
+          continue_button.innerHTML = "Exit";
+          form.appendChild(continue_button);
+
+          paymentInfo.classList.add("payment_info");
+          paymentInfo.innerHTML =
+            "<p>Your Payment was made with SUCCESS." +
+            "</br>" +
+            "Please go to your wallet if you want to see your reservation</p>";
+          paymentInfo.appendChild(form);
+        } else if (payment_status === "Declined") {
+          const continue_button_link = document.createElement("a");
+
+          paymentInfo.classList.add("payment_info");
+
+          continue_button_link.innerHTML = "&#x2716;";
+          continue_button_link.setAttribute("href", "/");
+
+          paymentInfo.innerHTML =
+            "<p>Your Payment was DECLINED." +
+            "</br>" +
+            "Please try again later</p>";
+          paymentInfo.appendChild(continue_button_link);
         }
-    };
-    function getTransactionStatus(k) {
+      }
+      document.getElementById("payment_info_board").appendChild(paymentInfo);
+    }
+  };
+  function getTransactionStatus(k) {
     console.log(
       "https://spg.qly.site1.sibs.pt/api/v1/payments/" + k + "/status"
     );
@@ -579,77 +607,41 @@
       },
     };
 
+    
+
     $.ajax(settings).done(function (response) {
       console.log(response);
-      var price = response.amount.value
+      var price = response.amount.value;
       var payment_Method = response.paymentMethod;
       var payment_status = response.paymentStatus;
       var transactionID = response.transactionID;
-      window.location.replace("http://localhost:8000/status/"+price+"/"+payment_Method+"/"+payment_status+"/"+transactionID);
+      function addMinutes(numOfMinutes, date = new Date()) {
+          date.setMinutes(date.getMinutes() + numOfMinutes);
 
-    /*const paymentInfo = document.createElement("div");
-      console.log("caralhinho")
-      if (payment_Method === "MBWAY" || payment_Method === "CARD") {
-        document.getElementById("payment_info_board").style.display = "block";
-        if ( response.paymentStatus === "Pending") {
-          const continue_button = document.createElement("button");
-          const continue_button_link = document.createElement("a");
-          var send_phone = response.token.value;
-
-          paymentInfo.classList.add("payment_info");
-
-          continue_button_link.innerHTML = "Continue";
-          continue_button_link.setAttribute("href", url);
-          continue_button.appendChild(continue_button_link);
-
-          paymentInfo.innerHTML =
-            "<p>The MBWAY payment request was sent to " +
-            send_phone +
-            ".</br>" +
-            " You have 4 minutes to procced the payment before it's expired.</p>";
-          paymentInfo.appendChild(continue_button);
-
-        } else if (response.paymentStatus === "Success") {
-
-          const form = document.getElementById("paymentStatus");
-
-          const input = document.createElement("input");
-          input.setAttribute("id", "paymentStatus_input");
-          input.setAttribute("name", "paymentStatus_input");
-          input.setAttribute("type", "checkbox");
-          input.setAttribute("valeu", "true");
-          input.setAttribute("style", "display:none;");
-          input.checked = true;
-          form.appendChild(input);
-
-          const continue_button = document.createElement("button");
-          continue_button.setAttribute("type", "submit");
-          continue_button.innerHTML = "Exit";
-          form.appendChild(continue_button);
-
-          paymentInfo.classList.add("payment_info");
-          paymentInfo.innerHTML =
-            "<p>Your Payment was made with SUCCESS." +
-            "</br>" +
-            "Please go to your wallet if you want to see your reservation</p>";
-          paymentInfo.appendChild(form);
-
-        } else if (response.paymentStatus === "Declined") {
-          const continue_button_link = document.createElement("a");
-
-          paymentInfo.classList.add("payment_info");
-
-          continue_button_link.innerHTML = "&#x2716;";
-          continue_button_link.setAttribute("href", url);
-
-          paymentInfo.innerHTML =
-            "<p>Your Payment was DECLINED." +
-            "</br>" +
-            "Please try again later</p>";
-          paymentInfo.appendChild(continue_button_link);
-        }
+          return date;
       }
-      document.getElementById("payment_info_board").appendChild(paymentInfo);*/
+      const date = new Date('2022-03-14T09:25:30.820');
+      var expireDate
+      if (payment_Method=="MBWAY"){
+        expireDate=new Date(response.execution.endTime);
+        
+        console.log(addMinutes(4, expireDate))
+      }else if(payment_Method=="REFERENCE"){
+
+      }
+      window.location.replace(
+        "http://127.0.0.1:8000/status/" +
+          price +
+          "/" +
+          payment_Method +
+          "/" +
+          payment_status +
+          "/" +
+          transactionID +
+          "/" +
+          expireDate +
+          "/"
+      );
     });
   }
   function isValidJSON(text) {
@@ -671,13 +663,13 @@
   }
   function bundleFiveRequest() {
     console.log("Entrou");
-    bundleType=5
+    bundleType = 5;
     price_js = 50;
     requestCheckout();
   }
   function bundleTenRequest() {
     console.log("Entrou");
-    bundleType=10
+    bundleType = 10;
     price_js = 90;
     requestCheckout();
   }
@@ -688,31 +680,31 @@
     );
     console.log(
       startDatetime.getFullYear() +
-      "-" +
-      startDatetime.getMonth() +
-      "-" +
-      startDatetime.getDay() +
-      "T" +
-      startDatetime.getHours() +
-      ":" +
-      startDatetime.getMinutes() +
-      ":" +
-      startDatetime.getSeconds() +
-      ".040Z"
+        "-" +
+        startDatetime.getMonth() +
+        "-" +
+        startDatetime.getDay() +
+        "T" +
+        startDatetime.getHours() +
+        ":" +
+        startDatetime.getMinutes() +
+        ":" +
+        startDatetime.getSeconds() +
+        ".040Z"
     );
     console.log(
       endDatetime.getFullYear() +
-      "-" +
-      endDatetime.getMonth() +
-      "-" +
-      endDatetime.getDay() +
-      "T" +
-      endDatetime.getHours() +
-      ":" +
-      endDatetime.getMinutes() +
-      ":" +
-      endDatetime.getSeconds() +
-      ".040Z"
+        "-" +
+        endDatetime.getMonth() +
+        "-" +
+        endDatetime.getDay() +
+        "T" +
+        endDatetime.getHours() +
+        ":" +
+        endDatetime.getMinutes() +
+        ":" +
+        endDatetime.getSeconds() +
+        ".040Z"
     );
     var settings1 = {
       url: "https://spg.qly.site1.sibs.pt/api/v1/payments",
@@ -764,14 +756,26 @@
     };
 
     $.ajax(settings1).done(function (response) {
-      console.log(response)
+      console.log(response);
       transactionID = response.transactionID;
       var formContext = response.formContext;
-      var transactionSignature=response.transactionSignature.replaceAll("/","<")
-      console.log(transactionID)
-      console.log(formContext)
-      console.log(transactionSignature)
-      window.location.replace("http://localhost:8000/meetingRoomPersonalizada/form/"+formContext+"/"+transactionID+"/"+transactionSignature+"/"+bundleType);
+      var transactionSignature = response.transactionSignature.replaceAll(
+        "/",
+        "<"
+      );
+      console.log(transactionID);
+      console.log(formContext);
+      console.log(transactionSignature);
+      window.location.replace(
+        "http://127.0.0.1:8000/meetingRoomPersonalizada/form/" +
+          formContext +
+          "/" +
+          transactionID +
+          "/" +
+          transactionSignature +
+          "/" +
+          bundleType
+      );
     });
   }
 

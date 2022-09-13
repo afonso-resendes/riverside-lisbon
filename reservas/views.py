@@ -40,7 +40,6 @@ from django.http import JsonResponse
 import json
 from .tokens import account_activation_token
 from Cryptodome.Cipher import AES
-from django.contrib.auth.decorators import login_required
 
 import base64
 
@@ -107,7 +106,6 @@ def get_RealQty(reserva):
 
     return qty
 
-@login_required(login_url='login')
 @csrf_exempt
 def coworkingTanks(request):
     if request.method=="POST":
@@ -143,7 +141,7 @@ def checkWebhook(payload, request):
     print(transactions)
     print(transactions.transactionId)
     transactions.status=payload['paymentStatus']
-    transactions.save() 
+    transactions.save()
     try:
         reserva_cow_prov=reservas_Coworking_provisoria.objects.get(transactionId=payload['transactionID'])
         if reserva_cow_prov and payload['paymentStatus']=='Success':
@@ -199,10 +197,13 @@ def checkWebhook(payload, request):
                         confirmPurchase(request, meet_prov.user, reserva_cow_prov.user.email)
             except:
                 pass
-            
-def refund(request, transactionID=None):
+def refund(request, payment_status=None, transactionID=None):
     if request.user.is_superuser:
         transact=transaction.objects.get(transactionId=transactionID)
+        if payment_status=="pass":
+            transact.status="Refunded"
+            transact.save()
+            return redirect('index')
         price=transact.price
         context={
             "price":price
@@ -210,7 +211,6 @@ def refund(request, transactionID=None):
         return render(request, "refund.html", context)
     else:
         return redirect('index')
-    
 def cancelation(request, transactionID=None):
     if request.user.is_superuser:
         transact=transaction.objects.get(transactionId=transactionID)
@@ -221,19 +221,58 @@ def cancelation(request, transactionID=None):
         return render(request, "cancelation.html", context)
     else:
         return redirect('index')
-def index(request, price=None, payment_Method=None, payment_status=None, transactionID=None):
+def index(request, price=None, payment_Method=None, payment_status=None, transactionID=None, expireDate=None):
+    print(expireDate)
+    print ("asdfsdfasfasfasdf")
+   
+    print(datetime.now())
+
+    """  Mon Sep 12 2022 11:20:03 GMT+0000 (+00)
+        2022-09-12 11:23:46.298683 """
     if price and payment_Method and payment_status and transactionID:
         try:
             transaction.objects.get(transactionId=transactionID)
         except:
+            date = expireDate.split(" ")
+            d_ano = date[3]
+            m = {
+                'jan': 1,
+                'feb': 2,
+                'mar': 3,
+                'apr':4,
+                'may':5,
+                'jun':6,
+                'jul':7,
+                'aug':8,
+                'sep':9,
+                'oct':10,
+                'nov':11,
+                'dec':12
+            }
+            d_mes = str(m[date[1].lower()])
+            d_dia = date[2]
+            d_horas = date[4]
+            print(d_ano)
+            print(d_mes)
+            print(d_dia)
+            expire_date_p = d_ano + '-' + d_mes + '-' + d_dia + ' ' + d_horas
+
+
+
+            expire_date = datetime.strptime(expire_date_p, '%Y-%m-%d %H:%M:%S')
+            
+            
+
+
             transaction.objects.create(
                             user=request.user,
                             transactionId=transactionID,
                             status = payment_status,
                             payment_Method = payment_Method,
                             price = float(price),
+                            expireDate = expire_date,
                         )
-        return render(request, "dashboard(resendes).html")
+            return render(request, "dashboard(resendes).html")
 
     if request.user.is_authenticated:
         if request.user.is_superuser:
@@ -291,7 +330,7 @@ def coworkingSimulation(request, spgContext=None, transactionID=None, transactio
     viewChairs = False
     if transactionID:
         print(transactionID)
-        reserva_prov=reservas_Coworking_provisoria.objects.get(user=request.user.id)
+        reserva_prov=reservas_Coworking_provisoria.objects.get(user=request.user)
         reserva_prov.transactionId=transactionID
         reserva_prov.save()
         context = {
@@ -544,7 +583,7 @@ def meetingRoomPersonalizada(request, spgContext=None, transactionID=None, trans
             dateSplit = meetingdate.split("/")
             meetingDate_Format = datetime(
                 int(dateSplit[2]), int(dateSplit[0]), int(dateSplit[1]))
-            
+
             if startAm_PM == "PM":
                 if startHour == 12:
                     startHour = 0
@@ -558,7 +597,7 @@ def meetingRoomPersonalizada(request, spgContext=None, transactionID=None, trans
             s_date = str(startHour)+':'+str(startMinute)
             e_date = str(endHour)+':'+str(endMinute)
 
-                
+
 
             startTime = datetime.strptime(s_date, '%H:%M').time()
             endTime = datetime.strptime(e_date, '%H:%M').time()
@@ -598,7 +637,7 @@ def meetingRoomPersonalizada(request, spgContext=None, transactionID=None, trans
 
             userHours = user_wallet.mettingRoomHours
             userMinutes = user_wallet.mettingRoomMinutes
-    
+
 
             if userHours > reservationHour:
                 left_user_hour = userHours - reservationHour
@@ -610,7 +649,7 @@ def meetingRoomPersonalizada(request, spgContext=None, transactionID=None, trans
                     if left_user_minute == 60:
                         left_user_minute = 0
                         left_user_hour += 1
-            
+
 
             if left_user_hour * 60 + left_user_minute >= (reservationTime.seconds/60):
                 payWallet = True
@@ -657,8 +696,8 @@ def meetingRoomPersonalizada(request, spgContext=None, transactionID=None, trans
 
             userHours = user_wallet.mettingRoomHours
             userMinutes = user_wallet.mettingRoomMinutes
-            
-            
+
+
             splitRT = str(reservationTime).split(":")
             reservationHour = int(splitRT[0])
             reservationMinute = int(splitRT[1])
@@ -674,7 +713,7 @@ def meetingRoomPersonalizada(request, spgContext=None, transactionID=None, trans
                     if left_user_minute == 60:
                         left_user_minute = 0
                         left_user_hour += 1
-            
+
 
             user_wallet.mettingRoomHours=left_user_hour
             user_wallet.mettingRoomMinutes=left_user_minute
@@ -705,7 +744,7 @@ def wallet(request):
     user_wallet = Wallet.objects.get(user=request.user)
     userHours = user_wallet.mettingRoomHours
     userMinutes = user_wallet.mettingRoomMinutes
-    
+
     print(request.user)
     print(request.user.email)
 

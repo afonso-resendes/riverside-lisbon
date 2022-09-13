@@ -4,9 +4,10 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path("status/<str:price>/<str:payment_Method>/<str:payment_status>/<str:transactionID>/", views.index, name="index"),
+    path("status/<str:price>/<str:payment_Method>/<str:payment_status>/<str:transactionID>/<str:expireDate>/", views.index, name="index"),
     path("<str:transactionID>/cancelation", views.cancelation, name="cancelation"),
     path("<str:transactionID>/refund", views.refund, name="refund"),
+    path("<str:payment_status>/<str:transactionID>/refund", views.refund, name="refund"),
     path("meetingRoomPersonalizada",views.meetingRoomPersonalizada,name="meetingRoomPersonalizada",),
     path("meetingRoomPersonalizada/form/<str:spgContext>/<str:transactionID>/<str:transactionSignature>/<str:bundleType>",views.meetingRoomPersonalizada,name="meetingRoomPersonalizada"),
     path("coworkingSimulation",views.coworkingSimulation,name="coworkingSimulation"),
